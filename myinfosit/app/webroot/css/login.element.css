@@ -1,0 +1,56 @@
+div.login_element {
+	width: 100%;
+	float: left;
+	/*border:1px solid;*/
+}
+
+div.login_element div { /*width:100%;*/
+	float: left;
+	/*border:1px solid;*/
+}
+
+div.login_element div ul {
+	width: 100%;
+	float: left;
+	list-style-type: none;
+}
+
+div.login_element div ul li {
+	width: 100%;
+	float: left;
+	margin: 3px;
+}
+
+div.login_element div ul li span {
+	width: 50px;
+	float: left;
+	padding: 3px;
+	/*clear:left;*/
+}
+
+div.login_element div ul li input[type=text],input[type=password] {
+	width: 150px;
+	height: 12px;
+	font-size: 12px;
+	float: left;
+	border: solid 1px #000;
+	/*clear:right;*/
+}
+
+div.login_element div ul li input {
+	_width: 150px;
+	_height: 12px;
+	_font-size: 12px;
+	_float: left;
+	_border: solid 1px #000;
+	/*clear:right;*/
+}
+
+div.login_element div div input {
+	_width: 50px;
+	_height: 20px;
+	_font-size: 12px;
+	_float: left;
+	_border: solid 1px #000;
+	/*clear:right;*/
+}

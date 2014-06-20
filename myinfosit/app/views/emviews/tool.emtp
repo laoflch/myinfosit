@@ -1,0 +1,29 @@
+<div class="pagehead shrunken dashboard">
+<div class="container">
+<div class="select-menu account-switcher js-menu-container js-select-menu">
+  <span class="minibutton select-menu-button with-gravatar js-menu-target">
+    <div class="select-menu-button-gravatar js-select-button-gravatar">
+      <img height="20" src="https://secure.gravatar.com/avatar/741ed1b2922ec7d5c077af7922b63a77?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="20" />
+    </div>
+    <span class="js-select-button">{{currentCustomerName}}</span>
+  </span>
+   
+  <ul class="pagehead-actions">
+      <li><a class="feed tooltipped leftwards" title="Subscribe to your personalized GitHub Feed" href="/laoflch.private.atom?token=c110117925e0d4f9269dcabd138575f3"><span class="dashboard-feed-icon octicon octicon-rss"></span> News Feed</a></li>
+    </ul>
+    {{view MDEmber.SelectMenu }}   
+   
+  </div>
+  </div>
+
+  <div class="container">
+     <ul class="tabs">
+  <li><a href="/" class="js-selected-navigation-item selected" >首页</a></li>
+  <li>{{#linkTo 'friend' class="js-selected-navigation-item"}}好友管理{{/linkTo}}</li>
+  <li>{{#linkTo 'regular' class="js-selected-navigation-item"}}规则配置{{/linkTo}}</li>
+  <li>{{#linkTo 'content' class="js-selected-navigation-item"}}素材管理{{/linkTo}}</li>
+  <li>{{#linkTo 'message' class="js-selected-navigation-item"}}消息管理{{/linkTo}}</li>
+</ul>
+   
+  </div>
+</div><!-- /.pagehead -->

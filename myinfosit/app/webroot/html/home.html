@@ -1,0 +1,276 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>micro-data</title>
+<link rel="search" type="application/opensearchdescription+xml"
+	href="/opensearch.xml" title="micro-data" />
+<link rel="fluid-icon" href="https://github.com/fluidicon.png"
+	title="GitHub" />
+<link rel="apple-touch-icon" sizes="57x57"
+	href="/apple-touch-icon-114.png" />
+<link rel="apple-touch-icon" sizes="114x114"
+	href="/apple-touch-icon-114.png" />
+<link rel="apple-touch-icon" sizes="72x72"
+	href="/apple-touch-icon-144.png" />
+<link rel="apple-touch-icon" sizes="144x144"
+	href="/apple-touch-icon-144.png" />
+<link rel="logo" type="image/svg"
+	href="http://github-media-downloads.s3.amazonaws.com/github-logo.svg" />
+<link rel="assets" href="https://a248.e.akamai.net/assets.github.com/">
+<link rel="xhr-socket" href="/_sockets" />
+
+
+
+<meta name="msapplication-TileImage" content="/windows-tile.png" />
+<meta name="msapplication-TileColor" content="#ffffff" />
+<meta name="selected-link" value="/" data-pjax-transient />
+<!--meta content="collector.githubapp.com" name="octolytics-host" /><meta content="github" name="octolytics-app-id" /-->
+
+
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="ci3kYzWQQQHupvO74rjQZllm05rvuEahwzup9EI+zRM="
+	name="csrf-token" />
+
+<!-- link href="https://a248.e.akamai.net/assets.github.com/assets/github-0c2e6b2f619f4aafd0dc861f56d66b8fc3b130eb.css" media="all" rel="stylesheet" type="text/css" /-->
+<!-- link href="https://a248.e.akamai.net/assets.github.com/assets/github2-825f026ec649c1aabce8f2d0390fc4d3bb870964.css" media="all" rel="stylesheet" type="text/css" /-->
+<!-- 
+<link href="./theme/default/easyui.css" rel="stylesheet" type="text/css" />
+<link href="./theme/icon.css" rel="stylesheet" type="text/css" />
+-->
+<link href="./css/core.css" rel="stylesheet" type="text/css" />
+<script src="./js/jquery-1.9.1.js" type="text/javascript"></script>
+<script src="./js/jquery.easyui.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="./js/handlebars-1.0.0-rc3.js"
+	defer="defer"></script>
+<script type="text/javascript" src="./js/ember-1.0.0-rc.3.js"
+	defer="defer"></script>
+<script type="text/javascript" src="./js/md_app.js" defer="defer"></script>
+<script type="text/javascript" src="./js/xheditor-1.1.14-zh-cn.js" defer="defer"></script>
+
+<!-- script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-4c434fa1705bf526e191eec0cd8fab1a5ce3e326.js" type="text/javascript"></script -->
+<!-- script src="https://a248.e.akamai.net/assets.github.com/assets/github-fa0e576ffff9e151472d56e5f4512a9053a68a12.js" type="text/javascript"></script -->
+
+<meta http-equiv="x-pjax-version"
+	content="51c0b4a5726a8cb47213bcf36c3dd471">
+
+<meta name="description" content="Build software better, together." />
+</head>
+
+
+<body class="logged_out marketing linux  env-production  ">
+	<div id="wrapper">
+		<div class="header header-logged-out"></div>
+		<div id="main_content" class="home site">
+		
+		
+			<!--select id="ember345" class="input-block easyui-combobox input-block" name="content_type_code">
+			<script id="metamorph-44-start" type="text/x-placeholder"></script>
+			<option id="ember386" class="ember-view" value="01">
+			<script id="metamorph-45-start" type="text/x-placeholder"></script>
+			文本<script id="metamorph-45-end" type="text/x-placeholder"></script>
+			</option>
+			<script id="metamorph-44-end" type="text/x-placeholder"></script>
+			</select-->
+			
+<!-- 浮动窗口 -->
+	<!--  div id="back_ground" >
+
+    
+	</div>-->
+	<div id="float_layer"  class="content easyui-draggable" style="display:none" data-options="handle:'#float_header'" ><div id="float_header" class="auth-form-header" style="height:20px;">
+        <span class="header_title" style="float:left;width:75%"></span>
+        <span class="octicon octicon-remove-close " onclick="MDEmber.floatLayer.destroyAndHide()"></span>
+      </div></div>
+<!-- 浮动窗口 -->
+
+		</div>
+		<!-- /.home -->
+		<div id="footer-push"></div>
+		<!-- hack for sticky footer -->
+	</div>
+	<!-- end of wrapper - hack for sticky footer -->
+
+	<!-- footer -->
+	<div id="footer"></div>
+	<!-- /.#footer -->
+	
+</body>
+<script type="text/x-handlebars" data-template-name="register">
+
+        <form accept-charset="UTF-8" action="/users" autocomplete="off" class="home-signup" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="ci3kYzWQQQHupvO74rjQZllm05rvuEahwzup9EI+zRM=" /></div>          <dl class="form">
+            <dd>{{view MDEmber.InputView placeholder="请输入用户名" data-autocheck-url=""}}</dd>
+          </dl>
+
+          <dl class="form">
+            <dd>
+              {{view MDEmber.InputView placeholder="请输入邮件" id="username" class="is-autocheck-successful" data-autocheck-url=""}}
+            </dd>
+          </dl>
+
+          <dl class="form">
+            <dd>
+              {{view MDEmber.InputView placeholder="请输入密码" id="password" data-autocheck-url=""}}
+            </dd>
+          </dl>
+
+         
+
+          <button class="button primary button-block" type="submit">Sign up for free</button>
+          </form>
+  </script>
+<script type="text/x-handlebars" data-template-name="signin">
+<div class="container">
+        {{#view MDEmber.FormView accept-charset="UTF-8" action="/myinfosit/user/login" autocomplete="off" method="post"}}
+        <div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="ci3kYzWQQQHupvO74rjQZllm05rvuEahwzup9EI+zRM=" /></div>
+          <dl class="form">
+            <dd>{{view MDEmber.InputView placeholder="请输入用户名" data-autocheck-url="" name="username"}}</dd>
+          </dl>        
+
+          <dl class="form">
+            <dd>
+              {{view MDEmber.InputView placeholder="请输入密码" data-autocheck-url="" type="password" name="password"}}
+            </dd>
+          </dl>
+
+         <dl class="form">
+            <dd>
+              {{view MDEmber.InputView placeholder="请输入验证码" data-autocheck-url="" name="valitecode"}}&nbsp;&nbsp;<img src='/myinfosit/img/valite' />
+            </dd>
+          </dl>
+
+          <button class="button primary button-block" type="submit">登陆</button>
+         {{/view}}
+</div>
+  </script>
+  <script type="text/x-handlebars" data-template-name="friend">
+          
+            <div class="jumbotron">
+            <div id="container-1" class="container">{{outlet container-1}}</div>
+            <div id="container-2" class="container"><div id="container-left" class="container-left">{{outlet container-left}}</div>
+			<!-- /.jumbotron -->
+			<div id="container-right" class="container-right">{{outlet container-right}}</div>
+			<!-- /.container --></div>
+       
+  </script>
+   <script type="text/x-handlebars" data-template-name="logon_home">
+            <div id="container-1" class="jumbotron">{{outlet container-1}}</div>
+			<!-- /.jumbotron -->
+			<div id="container-2" class="container">{{outlet container-2}}</div>
+			<!-- /.container -->
+       
+  </script>
+  <script type="text/x-handlebars" data-template-name="regular">
+            <div class="jumbotron"><div id="container-1" class="container">{{outlet container-1}}</div>
+			<!-- /.jumbotron -->
+			<div id="container-2" class="container">{{outlet container-2}}</div>
+			<!-- /.container --></div>
+       
+  </script>
+   <script type="text/x-handlebars" data-template-name="content">
+
+            <div class="jumbotron">
+            <div id="container-1" class="container">{{outlet container-1}}</div>
+            <div id="container-2" class="container"><div id="container-left" class="container-left">{{outlet container-left}}</div>
+			<!-- /.jumbotron -->
+			<div id="container-right" class="container-right">{{outlet container-right}}</div>
+			<!-- /.container --></div>
+</div>
+       
+  </script>
+     <script type="text/x-handlebars" data-template-name="message">
+
+            <div class="jumbotron">
+            <div id="container-1" class="container">{{outlet container-1}}</div>
+            <div id="container-2" class="container"><div id="container-left" class="container-left">{{outlet container-left}}</div>
+			<!-- /.jumbotron -->
+			<div id="container-right" class="container-right">{{outlet container-right}}</div>
+			<!-- /.container --></div>
+</div>
+       
+  </script>
+<script type="text/x-handlebars" data-template-name="sign_nav">
+     
+
+      <a class="header-logo-wordmark" href=""></a>
+
+      <div class="header-actions" >      
+       {{#if controller.isSignin}}
+        <a class="button primary" name="logout" onclick="MDEmber.logout(event)" >注销</a>
+       {{/if}}
+       {{#unless controller.isSignin}}
+        <a class="button" name="login">注册</a>
+       {{/unless}}
+      </div>   
+  </script>
+<script type="text/javascript">
+   
+  </script>
+<script type="text/javascript">
+ 
+  var timeoutID;
+  $("#username").keypress(function(event){
+	 // if (!$.browser.mozilla) {  
+          //$("#mes").text("您按下的键值是: " + event.keyCode); 
+         // alert(event.keyCode);
+     
+     //alert(url);
+     window.clearTimeout(timeoutID);
+     timeoutID = window.setTimeout(function(){
+    	 var url="http://localhost/myinfosit/user/checkunqieuser.json?username="+$("#username").val();
+    	 //alert(url);
+    	 $.get(url,function(User){
+    	 //alert(User["return_code"]==102);
+     	 if(User["return_code"]=="102"){
+     		//alert($("#username").attr("class"));
+     		$("#username").removeClass("is-autocheck-errored")
+     		$("#username").addClass("is-autocheck-successful")
+     	 }else{
+     		 if(User["return_code"]=="101"){
+     			//alert($("#username").attr("class"));
+     			$("#username").removeClass("is-autocheck-successful")
+         		$("#username").addClass("is-autocheck-errored")
+     		 }
+     	 };
+     });
+     }, 400);
+          
+         // if (event.keyCode && (event.keyCode < 48 || event.keyCode > 57)) {  
+              // ie6,7,8,opera,chrome管用  
+             // event.preventDefault();  
+          //}  
+      //} else {  
+          //$("#mes").text("您按下的键值是: " + event.charCode);  
+         // alert(event.charCode);
+         // if (event.charCode && (event.charCode < 48 || event.charCode > 57)) {  
+              // firefox管用  
+          //    event.preventDefault();  
+          //}  
+     //}  
+  });  
+  </script>
+  <scirpt type="text/x-handlebars" data-template-name="menuContent">
+  <div class="select-menu-modal-holder js-menu-content">
+    <div class="select-menu-modal js-navigation-container js-active-navigation-container">
+      <div class="select-menu-header">
+        <span class="select-menu-title">Switch account context</span>
+        <span class="octicon octicon-remove-close js-menu-close"></span>
+      </div> <!-- /.select-menu-header -->
+
+          <div class="select-menu-list js-navigation-container">
+            <div class="select-menu-no-results">You don’t belong to any organizations.</div>
+          </div> <!-- /.select-menu-list -->
+          <div class="select-menu-footer">
+            <span class="octicon octicon-plus"></span>
+            <a href="/account/organizations/new">Create Organization</a>
+          </div> <!-- /.select-menu-footer -->
+
+    </div> <!-- /.select-menu-modal -->
+  </div>
+  </scirpt>
+
+  
+</html>

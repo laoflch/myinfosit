@@ -1,0 +1,40 @@
+
+<div class="container-list">
+
+     {{#if isShowCurrent}}
+     
+     {{view MDEmber.FriendCurrentListView }}
+     
+     {{/if}}
+     
+     {{#if isShowGroup}}
+     
+     {{view MDEmber.ContentMixListView }}
+     
+     {{/if}}
+     
+     {{#if isShowLabel}}
+     
+     {{view MDEmber.ContentPictureListView }}
+     
+     {{/if}}
+     
+     {{#if isShowSynchronize}}
+     
+     {{view MDEmber.FriendSynchronizeListView }}
+     
+     {{/if}}
+     
+     {{#if isShowHistroy}}
+     
+     {{view MDEmber.ContentAudioListView }}
+     
+     {{/if}}
+     
+     {{#if isShowMap}}
+     
+     {{view MDEmber.ContentAudioListView }}
+     
+     {{/if}}
+   
+  </div>

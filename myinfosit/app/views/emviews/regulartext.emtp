@@ -1,0 +1,60 @@
+<div>   
+      <div class="auth-form-body">
+      {{view Ember.TextField class="input-block" type="hidden" valueBinding="controller.model.WeixinRule_rule_id" name="rule_id"}}
+             
+        {{#if isKeyAdapter}}
+        <label for="login_field">
+          关键字
+        </label>
+        <!--input autocapitalize="off" autofocus="autofocus" class="input-block" id="login_field" name="login" tabindex="1" type="text" value="{{codd}}">
+  </input-->
+  {{view Ember.TextField class="input-block" valueBinding="controller.model.WeixinRuleDetail_rule_key" name="rule_key"}}
+        {{/if}}
+         {{#if isEventAdapter}}
+        <label for="login_field">
+          事件编号
+        </label>
+        <!--input autocapitalize="off" autofocus="autofocus" class="input-block" id="login_field" name="login" tabindex="1" type="text" value="{{codd}}">
+  </input-->
+  {{view Ember.TextField class="input-block" valueBinding="controller.model.WeixinRuleDetail_event_key" name="rule_key"}}
+        {{/if}}
+        
+        
+        <label for="password">
+          返回内容类型
+        </label>
+        {{view Ember.Select class="easyui-combobox input-block" 
+                                  contentBinding="controller.contentTypeList"
+                                 optionValuePath="content.WeixinContentType_content_type_code"
+                                  optionLabelPath="content.WeixinContentType_content_type_title"
+                                  valueBinding="controller.model.WeixinRuleDetail_content_type_code"
+                                  name="content_type_code"}}
+      
+        {{#if isTextContent}}
+        <label for="password">
+          返回内容
+        </label>
+         {{view Ember.Select class="input-block" 
+                                  contentBinding="controller.contentList"
+                                  optionValuePath="content.WeixinRuleContentText_content_id"
+                                  optionLabelPath="content.WeixinRuleContentText_text_message"
+                                  valueBinding="controller.model.WeixinRuleDetail_content_id"
+                                  name="content_id"}}
+                                  {{/if}}
+        {{#if isReplyMixContent}}
+         <label >
+           应答内容
+        </label>               
+         {{view Ember.Select class="input-block" 
+                                  contentBinding="controller.contentList"
+                                  optionValuePath="content.WeixinRuleContentReplyMix_content_id"
+                                  optionLabelPath="content.WeixinRuleContentReplyMix_content_name"
+                                  valueBinding="controller.model.WeixinRuleDetail_content_id"
+                                  name="content_id"}}
+         {{/if}}
+
+      <button class="button primary button-block" type="submit">保存</button>
+      <button class="button primary button-block" onclick="MDEmber.floatLayer.destroyAndHide();return false;">关闭</button>
+      
+      </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="bubble files-bubble">
+{{#view MDEmber.FriendSynFormView accept-charset="UTF-8" action="/myinfosit/user/login" autocomplete="off" method="post"}} 
+ <button class="button primary button-block" type="submit">同步</button>
+
+{{/view}}
+</div>
+
+

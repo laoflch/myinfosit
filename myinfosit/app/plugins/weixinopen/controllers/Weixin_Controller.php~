@@ -1,0 +1,330 @@
+<?php
+
+/**
+ *
+ * @author laoflch
+ *
+ */
+App::import('Controller', "NoModelController",false);
+App::import('file', "weixinopen.RuleKeyAdapter",false);
+App::import('file', "weixinopen.FsocketAdapter",false);
+
+
+
+class WeixinController extends WeixinopenAppController implements NoModelController
+{
+
+	var $helpers = array('Javascript');
+
+	var $uses = array('weixinopen.WeixinOriginalUser','weixinopen.WeixinRule','weixinopen.WeixinRuleAdapter','weixinopen.WeixinRuleKey',
+			
+	'weixinopen.WeixinContentType','weixinopen.WeixinRuleContentText');
+
+	//var $components = array('RequestHandler');
+
+	function handle(){
+		if(true/* $this->RequestHandler->isPost() */) {
+			//get post data, May be due to the different environments
+			$postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
+			$postStr="
+					<xml>
+					<ToUserName><![CDATA[gh_b1cef7dbee50]]></ToUserName>
+					<FromUserName><![CDATA[gh_b1cef7dbee50]]></FromUserName>
+					<CreateTime>1348831860</CreateTime>
+					<MsgType><![CDATA[text]]></MsgType>
+					<Content><![CDATA[你好 ! ]]></Content>
+					<MsgId>1234567890123456</MsgId>
+					</xml>
+					";
+			//extract post data
+			if (!empty($postStr)){
+				 
+				$postObj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+				$this->__recordMessage($postObj);
+				$returnStr=$this->__filterRequestContent($postObj);
+				
+				echo $returnStr;
+				$this->__recordMessage(simplexml_load_string($returnStr, 'SimpleXMLElement', LIBXML_NOCDATA));
+				$this->autoRender=false;
+				//$fromUsername = $postObj->FromUserName;
+				//gh_b1cef7dbee50
+				/* $toUsername = $postObj->ToUserName;
+				$keyword = trim($postObj->Content);
+				$time = time();
+				$textTpl = "<xml>
+				<ToUserName><![CDATA[%s]]></ToUserName>
+				<FromUserName><![CDATA[%s]]></FromUserName>
+				<CreateTime>%s</CreateTime>
+				<MsgType><![CDATA[%s]]></MsgType>
+				<Content><![CDATA[%s]]></Content>
+				<FuncFlag>0</FuncFlag>
+				</xml>";
+				if(!empty( $keyword ))
+				{
+				$msgType = "text";
+				$contentStr = "Welcome to wechat world!";
+				$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
+				
+				}else{
+				echo "Input something...";
+				}
+				*/
+			}else {
+				echo "";
+				exit;
+			}
+		}elseif($this->RequestHandler->isGet()){
+
+			$tmpArr = array("myinfosit", $this->params["url"]["timestamp"], $this->params["url"]["nonce"]);
+			sort($tmpArr);
+			$tmpStr = implode( $tmpArr );
+			$tmpStr = sha1( $tmpStr );
+
+			if( $tmpStr == $this->params["url"]["signature"] ){
+					
+				//$this->set('echostr', $this->params["url"]["echostr"]);
+
+				echo $this->params["url"]["echostr"];
+				$this->autoRender=false;
+				//$this->render('/User/home');
+					
+			}
+		}
+		return;
+			
+	}
+
+	function saveOriginalUser(){
+		$this->WeixinOriginalUser->save(array("original_user_name"=>"gh_b1cef7dbee50"));
+
+	}
+
+	function __getMatchRuleGroup($originaUserName){
+		return $this->WeixinOriginalUser->findByOriginalUserName($originaUserName);
+
+
+
+	}
+
+	function __getMatchRule($originalUserId){
+		$returnArray=array();
+		if(isset($originalUserId)&&!empty($originalUserId)){
+			$ruleGroups=$this->__getMatchRuleGroup($originalUserId);
+			foreach ($ruleGroups as $ruleGroup){
+				$returnArray[]=$this->__getMatchRuleByGroup($ruleGroup["rule_group_id"]);
+					
+			}
+		}
+		return $returnArray;
+
+	}
+
+	function __getMatchRuleByGroup($ruleGroupID){
+		return $this->WeixinRule->findByRuleGroupId($ruleGroupID);
+	}
+
+	function __filterRequestContent($postObj){
+		if(isset($postObj)&&!empty($postObj)){
+			$matchRules=$this->__getMatchRule((string)$postObj->ToUserName);
+			foreach ($matchRules as $matchRule){
+				$ruleAdapters=$this->__fetchRuleAdapters();
+				App::import('file','weixinopen.'.$ruleAdapters[$matchRule["WeixinRule"]["rule_adapter_id"]],false);
+				//$reflectMethod=new ReflectionMethod($ruleAdapters[$matchRule["WeixinRule"]["rule_adapter_id"]],"instance");
+				//$ruleAdapter=$reflectMethod.invoke(null);
+				$r = new ReflectionClass($ruleAdapters[$matchRule["WeixinRule"]["rule_adapter_id"]]);
+				$ruleadapter=$r->getMethod('instance')->invoke(null);
+				//$r=RuleKeyAdapter::instance();
+				//$ruleAdapter=$matchRule->ruleAdapterId->instance();
+				
+				$matchRuleKey=$this->WeixinRuleKey->findByRuleId($matchRule["WeixinRule"]["rule_id"]);
+				
+				
+				
+				//$contentType=$this->WeixinContentType-find("all");
+					
+				return $ruleadapter->parse($postObj,$matchRuleKey,$this->WeixinContentType,$this->WeixinRuleContentText);
+					
+					
+			}
+			
+			
+		}
+		
+		return null;
+
+	}
+
+	function __fetchRuleAdapters(){
+		if(!isset($this->__ruleAdapters)||empty($this->__ruleAdapters)){
+			//$this->__ruleAdapters=
+			$ruleObjs=$this->WeixinRuleAdapter->find("all");
+				
+				
+			foreach ($ruleObjs as $key){
+					
+				
+					$this->__ruleAdapters[$key["WeixinRuleAdapter"]["rule_adapter_id"]]=$key["WeixinRuleAdapter"]["rule_adapter_name"];
+				
+			}
+				
+		}
+		return $this->__ruleAdapters;
+
+	}
+
+	function sendMessage(){
+
+		$this->__initConnet();
+
+		$return_obj=$this->WeixinHandler->sendMessage($this->token,"hello worlds",null,"678038100");
+
+		if($return_obj->msg==="ok"){
+
+			echo 1234;
+
+		}
+
+		$this->set('pass',array("return_code"=>107,"return_message"=>"send message successfully !"));
+		//$this->view_outs[] = array("view_name"=>"tool_nav","target"=>"#container-2");
+		//return $this->render(null,null,'index');
+		$this->isRenderTemple=false;
+
+			
+	}
+
+	function createMixMessage(){
+
+		$this->__initConnet();
+		//$token=$this->WeixinHandler->loginOpenWeixin("laoflch@163.com","arsenal");
+
+		$fileid=$this->WeixinHandler->uploadImage($this->token,"/home/laoflch/test.jpg");
+
+		$this->WeixinHandler->createMixMessage($this->token,$fileid,"hello world!","hello world!","http://www.baidu.com");
+
+		$this->set('pass',array("return_code"=>108,"return_message"=>"upload image successfully !"));
+		//$this->view_outs[] = array("view_name"=>"tool_nav","target"=>"#container-2");
+		//return $this->render(null,null,'index');
+		$this->isRenderTemple=false;
+
+
+
+
+	}
+
+	function __initConnet(){
+		if(!isset($this->token)&&empty($this->token)){
+			$this->token=$this->WeixinHandler->loginOpenWeixin("laoflch@163.com","arsenal");
+		}
+
+	}
+
+	function fetchAllUserInfo(){
+		$this->__initConnet();
+		if(isset($this->token)&&!empty($this->token)){
+			$users=$this->WeixinHandler->fetch_all_user_info($this->token);
+			$user_friends=array();
+			$user_friend_infos=array();
+				
+				
+
+			foreach ($users as $user){
+				$vars=get_object_vars($user);
+				//$user;
+				//$data=array();
+				$data=array();
+				foreach (array_keys($vars) as $key){
+						
+					if(!is_object($vars[$key])&&!is_array($vars[$key])){
+						$data=array_merge($data,array($this->__tranVarName($key)=>$vars[$key]));
+						/* array("fake_id"=>$user->fakeId,
+						 "open_fake_id"=>"678038100",
+								"nick_name"=>$user->nickName,
+								"remark_name"=>isset($user->remakName)&&!empty($user->remakName)?$user->remakName:"",
+								"group_id"=>$user->groupId); */
+					}
+						
+				}
+				if(isset($data)&&!empty($data)){
+					$data["open_account_id"]="678038100";
+					$user_friends[]=$data;
+				}
+
+				$vars=get_object_vars($user->info);
+				$data=array();
+				foreach (array_keys($vars) as $key){
+						
+					if(!is_object($vars[$key])&&!is_array($vars[$key])){
+						$data=array_merge($data,array($this->__tranVarName($key)=>$vars[$key]));
+						/* array("fake_id"=>$user->fakeId,
+						 "open_fake_id"=>"678038100",
+								"nick_name"=>$user->nickName,
+								"remark_name"=>isset($user->remakName)&&!empty($user->remakName)?$user->remakName:"",
+								"group_id"=>$user->groupId); */
+					}
+						
+				}
+
+				if(isset($data)&&!empty($data)){
+					$data["open_account_id"]="678038100";
+					$user_friends_infos[]=$data;
+				}
+				/* $user_friend_info[]=array("fake_id"=>$user->info->fakeId,
+				 "user_name"=>$user->info->userName,
+						"nick_name"=>$user->info->nickName,
+						"remark_name"=>isset($user->info->remakName)&&!empty($user->info->remakName)?$user->info->remakName:"",
+						"user_name"=>$user->info->userName,
+						"nick_name"=>$user->info->nickName,
+						"group_id"=>$user->info->groupId);
+				*/
+			}
+
+			$this->WeixinFriend->deleteAll(array("open_fake_id"=>"678038100"),false,false);
+			$this->WeixinFriend->saveAll($user_friends);
+			$this->WeixinFriendInfo->deleteAll(array("open_fake_id"=>"678038100"),false,false);
+			$this->WeixinFriendInfo->saveAll($user_friends_infos);
+
+			//$this->WeixinFriendInfo-deleteAll();
+
+		}
+			
+	}
+
+	function __tranVarName($var_name){
+		if(isset($var_name)&&!empty($var_name)){
+			return  strtolower(preg_replace("/([a-z])([A-Z])/e","$1.'_'.$2",lcfirst($var_name)));
+
+		}
+			
+	}
+
+	function addOpenAccount(){
+		$open_account_id = strip_tags($this->params["form"]['username']);
+		$pw = strip_tags($this->params["form"]['password']);
+
+		//$this->WeixinOpenAccount->save(array("open_account_id"=>$open_account_id,"password"=>$pw));
+		$this->WeixinOpenAccount->save(array("open_account_id"=>'$open_account_id',"password"=>'$pw'));
+
+
+
+	}
+	
+	/* *
+	 * 记录信息 
+	 * 
+	 */
+	function __recordMessage($postObj){
+		switch ($postObj->MsgType){
+			case "text":
+				FsocketAdapter::get("localhost", "/myinfosit/weixinopen/message/addTextMessage", $postObj);
+				break;
+			default:
+				FsocketAdapter::get("localhost", "/myinfosit/weixinopen/message/addTextMessage", $postObj);
+				break;
+		}
+
+	}
+	
+	
+
+
+}

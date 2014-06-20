@@ -1,0 +1,16 @@
+<div class="pagehead shrunken dashboard">
+<div class="repository-sidebar">
+<div class="repo-nav-contents">
+
+     <ul class="repo-menu">
+  <li><a name="current" class="js-selected-navigation-item selected" >消息列表</a></li>
+  <li><a name="group" class="js-selected-navigation-item" >用户分组</a></li>
+  <li><a name="label" class="js-selected-navigation-item" >用户标签</a></li>
+  <li><a name="synchronize" class="js-selected-navigation-item" >用户同步</a></li>
+  <li><a name="histroy" class="js-selected-navigation-item" >历史用户</a></li>
+  <li><a name="map" class="js-selected-navigation-item" >用户映射</a></li>
+</ul>
+
+  </div>
+  </div>
+</div><!-- /.pagehead -->

@@ -1,0 +1,83 @@
+<div class="bubble files-bubble">
+  <div class="branch-infobar clearfix">
+          <p>
+              语音消息-列表
+          </p>
+
+          <ul class="lightweight-actions">
+            <li>
+                <a href="/laoflch/rails/pull/new/master">
+                  <span class="octicon octicon-git-pull-request"></span>
+                 
+                </a>
+            </li>
+            
+            <li>
+              <a href="#">
+                <span class="create_rule octicon octicon-repo-create"></span>
+                
+              </a>
+            </li>
+            
+            <li>
+              <a href="/laoflch/rails/compare">
+                <span class="octicon octicon-diff"></span>
+              
+              </a>
+            </li>
+          </ul>
+
+        </div><div class="commit commit-tease js-details-container">
+    <!--p class="commit-title ">
+        <a href="/laoflch/rails/commit/7c8caf930d1176503259e9e811ae9935caf1a7b5" class="message" data-pjax="true" title="adding test for the symbol refs">adding test for the symbol refs</a>
+        
+    </p-->
+    <!--div class="commit-meta">
+      <!--span class="js-zeroclipboard zeroclipboard-link" data-clipboard-text="7c8caf930d1176503259e9e811ae9935caf1a7b5" data-copied-hint="copied!" title="Copy SHA"><span class="octicon octicon-clippy"></span></span>
+      <a href="/laoflch/rails/commit/7c8caf930d1176503259e9e811ae9935caf1a7b5" class="sha-block" data-pjax="">latest commit <span class="sha">7c8caf930d</span></a>
+
+      <div class="authorship">
+        <img class="gravatar" height="20" src="https://secure.gravatar.com/avatar/f29327647a9cff5c69618bae420792ea?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="20">
+        <span class="author-name"><a href="/tenderlove" data-skip-pjax="true" rel="contributor">tenderlove</a></span>
+        authored <time class="js-relative-date updated" datetime="2013-03-05T14:34:54-08:00" title="2013-03-05 14:34:54">5 months ago</time>
+
+      </div-->
+    </div-->
+  </div>
+  <table class="files" data-pjax="">
+    <thead>
+        
+
+        
+  
+
+    </thead>
+
+    
+<tbody class="" data-url="/laoflch/rails/file-list/master">
+    {{#each controller.contentList}}
+     <tr class="alt">
+      <td class="icon">
+        <span class="octicon octicon-file-directory"></span>
+       
+      </td>
+      <td class="content_id">
+        <span class="css-truncate css-truncate-target"><a href="/laoflch/rails/tree/master/actionmailer" class="js-directory-link" id="8c839fb1727eeb6f0d7f5698c6eee922-97291e39f6541127e42ae2f59936231d4f6a3e0f" title="actionmailer">{{WeixinRuleContentAudio_content_id}}</a></span>
+      </td>
+      <td class="content_name">
+        <span class="css-truncate css-truncate-target"><a href="/laoflch/rails/commit/e79d2c8aa61d480c9abbfba376fd03523ba23046" class="message" data-pjax="true" title="copy-edit pass in AM changelog [ci skip]">{{WeixinRuleContentAudio_content_name}}</a></span>
+      </td>
+      <td class="message"><span class="css-truncate css-truncate-target">{{WeixinRuleContentAudio_title}}</span></td>
+      <td class="message"><span class="css-truncate css-truncate-target">{{WeixinRuleContentAudio_front_picture}}</span></td>
+      <td class="message"><span class="css-truncate css-truncate-target">{{WeixinRuleContentAudio_abstract}}</span></td>
+      <td class="message"><span class="css-truncate css-truncate-target">{{WeixinRuleContentAudio_body}}</span></td>
+      <td class="message"><span class="css-truncate css-truncate-target">{{WeixinRuleContentAudio_orginal_url}}</span></td>
+   <td> <span class="edit_rule octicon octicon-repo-delete"></span><span class="edit_rule octicon octicon-file-text"></span></td>
+    </tr>     
+    {{/each}}
+</tbody>
+
+  </table>
+</div>
+
+

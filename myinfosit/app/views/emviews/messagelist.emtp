@@ -1,0 +1,34 @@
+
+
+  <div class="container-list">
+     {{#if isShowSample}}
+     
+     {{view MDEmber.MessageSampleListView }}
+     
+     {{/if}}
+     
+     {{#if isShowMix}}
+     
+     {{view MDEmber.ContentMixListView }}
+     
+     {{/if}}
+     
+     {{#if isShowPicture}}
+     
+     {{view MDEmber.ContentPictureListView }}
+     
+     {{/if}}
+     
+     {{#if isShowVideo}}
+     
+     {{view MDEmber.ContentVideoListView }}
+     
+     {{/if}}
+     
+     {{#if isShowAudio}}
+     
+     {{view MDEmber.ContentAudioListView }}
+     
+     {{/if}}
+   
+  </div>

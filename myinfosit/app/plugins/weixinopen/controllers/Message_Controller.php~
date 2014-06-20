@@ -1,0 +1,82 @@
+<?php
+
+/**
+ *
+ * @author laoflch
+ *
+ */
+App::import('Controller', "NoModelController",false);
+
+
+
+class MessageController extends WeixinopenAppController implements NoModelController
+{
+    var $uses = array('weixinopen.WeixinMessageText');
+    
+	function view() {
+			
+	}
+
+	function logMessage(){
+		$Messages=$this->WeixinMessageText->find("all");
+
+	}
+	
+	function addTextMessage(){
+		if($this->RequestHandler->isPost()){
+		if(isset($this->params["form"])&&!empty($this->params["form"])&&$this->params["form"]['msg_type']=="text"){
+			/* if(isset($this->params["form"]['msg_type'])
+					&&!empty($this->params["form"]['msg_type'])){ */
+		//$this->WeixinMessageText->create();
+		
+		//if(isset($this->data["WeixinMessageText"])){
+			//$this->data["WeixinMessageText"]["msg_type"]=$this->params["form"]['msg_type'];
+			//$this->data["msg_type"]="text";
+			$this->data["msg_type"]=$this->params["form"]['msg_type'];
+			$this->data["to_user_name"]=$this->params["form"]['to_user_name'];
+			$this->data["from_user_name"]=$this->params["form"]['from_user_name'];
+			$this->data["create_time"]=$this->params["form"]['create_time'];
+			$this->data["from_msg_id"]=$this->params["form"]['from_msg_id'];
+			$this->data['WeixinMessageTextOnly']['content'] = $this->params["form"]['content'];
+		//}
+		}else{
+			return;
+		}
+		}elseif($this->RequestHandler->isGet()){
+		if(isset($this->params["url"])&&!empty($this->params["url"])&&$this->params["url"]['msg_type']=="text"){
+			$this->data["msg_type"]="text";
+			$this->data["to_user_name"]=$this->params["url"]['to_user_name'];
+			$this->data["from_user_name"]=$this->params["url"]['from_user_name'];
+			$this->data["create_time"]=$this->params["url"]['create_time'];
+			if(isset($this->params["url"]['msg_id'])&&!empty($this->params["url"]['msg_id'])){
+			$this->data["from_msg_id"]=$this->params["url"]['msg_id'];
+			}
+			$this->data['WeixinMessageTextOnly']['content'] = $this->params["url"]['content'];
+			
+		}else{
+			return ;
+		}
+		}
+		
+		//if(isset($this->data["msg_type"])&&!empty($this->data["msg_type"])&&$this->data["msg_type"]=="text"){
+		$content = $this->WeixinMessageText->save( $this->data );
+		//$this->data["content"]="12345678";
+		//$content = $this->Content->save( $this->data );
+		// Save Meta
+		if( !empty( $content )&&(isset($this->params["form"]['content'])||isset($this->params["url"]['content'])) ) {
+			$this->data['WeixinMessageTextOnly']['message_id'] = $this->WeixinMessageText->id;
+			/* if($this->RequestHandler->isGet()){
+				$this->data['WeixinMessageTextOnly']['content'] = $this->params["url"]['content'];
+			}elseif($this->RequestHandler->isPost()){
+				$this->data['WeixinMessageTextOnly']['content'] = $this->params["form"]['content'];
+			} */
+			$this->WeixinMessageText->WeixinMessageTextOnly->save( $this->data );
+			
+		}
+		//$this->data["WeixinMessage"][]
+		//$return=$this->WeixinMessageText->save($this->data);
+		/* } */
+		 //}
+	}
+	
+}

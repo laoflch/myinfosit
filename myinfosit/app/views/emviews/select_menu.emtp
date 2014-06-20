@@ -1,0 +1,19 @@
+ <div class="select-menu-modal-holder js-menu-content" >
+    <div class="select-menu-modal">
+      <div class="select-menu-header">
+        <span class="select-menu-title">Switch account context</span>
+        <span class="octicon octicon-remove-close js-menu-close"></span>
+      </div> <!-- /.select-menu-header -->
+          
+          <div class="select-menu-list js-navigation-container js-select-menu-pane">
+           {{#each controller.openaccount_list}}
+              <div class="select-menu-results" {{bindAttr customer_id=WeixinOpenAccount_customer_id}}>{{WeixinOpenAccount_original_user_name}}</div>
+           {{/each}} <div class="select-menu-no-results">You don’t belong to any organizations.</div>
+          </div> <!-- /.select-menu-list -->
+          <div class="select-menu-footer">
+            <span class="octicon octicon-plus"></span>
+            <a href="/account/organizations/new">Create Organization</a>
+          </div> <!-- /.select-menu-footer -->
+
+    </div> <!-- /.select-menu-modal -->
+  </div> <!-- /.select-menu-modal-holder -->

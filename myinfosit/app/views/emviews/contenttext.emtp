@@ -1,0 +1,24 @@
+<div>
+  
+      <div class="auth-form-body">
+      {{view Ember.TextField class="input-block" type="hidden" valueBinding="controller.model.WeixinRuleContentText_content_id" name="content_id"}}
+      <label for="login_field">
+          消息名
+        </label>
+      {{view Ember.TextField class="input-block"  valueBinding="controller.model.WeixinRuleContentText_content_name" name="content_name"}}
+        <label for="login_field">
+          关键字
+        </label>
+        <!--input autocapitalize="off" autofocus="autofocus" class="input-block" id="login_field" name="login" tabindex="1" type="text" value="{{codd}}">
+  </input-->
+  <div>
+                                  
+                                <!--textarea id="elm12" name="elm1" rows="12" cols="80" style="width: 80%"></textarea-->
+	{{view Ember.TextArea id="elm1"  rows="12" cols="80"  style="width: 80%" class="input-block" valueBinding="controller.model.WeixinRuleContentText_text_message"}}
+	</div>
+	
+      <button class="button primary button-block" type="submit">登陆</button>
+      
+      
+      </div>
+</div>

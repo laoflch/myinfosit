@@ -1,0 +1,16 @@
+ [ISAPI_Rewrite]    
+   
+   #RewriteRule    ^/(.*)  /app/webroot/$1 [L]
+   #RewriteRule    (theme.*)  /app/webroot/$1 [L]
+
+   #RewriteRule    ^/(.*)  /app/webroot/html/home\.html    [L]
+   RewriteRule    ^/css/(.*)  /app/webroot/css/$1 [L]
+   RewriteRule    ^/js/(.*)  /app/webroot/js/$1 [L]
+   #RewriteRule    ^/img/(.*)  /app/webroot/img/$1 [L]
+   RewriteRule    ^/theme/(.*)  /app/webroot/theme/$1 [L]
+   RewriteRule    ^/html/(.*)  /app/webroot/html/$1 [L]
+   RewriteRule    ^/(.*)\.html  /app/webroot/html/$1\.html [L]
+   RewriteRule    ^/files/(.*)  /app/webroot/files/$1 [L]
+   RewriteRule    ^/  /app/webroot/html/home\.html    [L]
+   RewriteRule    ^/(.+)  /app/webroot/index\.php\?url=$1 [L]
+  

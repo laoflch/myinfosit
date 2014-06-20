@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>批量反地址解析+商圈</title>
+<style type="text/css">
+body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-size:13px;}
+#l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+#r-result{height:100%;width:20%;float:left;}
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=57b82438e9291975981be2f1e1cae0dc"></script>
+</head>
+<body>
+<div id="l-map"></div>
+<div id="r-result">
+    <div id="demo"></div>
+    <div id="result"></div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+var x=document.getElementById("demo");
+
+ if (navigator.geolocation)
+    {
+var option = {
+            enableHighAccuracy : true,
+            timeout : 100000,
+            maximumAge : 0
+        };
+    navigator.geolocation.getCurrentPosition(showPosition,geoError,option);
+alert(123);
+    }
+  else{x.innerHTML="Geolocation is not supported by this browser.";};
+  
+function showPosition(position)
+  {
+  x.innerHTML="Latitude: <br />" + position.coords.latitude +
+  "<br />Longitude: <br />" + position.coords.longitude;
+var map = new BMap.Map("l-map");
+map.centerAndZoom(new BMap.Point( position.coords.longitude,position.coords.latitude), 13);
+var index = 0;
+var myGeo = new BMap.Geocoder();
+var adds = [
+    new BMap.Point(position.coords.longitude,position.coords.latitude)
+    
+];
+
+
+    var marker = new BMap.Marker(adds[0]);
+    map.addOverlay(marker);
+
+ myGeo.getLocation(adds[0], function(rs){
+        var addComp = rs.addressComponents;
+        document.getElementById("result").innerHTML += index + ". " +adds[0].lng + "," + adds[0].lat + "："  + "商圈(" + rs.business + ")  结构化数据(" + addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber + ")<br/><br/>";
+    });
+
+  };
+
+function geoError(event) { 
+alert(event.code);
+   switch(event.code) 
+    {
+    case event.PERMISSION_DENIED:
+      alert("User denied the request for Geolocation.");
+      break;
+    case event.POSITION_UNAVAILABLE:
+       alert("Location information is unavailable.");
+      break;
+    case event.TIMEOUT:
+      alert("The request to get user location timed out.");
+      break;
+    case event.UNKNOWN_ERROR:
+       alert("An unknown error occurred.");
+      break;
+    }
+};
+
+
+/*// 百度地图API功能
+var map = new BMap.Map("l-map");
+map.centerAndZoom(new BMap.Point( 121.51521149999998,31.226679199999996), 13);
+var index = 0;
+var myGeo = new BMap.Geocoder();
+var adds = [
+    new BMap.Point(121.51521149999998,31.226679199999996)
+    
+];
+
+
+    var marker = new BMap.Marker(adds[0]);
+    map.addOverlay(marker);*/
+
+
+
+
+</script>

@@ -1,0 +1,13 @@
+<div>
+
+      <div class="auth-form-body">
+       <label for="login_field">
+          消息
+        </label>
+      {{view Ember.TextArea id="elm1"  rows="12" cols="80"  style="width: 80%" class="input-block" }}
+	
+      <button class="button primary button-block" type="submit">发送</button>
+      
+      
+      </div>
+</div>

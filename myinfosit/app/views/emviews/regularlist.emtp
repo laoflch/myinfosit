@@ -1,0 +1,14 @@
+<div class="pagehead shrunken dashboard">
+
+<div class="select-rule-header"><div class="rule_id"></div>
+              <div class="rule_adapter_name"></div>
+               <div></div><div></div><span class="create_rule octicon octicon-repo-create"></span></div>
+ <div class="select-rule-container">
+ {{#each controller}}
+              <div class="select-rule" {{bindAttr rule_id="WeixinRule_rule_id"}}>
+              <div name="rule_name" >{{WeixinRule_rule_name}}</div>
+              <div name="rule_adapter_name" {{bindAttr rule_adapter_id="WeixinRuleAdapter_rule_adapter_id"}}>{{WeixinRuleAdapter_rule_adapter_name}}</div>
+               <div name="rule_name">{{WeixinRuleAdapter_rule_name}}</div><span class="edit_rule octicon octicon-repo-delete"></span><span class="edit_rule octicon octicon-file-text"></span></div>
+           {{/each}} 
+           </div>
+</div><!-- /.pagehead -->
