@@ -765,7 +765,8 @@ MDEmber.MessageRoute = MDEmber.StandRoute.extend({
 							"view_outs" : [ "tool", "selectMenu","pagetool","messagenav",
 									"messagelist", "messagesamplelist" ],
 							"messageType" : "sample",
-							"customer_id" : MDEmber.getCustomerId()
+							"customer_id" : MDEmber.getCustomerId(),
+							"page_info":'{"page":5,"limit":10}'
 						},
 						function(data) {
 							if (data["ember_temple"]) {
@@ -792,7 +793,8 @@ MDEmber.MessageRoute = MDEmber.StandRoute.extend({
 									"message" + this.defaultMessageType + "list",
 									"messagenav", "messagelist","pagetool" ],
 							"messageType" : this.defaultMessageType,
-							"customer_id" : MDEmber.getCustomerId()
+							"customer_id" : MDEmber.getCustomerId(),
+							"page_info" : '{"page":5,"limit":20}'
 						},
 						function(data) {
 							if (data["ember_temple"]) {
@@ -826,6 +828,30 @@ MDEmber.MessageRoute = MDEmber.StandRoute.extend({
 		}
 		;
 	},
+	flushPage:function(){
+
+		   MDEmber.jsonSync("/weixinopen/message/messageMain.json",
+					"post",
+					 {
+						"messageType" : "sample",
+						"customer_id" : MDEmber.getCustomerId(),
+						"page_info":"{\"page\":"+MDEmber.messageController.get("page")+",\"limit\":"+MDEmber.messageController.get("limit")+"}"
+					},
+					function(data) {
+						if (data["messageList"]) {
+							
+							MDEmber.messageController.set("messageList",
+									data["messageList"]);
+						}},
+					function() {
+						// view("异常！");
+						alert("获取json数据错误！");
+					});
+			
+		
+		
+		
+	}
 });
 
 /**
@@ -838,9 +864,10 @@ MDEmber.MDArrayController = Ember.ArrayController.extend({
 
 MDEmber.MDPageController = MDEmber.MDArrayController.extend({
 	isShowPage : false,
-	currentPage : 0,
-	pageSize : 20,
+	page : 0,
+	limit : 20,
 	pageCount :0
+	
 });
 
 MDEmber.FriendController = MDEmber.MDArrayController.extend({
@@ -951,6 +978,7 @@ MDEmber.MessageController = MDEmber.MDPageController.extend({
 	isShowAudio : function() {
 		return (this.get("currentContentType") === "audio");
 	}.property('currentContentType'),
+	isShowPage : true,
 
 });
 
@@ -1217,12 +1245,24 @@ MDEmber.ToolView = Ember.View
 
 MDEmber.PageToolView = Ember.View
 .extend({
-	templateName : "pagetool-template",
-	click : function(event) {
+	template:Ember.Handlebars.compile("<div class=\"pagenavcontainer\"><div class=\"next\">下一页</div><div>"),
+	tagName:"div",
+	click: function(){
+		if (event.target.className.indexOf("next") >= 0) {
+			MDEmber.messageController.set("page",MDEmber.messageController.get("page")+1)
+			var currentRoute = MDEmber.Router.router.currentHandlerInfos[1].handler;
+			if (currentRoute.flushPage instanceof Function) {
+				currentRoute.flushPage();
+			};						
+			//currentRoute.renderTemplate();
+			
+		}
 		
 	},
+    
 
 });
+
 
 MDEmber.IndexView = Ember.View.extend({
 	templateName : "logon_home",
@@ -2214,6 +2254,7 @@ MDEmber.EasyComboBox = Ember.View.extend({
 	tagName:"div",
 	
 });
+
 
 MDEmber.ContentnavView = Ember.View
 		.extend({

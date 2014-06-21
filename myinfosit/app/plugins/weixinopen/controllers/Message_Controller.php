@@ -115,7 +115,8 @@ class MessageController extends WeixinopenAppController implements NoModelContro
 				$open_account=$this->WeixinOpenAccount->find("first",array('conditions' => array('customer_id' =>$this->params["form"]['customer_id']) ));
 				$messages_sample=$this->WeixinMessage->find("all",array('conditions' => array(
 						'or'=>array(
-								'to_user_name' =>$open_account[0]["WeixinOpenAccount"]["original_user_id"]))));
+								'to_user_name' =>$open_account[0]["WeixinOpenAccount"]["original_user_id"])),
+				        ));
 				$this->_clearClass($messages_sample);
 				if($messages_sample){
 				$this->set('pass',array("return_code"=>107,"return_message"=>"get message successfully !","message_list"=>$messages_sample));
@@ -142,12 +143,26 @@ class MessageController extends WeixinopenAppController implements NoModelContro
 			
 				if(isset($this->params["form"]['customer_id'])&&!empty($this->params["form"]['customer_id'])){
 				/* &&isset($this->params["form"]['content'])&&!empty($this->params["form"]['content']) ){*/
-				$open_account=$this->WeixinOpenAccount->find("first",array('conditions' => array('customer_id' =>1/* $this->params["form"]['customer_id'] */)));
-				$messages_sample=$this->WeixinMessage->find("all",array('conditions' => array(
+				$open_account=$this->WeixinOpenAccount->find("first",array('conditions' => array('customer_id' => $this->params["form"]['customer_id'])));
+				
+				$conditions= array('conditions' => array(
 						'or'=>array(
 								'to_user_name' =>$open_account["WeixinOpenAccount"]["original_user_id"],
 								'from_user_name' =>$open_account[0]["WeixinOpenAccount"]["original_user_id"]
-						))));
+						)));
+				
+				if(isset($this->params["form"]['page_info'])&&!empty($this->params["form"]['page_info'])){ 
+					$pageInfo=json_decode($this->params["form"]['page_info']);
+					$pageInfo=(array)$pageInfo;
+					
+				}else{
+					$pageInfo=array();
+				}
+				
+				$var = var_export(array_merge($conditions,$pageInfo),TRUE);
+				file_put_contents("test8.txt","postStr".$var,FILE_APPEND);
+				
+				$messages_sample=$this->WeixinMessage->find("all",array_merge($conditions,$pageInfo));
 				$this->_clearClass($messages_sample);
 				if($messages_sample){
 				$this->set('pass',array("return_code"=>107,"return_message"=>"get message successfully !","messageList"=>$messages_sample));
