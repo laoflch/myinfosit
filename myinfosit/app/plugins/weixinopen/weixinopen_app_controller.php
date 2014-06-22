@@ -47,16 +47,25 @@ class WeixinopenAppController extends MdController {
 	function __initConnet(){
 		
 		if(!isset($this->token)&&empty($this->token)){
-			//if(!isset($this->Session->read("CURRENT_CUSTOMER_ID"))&&empty($this->Session->read("CURRENT_CUSTOMER_ID"))){
+			switch (func_num_args()){
+			case 1 :
 			
-				//$current_customer=$this->Session->read("CURRENT_CUSTOMER_ID");
-				
-				//$this->WeixinOpenAccount->
 				
 				$this->token=$this->WeixinHandler->loginOpenWeixin("laoflch@163.com","liverpool");
-			//}
+			
+			    break;
+			case 2 :
+				$sit_login_name = func_get_arg(0);
+				$password = func_get_arg(1);
+				$this->token=$this->WeixinHandler->loginOpenWeixin($sit_login_name,$password);
+			    break;
+			default :
+				$this->token=$this->WeixinHandler->loginOpenWeixin("laoflch@163.com","liverpool");
+			}
 		}
 	
 	}
+	
+	
 
 }

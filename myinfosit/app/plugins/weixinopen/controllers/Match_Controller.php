@@ -23,7 +23,8 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 				//var_dump($this->params["form"]);
 				if(isset($this->params["form"]['create_time'])&&!empty($this->params["form"]['create_time'])&&
 				isset($this->params["form"]['from_user_name'])&&!empty($this->params["form"]['from_user_name'])&&
-				isset($this->params["form"]['to_user_name'])&&!empty($this->params["form"]['to_user_name'])){
+				isset($this->params["form"]['to_user_name'])&&!empty($this->params["form"]['to_user_name'])
+				){
 					
 					$create_time=$this->params["form"]['create_time'];
 					$from_user_name=$this->params["form"]['from_user_name'];
@@ -34,6 +35,8 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					if(isset($openAccount)&&!empty($openAccount)){
 						$customer_id=$openAccount["WeixinOpenAccount"]["customer_id"];
+						$sit_login_name=$openAccount["WeixinOpenAccount"]["sit_login_name"];
+						$password=$openAccount["WeixinOpenAccount"]["password"];
 						
 						if((!isset($customer_id))||empty($customer_id)){
 							return true;
@@ -54,7 +57,7 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					
 					
-					$this->__initConnet();
+					$this->__initConnet($sit_login_name,$password);
 					
 					if(isset($this->token)&&!empty($this->token)){
 						//echo 12345;
@@ -121,6 +124,8 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					if(isset($openAccount)&&!empty($openAccount)){
 						$customer_id=$openAccount["WeixinOpenAccount"]["customer_id"];
+						$sit_login_name=$openAccount["WeixinOpenAccount"]["sit_login_name"];
+						$password=$openAccount["WeixinOpenAccount"]["password"];
 						
 						if((!isset($customer_id))||empty($customer_id)){
 							return true;
@@ -142,7 +147,7 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					
 					
-					$this->__initConnet();
+					$this->__initConnet($sit_login_name,$password);
 					
 					if(isset($this->token)&&!empty($this->token)){
 						//echo 12345;
@@ -218,6 +223,8 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					if(isset($openAccount)&&!empty($openAccount)){
 						$customer_id=$openAccount["WeixinOpenAccount"]["customer_id"];
+						$sit_login_name=$openAccount["WeixinOpenAccount"]["sit_login_name"];
+						$password=$openAccount["WeixinOpenAccount"]["password"];
 						
 						if((!isset($customer_id))||empty($customer_id)){
 							return true;
@@ -236,7 +243,7 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 						return true;
 					}
 						
-					$this->__initConnet();
+					$this->__initConnet($sit_login_name,$password);
 						
 					if(isset($this->token)&&!empty($this->token)){
 						$end=true;
@@ -301,6 +308,8 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 					
 					if(isset($openAccount)&&!empty($openAccount)){
 						$customer_id=$openAccount["WeixinOpenAccount"]["customer_id"];
+						$sit_login_name=$openAccount["WeixinOpenAccount"]["sit_login_name"];
+						$password=$openAccount["WeixinOpenAccount"]["password"];
 						
 						if((!isset($customer_id))||empty($customer_id)){
 							return true;
@@ -319,7 +328,7 @@ class MatchController extends WeixinopenAppController implements NoModelControll
 						return true;
 					}
 						
-					$this->__initConnet();
+					$this->__initConnet($sit_login_name,$password);
 						
 					if(isset($this->token)&&!empty($this->token)){
 						$end=true;
