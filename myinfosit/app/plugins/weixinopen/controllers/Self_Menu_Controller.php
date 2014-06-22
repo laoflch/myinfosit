@@ -36,9 +36,9 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
           "name":"活动预告",
            "sub_button":[
            {	
-               "type":"view",
+               "type":"click",
                "name":"最近活动",
-               "url":"http://www.soso.com/"
+               "key":"MENU_01_01"
             },
             {
                "type":"view",
@@ -62,13 +62,8 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             },
             {
                "type":"view",
-               "name":"乐游",
+               "name":"乐旅",
                "url":"http://v.qq.com/"
-            },
-            {
-               "type":"click",
-               "name":"乐居",
-               "key":"V1001_GOOD"
             },
             {
                "type":"click",

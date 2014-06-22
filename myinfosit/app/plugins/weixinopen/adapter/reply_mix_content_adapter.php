@@ -50,7 +50,7 @@ class ReplyMixContentAdapter extends AbstractContentTypeAdapter implements Conte
 				$contentReplyMixItem=$this->model->findAllByContentId($contentId);
 				if(isset($contentReplyMixItem)&&!empty($contentReplyMixItem)&&count($contentReplyMixItem)>0){
 				
-				if(count($contentReplyMixItem)>1){
+				if(count($contentReplyMixItem)>=1){
 					
 				for($i=0;$i<$contentReplyMix["WeixinRuleContentReplyMix"]["article_count"];$i++){
 					$aticle[$i]=array("item"=>array(
@@ -63,14 +63,14 @@ class ReplyMixContentAdapter extends AbstractContentTypeAdapter implements Conte
 					
 					
 				}
-				}elseif(count($contentReplyMixItem)==1){
+				}/* elseif(count($contentReplyMixItem)==1){
 					$aticle=array("item"=>array(
 							"Title"=>$contentReplyMixItem["WeixinRuleContentReplyMixItem"]["title"],
 							"Decription"=>$contentReplyMixItem["WeixinRuleContentReplyMixItem"]["decription"],
 							"PicUrl"=>$this->maxPic($contentReplyMixItem["WeixinRuleContentReplyMixItem"]["pic_url"]),
 							"Url"=>$contentReplyMixItem["WeixinRuleContentReplyMixItem"]["url"],
 					));
-				}
+				} */
 				$return_array["Articles"]=$aticle;
 
 				return $return_array;
