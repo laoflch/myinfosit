@@ -48,7 +48,7 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             {
                "type":"click",
                "name":"其他同城",
-               "key":"V1001_GOOD"
+               "key":"MENU_01_03"
             }]
       },
       {
@@ -58,7 +58,7 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
            {	
                "type":"view",
                "name":"乐购",
-               "url":"http://www.soso.com/"
+               "url":"http://www.fabula.cc/product/1181"
             },
             {
                "type":"view",
@@ -68,7 +68,7 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             {
                "type":"click",
                "name":"乐享",
-               "key":"V1001_GOOD"
+               "key":"MENU_02_03"
             }]
       },
       {
