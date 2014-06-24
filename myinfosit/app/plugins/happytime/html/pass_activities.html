@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>micro-data</title>
+
+<link href="../../happytime/css/demo.css?v=256" rel="stylesheet">
+
+<script src="../../js/jquery-1.9.1.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="../../js/handlebars-1.0.0-rc3.js"
+	defer="defer"></script>
+<script type="text/javascript" src="../../js/ember-1.0.0-rc.3.js"
+	defer="defer"></script>
+<script type="text/javascript" src="../../happytime/js/ht.js" defer="defer"></script>
+
+
+<!-- script src="https://a248.e.akamai.net/assets.github.com/assets/frameworks-4c434fa1705bf526e191eec0cd8fab1a5ce3e326.js" type="text/javascript"></script -->
+<!-- script src="https://a248.e.akamai.net/assets.github.com/assets/github-fa0e576ffff9e151472d56e5f4512a9053a68a12.js" type="text/javascript"></script -->
+
+</head>
+
+
+<body>
+	<div class="bg"></div>
+    
+</body>
+<script type="text/x-handlebars" data-template-name="pass_activities">
+
+        <div class="container">
+			<div class="framwork">
+ {{#each passActivity in controller}}
+				<div class="container_item">
+					<div class="time_container">
+			<div class="time_line">6月10日 晚上21:25</div>
+		</div>
+		 {{HappytimePassActivity_activity_id}}
+			<div class="article_container">
+				<div class="framwork_first">
+				<div class="article article_first">
+				    <div class="title_first">
+					<div class="title_text">后花园|池坊，关于日本花道的本源后花园|池坊，关于日本花道的本源</div>
+				    </div>
+				</div>
+			</div>
+            {{#each passActivity.WeixinRuleContentReplyMixItems}}
+				<div class="article article_item"></div>
+				{{/each}}
+				
+			</div>
+					
+			</div>
+{{/each}}
+			
+		</div>
+
+			</div>
+			
+			<div class="bg_bottom"></div>
+		<div class="hook" id="hook"></div>
+  </script>
+</html>

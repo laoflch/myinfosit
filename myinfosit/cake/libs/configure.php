@@ -743,7 +743,7 @@ class App extends Object {
 	 * @return array numeric keyed array of core lib paths
 	 * @access public
 	 */
-	function core($type = null) {
+	static function core($type = null) {
 		static $paths = false;
 		if ($paths === false) {
 			$paths = Cache::read('core_paths', '_cake_core_');
