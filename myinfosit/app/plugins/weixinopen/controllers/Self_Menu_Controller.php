@@ -43,7 +43,7 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             {
                "type":"view",
                "name":"往期活动",
-               "url":"http://v.qq.com/"
+               "url":"http://www.micro-data.com.cn/happytime/html/pass_activities.html"
             },
             {
                "type":"click",
