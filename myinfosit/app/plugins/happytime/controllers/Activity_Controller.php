@@ -57,27 +57,30 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 		foreach ($passActivitiesList as $passActivity){
 			if($last_activity_id===$passActivity["HappytimePassActivity_activity_id"]){
 				if(isset($current_item)&&!empty($current_item)){
-					$current_item["WeixinRuleContentReplyMixItems"][]=array("WeixinRuleContentReplyMixItem_item_no"=>$passActivity["WeixinRuleContentReplyMixItem_item_no"],
+					$current_item[]=array("WeixinRuleContentReplyMixItem_item_no"=>$passActivity["WeixinRuleContentReplyMixItem_item_no"],
 								                                "WeixinRuleContentReplyMixItem_title"=>$passActivity["WeixinRuleContentReplyMixItem_title"],
 								                                "WeixinRuleContentReplyMixItem_description"=>$passActivity["WeixinRuleContentReplyMixItem_description"],
 								                                "WeixinRuleContentReplyMixItem_pic_url"=>$passActivity["WeixinRuleContentReplyMixItem_pic_url"],
 								                                "WeixinRuleContentReplyMixItem_url"=>$passActivity["WeixinRuleContentReplyMixItem_url"]);
-					
 				}
 				;
 			}else{
-				$current_item=array("HappytimePassActivity_activity_id"=>$passActivity["HappytimePassActivity_activity_id"],
+				
+				$current_mix=array("HappytimePassActivity_activity_id"=>$passActivity["HappytimePassActivity_activity_id"],
 						"HappytimeActivity_activity_name"=>$passActivity["HappytimeActivity_activity_name"],
 						"HappytimeActivity_content_id"=>$passActivity["HappytimeActivity_content_id"],
 						"WeixinRuleContentReplyMix_article_count"=>$passActivity["WeixinRuleContentReplyMix_article_count"],
 						"WeixinRuleContentReplyMixItems"=>array(array("WeixinRuleContentReplyMixItem_item_no"=>$passActivity["WeixinRuleContentReplyMixItem_item_no"],
+								                                "WeixinRuleContentReplyMixItem_first"=>($passActivity["WeixinRuleContentReplyMixItem_item_no"]==1?true:false),
 								                                "WeixinRuleContentReplyMixItem_title"=>$passActivity["WeixinRuleContentReplyMixItem_title"],
 								                                "WeixinRuleContentReplyMixItem_description"=>$passActivity["WeixinRuleContentReplyMixItem_description"],
 								                                "WeixinRuleContentReplyMixItem_pic_url"=>$passActivity["WeixinRuleContentReplyMixItem_pic_url"],
 								                                "WeixinRuleContentReplyMixItem_url"=>$passActivity["WeixinRuleContentReplyMixItem_url"]))
 				
 				);
-				$returnPassActivitiesList[]=&$current_item;
+				$current_item=&$current_mix["WeixinRuleContentReplyMixItems"];
+				$returnPassActivitiesList[]=$current_mix;
+				//$current_item=null;
 				$last_activity_id=$passActivity["HappytimePassActivity_activity_id"];
 				
 				

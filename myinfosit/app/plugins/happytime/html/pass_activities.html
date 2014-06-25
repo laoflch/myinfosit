@@ -35,17 +35,26 @@
 					<div class="time_container">
 			<div class="time_line">6月10日 晚上21:25</div>
 		</div>
-		 {{HappytimePassActivity_activity_id}}
+		 
 			<div class="article_container">
-				<div class="framwork_first">
-				<div class="article article_first">
+				
+            {{#each mixItem in passActivity.WeixinRuleContentReplyMixItems}}
+            {{#if mixItem.WeixinRuleContentReplyMixItem_first}}
+                <div class="framwork_first">
+				<div class="article article_first" {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}} s>
 				    <div class="title_first">
-					<div class="title_text">后花园|池坊，关于日本花道的本源后花园|池坊，关于日本花道的本源</div>
+					<div class="title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div>
 				    </div>
 				</div>
 			</div>
-            {{#each passActivity.WeixinRuleContentReplyMixItems}}
-				<div class="article article_item"></div>
+            {{/if}}
+            {{#unless mixItem.WeixinRuleContentReplyMixItem_first}}
+               
+				<div class="article article_item">
+<div class="framwork_item">
+                <div class="item_title"><div class="item_title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
+               </div>
+            {{/unless}}
 				{{/each}}
 				
 			</div>

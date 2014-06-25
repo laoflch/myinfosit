@@ -87,6 +87,11 @@ body {
 	
 }
 
+.framwork_item {
+	padding: 2% 2% 2% 2%;
+	
+}
+
 .article_container {
 	width: 100%;
 	display: block;
@@ -105,7 +110,6 @@ body {
 
 
 .article_first {	
-	background:url(../material/mix/7/title_pic_1.jpg);
 	-moz-background-size:100%;
 	background-size:100%;
 	padding-bottom: 10px;
@@ -120,10 +124,43 @@ body {
 
 .article_item {
 	border-top: 1px solid #DADADA;
-	height: 150px;
+	height: 200px;
 	position: relative;	
 	float: left;
 	width: 100%;
+	margin:
+}
+
+.article_item .item_title {
+	
+	height: 160px;
+	position: relative;	
+	float: left;
+	width:70%;
+	
+}
+
+.article_item .item_title .item_title_text {	
+	color: #000000;
+	font-weight: 100;
+	font-size: 2.75em;
+	font-family: serif;	
+	padding: 2% 1% 2% 1%;
+	line-height: 1em;
+	text-align: left;
+	//text-indent: 30px;	
+}
+
+.article_item .item_pic{
+	
+	height: 150px;
+	position: relative;	
+	float: right;
+	width: 150px;
+	background-size: auto 150px;
+     background-clip:content-box;
+     background-position:center;
+     background-repeat:no-repeat;
 }
 
 .title_first {
