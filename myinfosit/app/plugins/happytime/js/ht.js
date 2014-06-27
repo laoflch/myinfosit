@@ -264,7 +264,7 @@ Ember.Handlebars.registerHelper('text-content',function(options){
 	  // NOTE: We use all lower-case since Firefox has problems with mixed case in SVG
 	  //ret.push('data-bindattr-' + dataId + '="' + dataId + '"');
 	  //return new EmberHandlebars.SafeString(ret.join(' '));
-	return new Ember.Handlebars.SafeString('<font data-bindattr-' + dataId + '=\"' + dataId + '\">'+content+'</div>');
+	return new Ember.Handlebars.SafeString('<font data-bindattr-' + dataId + '=\"' + dataId + '\">'+content+'</font>');
 	
 });
 /*Ember.Handlebars.registerHelper('int-if', function(context, options) {
