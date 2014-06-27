@@ -256,7 +256,8 @@ Ember.Handlebars.registerHelper('text-content',function(options){
 	    }
 
 	   
-	      content =  Handlebars.Utils.escapeExpression(value);
+	      //content =  Handlebars.Utils.escapeExpression(value);
+	      content = value;
 	   
 	  }, this);
 
