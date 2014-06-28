@@ -58,7 +58,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 			if($last_activity_id===$passActivity["HappytimePassActivity_activity_id"]){
 				if(isset($current_item)&&!empty($current_item)){
 					$current_item[]=array("WeixinRuleContentReplyMixItem_item_no"=>$passActivity["WeixinRuleContentReplyMixItem_item_no"],
-								                                "WeixinRuleContentReplyMixItem_title"=>$passActivity["WeixinRuleContentReplyMixItem_title"],
+								                                "WeixinRuleContentReplyMixItem_title"=>implode(str_split($passActivity["WeixinRuleContentReplyMixItem_title"],57),"\n"),
 								                                "WeixinRuleContentReplyMixItem_description"=>$passActivity["WeixinRuleContentReplyMixItem_description"],
 								                                "WeixinRuleContentReplyMixItem_pic_url"=>$passActivity["WeixinRuleContentReplyMixItem_pic_url"],
 								                                "WeixinRuleContentReplyMixItem_url"=>$passActivity["WeixinRuleContentReplyMixItem_url"]);
@@ -72,7 +72,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 						"WeixinRuleContentReplyMix_article_count"=>$passActivity["WeixinRuleContentReplyMix_article_count"],
 						"WeixinRuleContentReplyMixItems"=>array(array("WeixinRuleContentReplyMixItem_item_no"=>$passActivity["WeixinRuleContentReplyMixItem_item_no"],
 								                                "WeixinRuleContentReplyMixItem_first"=>($passActivity["WeixinRuleContentReplyMixItem_item_no"]==1?true:false),
-								                                "WeixinRuleContentReplyMixItem_title"=>$passActivity["WeixinRuleContentReplyMixItem_title"],
+								                                "WeixinRuleContentReplyMixItem_title"=>implode(str_split($passActivity["WeixinRuleContentReplyMixItem_title"],57),"\n"),
 								                                "WeixinRuleContentReplyMixItem_description"=>$passActivity["WeixinRuleContentReplyMixItem_description"],
 								                                "WeixinRuleContentReplyMixItem_pic_url"=>$passActivity["WeixinRuleContentReplyMixItem_pic_url"],
 								                                "WeixinRuleContentReplyMixItem_url"=>$passActivity["WeixinRuleContentReplyMixItem_url"]))

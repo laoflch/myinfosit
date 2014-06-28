@@ -41,18 +41,19 @@
             {{#each mixItem in passActivity.WeixinRuleContentReplyMixItems}}
             {{#if mixItem.WeixinRuleContentReplyMixItem_first}}
                 <div class="framwork_first">
-				<div class="article article_first" {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}} s>
+				<div class="article article_first" {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}} 
+               {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
 				    <div class="title_first">
-					<div class="title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div>
+					<div class="title_text">{{text-content content=mixItem.WeixinRuleContentReplyMixItem_title}}</div>
 				    </div>
 				</div>
 			</div>
             {{/if}}
             {{#unless mixItem.WeixinRuleContentReplyMixItem_first}}
                
-				<div class="article article_item">
+				<div class="article article_item"  {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
 <div class="framwork_item">
-                <div class="item_title"><div class="item_title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
+                <div class="item_title"><div class="item_title_text">{{text-content content=mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
                </div>
             {{/unless}}
 				{{/each}}
@@ -67,6 +68,12 @@
 			</div>
 			
 			<div class="bg_bottom"></div>
-		<div class="hook" id="hook"></div>
+		{{view MDEmber.HookView}}
+  </script>
+  <script type="text/x-handlebars" data-template-name="hook">
+      
+            <div class="hook-loader"><div class="hook-spinner"></div></div>
+             <span class="hook-text">Reloading...</span>
+            
   </script>
 </html>
