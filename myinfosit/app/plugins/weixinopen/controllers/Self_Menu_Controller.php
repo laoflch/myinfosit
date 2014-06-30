@@ -43,7 +43,7 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             {
                "type":"view",
                "name":"往期活动",
-               "url":"http://www.micro-data.com.cn/happytime/html/pass_activities.html"
+               "url":"http://www.micro-data.com.cn/happytime/html/activities.html"
             },
             {
                "type":"click",
@@ -57,18 +57,18 @@ class SelfMenuController extends WeixinopenAppController implements NoModelContr
             "sub_button":[
            {	
                "type":"view",
-               "name":"乐购",
+               "name":"悦购",
                "url":"http://www.fabula.cc/product/1181"
             },
             {
                "type":"view",
-               "name":"乐旅",
+               "name":"悦旅",
                "url":"http://v.qq.com/"
             },
             {
-               "type":"click",
-               "name":"乐享",
-               "key":"MENU_02_03"
+               "type":"view",
+               "name":"悦享",
+               "url":"http://www.micro-data.com.cn/happytime/html/activities.html#happyshare"
             }]
       },
       {

@@ -3,7 +3,7 @@
 <head>
 <meta charset='utf-8'>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>micro-data</title>
+<title>好时光工作室</title>
 
 <link href="../../happytime/css/demo.css?v=256" rel="stylesheet">
 
@@ -33,7 +33,7 @@
  {{#each passActivity in controller}}
 				<div class="container_item">
 					<div class="time_container">
-			<div class="time_line">6月10日 晚上21:25</div>
+			<div class="time_line">{{passActivity.HappytimeActivity_issue_time}}</div>
 		</div>
 		 
 			<div class="article_container">
@@ -44,8 +44,9 @@
 				<div class="article article_first" {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}} 
                {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
 				    <div class="title_first">
-					<div class="title_text">{{text-content content=mixItem.WeixinRuleContentReplyMixItem_title}}</div>
-				    </div>
+					<!--div class="title_text">{{text-content content=mixItem.WeixinRuleContentReplyMixItem_title}}</div-->
+				    <div class="title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div>
+                    </div>
 				</div>
 			</div>
             {{/if}}
@@ -53,7 +54,7 @@
                
 				<div class="article article_item"  {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
 <div class="framwork_item">
-                <div class="item_title"><div class="item_title_text">{{text-content content=mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
+                <div class="item_title"><div class="item_title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
                </div>
             {{/unless}}
 				{{/each}}
@@ -70,6 +71,7 @@
 			<div class="bg_bottom"></div>
 		{{view MDEmber.HookView}}
   </script>
+  
   <script type="text/x-handlebars" data-template-name="hook">
       
             <div class="hook-loader"><div class="hook-spinner"></div></div>

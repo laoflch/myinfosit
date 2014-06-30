@@ -73,6 +73,12 @@ MDEmber.Router.map(function() {
 	this.route("pass", {
 		path : "/"
 	});
+	this.route("pass", {
+		path : "/pass"
+	});
+	this.route("happyshare", {
+		path : "/happyshare"
+	});
 	
 });
 
@@ -95,7 +101,7 @@ MDEmber.StandRoute = Ember.Route.extend({
 MDEmber.PassRoute = MDEmber.StandRoute.extend({
 	setupController : function(controller) {
 		
-		MDEmber.passController = controller;
+		//MDEmber.passController = controller;
 		
 		MDEmber.jsonAsync("/happytime/Activity/getPassActiviesList.json",
 				"post",
@@ -103,7 +109,7 @@ MDEmber.PassRoute = MDEmber.StandRoute.extend({
 				},
 				function(data) {
 					if (data["passActiviesList"]) {
-						MDEmber.passController.set("model",data["passActiviesList"]);
+						controller.set("model",data["passActiviesList"]);
 						
 					}},
 				function() {
@@ -115,12 +121,190 @@ MDEmber.PassRoute = MDEmber.StandRoute.extend({
 	},
 });
 
+MDEmber.HappyshareRoute = MDEmber.StandRoute.extend({
+	setupController : function(controller) {
+		
+		//MDEmber.happyshareController = controller;
+		
+		function callback_with_controller(data,controller)
+		{
+			controller.set("model",data);
+		}
+		
+		MDEmber.jsonAsync("/happytime/Activity/getHappyShareActiviesList.json",
+				"post",
+				{
+				},
+				function(data) {
+						if (data["happyShareActiviesList"]) {
+					
+							// callback_with_controller(data["happyShareActiviesList"],controller);
+							controller.set("model",data["happyShareActiviesList"]);
+					}},
+				function() {
+					// view("异常！");
+					alert("获取json数据错误！");
+				});
+
+		
+	},
+});
+
+
 MDEmber.MDArrayController = Ember.ArrayController.extend({});
 
 MDEmber.PassController = MDEmber.MDArrayController.extend({
 	isShow:false,
 	lastY:0,
 });
+
+MDEmber.DragUpController = MDEmber.MDArrayController.extend({
+	isShow:false,
+	lastY:0,
+});
+
+MDEmber.DragUpView = Ember.View.extend({
+	hookView : null,
+	click : function(event){
+		//alert(event.target.name);
+		var ItemNode=$(event.target).closest(".article");
+		/*function getItemNode(node){
+			
+			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
+				return node;
+				
+			}else{
+			    if(typeof(node.className)!="undefined"||node.className!=null){
+			    	return false;
+			    	
+			    }
+				return getItemNode(node.parentNode);
+			}
+			
+		}*/
+		
+		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
+			
+			window.location.href=ItemNode[0].attributes["url"].value;
+			
+			
+		}else{
+			
+			return false;
+		}
+		
+		
+		
+		
+	},
+	 touchStart:function(event){
+	    	this.controller.set("lastY",event.originalEvent.touches[0].pageY);
+	    	
+	    },
+	    touchMove:function(event){
+	    	st = $(window).scrollTop();
+	    	function getPageSize(window,document) {
+	    	    var xScroll, yScroll;
+	    	    if (window.innerHeight && window.scrollMaxY) {
+	    	        xScroll = window.innerWidth + window.scrollMaxX;
+	    	        yScroll = window.innerHeight + window.scrollMaxY;
+	    	    } else {
+	    	        if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac    
+	    	            xScroll = document.body.scrollWidth;
+	    	            yScroll = document.body.scrollHeight;
+	    	        } else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari    
+	    	            xScroll = document.body.offsetWidth;
+	    	            yScroll = document.body.offsetHeight;
+	    	        }
+	    	    }
+	    	    var windowWidth, windowHeight;
+	    	    if (self.innerHeight) { // all except Explorer    
+	    	        if (document.documentElement.clientWidth) {
+	    	            windowWidth = document.documentElement.clientWidth;
+	    	        } else {
+	    	            windowWidth = self.innerWidth;
+	    	        }
+	    	        windowHeight = self.innerHeight;
+	    	    } else {
+	    	        if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode    
+	    	            windowWidth = document.documentElement.clientWidth;
+	    	            windowHeight = document.documentElement.clientHeight;
+	    	        } else {
+	    	            if (document.body) { // other Explorers    
+	    	                windowWidth = document.body.clientWidth;
+	    	                windowHeight = document.body.clientHeight;
+	    	            }
+	    	        }
+	    	    }   
+	    	    
+	    	    // for small pages with total height less then height of the viewport    
+	    	    if (yScroll < windowHeight) {
+	    	        pageHeight = windowHeight;
+	    	    } else {
+	    	        pageHeight = yScroll;
+	    	    }    
+	    	    // for small pages with total width less then width of the viewport    
+	    	    if (xScroll < windowWidth) {
+	    	        pageWidth = xScroll;
+	    	    } else {
+	    	        pageWidth = windowWidth;
+	    	    }
+	    	    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
+	    	    return arrayPageSize;
+	    	};
+	        arrayPageSize=getPageSize($(window),$(document)[0]);
+	        pageHeight =arrayPageSize[1];
+	        screenHeight =arrayPageSize[3];
+	      // e.preventDefault();
+	      if(lastY-event.originalEvent.touches[0].pageY<-1){
+	        //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
+	        /*判断上划*/
+	      }
+	        if(st+screenHeight+2>=pageHeight&&!this.controller.isShow){
+	        	//alert(123);
+	        	var lastY=this.controller.get("lastY");
+	        	var swipe = lastY-event.originalEvent.touches[0].pageY;
+	        	if(swipe > 0) {
+	        	  var hook=$("#"+this.hookView.elementId);	
+	        		
+	        	  hook.show();
+	              // el.css("height","0px");
+	              //if(firstShow){
+	        	  hook.css("height","125px");
+	              //$("body").animate({"scrollTop": document.body.scrollHeight}, 2000);
+	              //firstShow=false;
+	            //}else{
+	            	//el.animate({
+	                  //"height": "100px"
+	              //}, 1000);
+	             // $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1500);
+	          // }
+	              /**/
+	               this.controller.set("isShow",true);
+	               hook.delay(2000).slideUp(1000, function () {
+	                /*if(settings.reloadPage) {
+	                       window.location.reload(true);
+	                   }*/
+	              //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+	               });
+	               
+	               this.controller.set("isShow",false);
+
+	        }
+	        	
+	        }else{
+	        	/*判断下划*/
+	        	console.warn( "--3--" );
+	        	this.controller.set("isShow",false);
+	        }
+
+	    	
+
+	           
+	    	
+	    }
+	
+})
 
 MDEmber.PassView = Ember.View.extend({
 	templateName : "pass_activities",
@@ -216,7 +400,7 @@ MDEmber.PassView = Ember.View.extend({
         pageHeight =arrayPageSize[1];
         screenHeight =arrayPageSize[3];
       // e.preventDefault();
-      if(event.originalEvent.touches[0].pageY>4000){
+      if(lastY-event.originalEvent.touches[0].pageY<-1){
         //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
         /*判断上划*/
       }
@@ -237,15 +421,162 @@ MDEmber.PassView = Ember.View.extend({
             	//el.animate({
                   //"height": "100px"
               //}, 1000);
-              $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1500);
+             // $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1500);
           // }
               /**/
                this.controller.set("isShow",true);
-               hook.delay(5000).slideUp(2000, function () {
+               hook.delay(2000).slideUp(1000, function () {
                 /*if(settings.reloadPage) {
                        window.location.reload(true);
                    }*/
-              $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+              //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+               });
+               
+               this.controller.set("isShow",false);
+
+        }
+        	
+        }else{
+        	/*判断下划*/
+        	console.warn( "--3--" );
+        	this.controller.set("isShow",false);
+        }
+
+    	
+
+           
+    	
+    }
+});
+
+MDEmber.HappyshareController = MDEmber.DragUpController.extend({
+	
+});
+
+MDEmber.HappyshareView = MDEmber.DragUpView.extend({
+	templateName : "pass_activities",
+	
+	click : function(event){
+		//alert(event.target.name);
+		var ItemNode=$(event.target).closest(".article");
+		/*function getItemNode(node){
+			
+			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
+				return node;
+				
+			}else{
+			    if(typeof(node.className)!="undefined"||node.className!=null){
+			    	return false;
+			    	
+			    }
+				return getItemNode(node.parentNode);
+			}
+			
+		}*/
+		
+		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
+			
+			window.location.href=ItemNode[0].attributes["url"].value;
+			
+			
+		}else{
+			
+			return false;
+		}
+		
+		
+		
+		
+	},
+    touchStart:function(event){
+    	this.controller.set("lastY",event.originalEvent.touches[0].pageY);
+    	
+    },
+    touchMove:function(event){
+    	st = $(window).scrollTop();
+    	function getPageSize(window,document) {
+    	    var xScroll, yScroll;
+    	    if (window.innerHeight && window.scrollMaxY) {
+    	        xScroll = window.innerWidth + window.scrollMaxX;
+    	        yScroll = window.innerHeight + window.scrollMaxY;
+    	    } else {
+    	        if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac    
+    	            xScroll = document.body.scrollWidth;
+    	            yScroll = document.body.scrollHeight;
+    	        } else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari    
+    	            xScroll = document.body.offsetWidth;
+    	            yScroll = document.body.offsetHeight;
+    	        }
+    	    }
+    	    var windowWidth, windowHeight;
+    	    if (self.innerHeight) { // all except Explorer    
+    	        if (document.documentElement.clientWidth) {
+    	            windowWidth = document.documentElement.clientWidth;
+    	        } else {
+    	            windowWidth = self.innerWidth;
+    	        }
+    	        windowHeight = self.innerHeight;
+    	    } else {
+    	        if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode    
+    	            windowWidth = document.documentElement.clientWidth;
+    	            windowHeight = document.documentElement.clientHeight;
+    	        } else {
+    	            if (document.body) { // other Explorers    
+    	                windowWidth = document.body.clientWidth;
+    	                windowHeight = document.body.clientHeight;
+    	            }
+    	        }
+    	    }   
+    	    
+    	    // for small pages with total height less then height of the viewport    
+    	    if (yScroll < windowHeight) {
+    	        pageHeight = windowHeight;
+    	    } else {
+    	        pageHeight = yScroll;
+    	    }    
+    	    // for small pages with total width less then width of the viewport    
+    	    if (xScroll < windowWidth) {
+    	        pageWidth = xScroll;
+    	    } else {
+    	        pageWidth = windowWidth;
+    	    }
+    	    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
+    	    return arrayPageSize;
+    	};
+        arrayPageSize=getPageSize($(window),$(document)[0]);
+        pageHeight =arrayPageSize[1];
+        screenHeight =arrayPageSize[3];
+      // e.preventDefault();
+      if(lastY-event.originalEvent.touches[0].pageY<-1){
+        //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
+        /*判断上划*/
+      }
+        if(st+screenHeight+2>=pageHeight&&!this.controller.isShow){
+        	//alert(123);
+        	var lastY=this.controller.get("lastY");
+        	var swipe = lastY-event.originalEvent.touches[0].pageY;
+        	if(swipe > 0) {
+        	  var hook=$("#"+this.hookView.elementId);	
+        		
+        	  hook.show();
+              // el.css("height","0px");
+              //if(firstShow){
+        	  hook.css("height","125px");
+              //$("body").animate({"scrollTop": document.body.scrollHeight}, 2000);
+              //firstShow=false;
+            //}else{
+            	//el.animate({
+                  //"height": "100px"
+              //}, 1000);
+             // $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1500);
+          // }
+              /**/
+               this.controller.set("isShow",true);
+               hook.delay(2000).slideUp(1000, function () {
+                /*if(settings.reloadPage) {
+                       window.location.reload(true);
+                   }*/
+              //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
                });
                
                this.controller.set("isShow",false);

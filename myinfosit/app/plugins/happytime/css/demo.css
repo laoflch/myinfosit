@@ -36,6 +36,7 @@ body {
 	width: 100%;
 	margin: 0px;
 	overflow-x: hidden;
+        background-color: #E2E2E2;
 }
 
 .container {
@@ -98,7 +99,7 @@ body {
 	position: relative;	
 	float: left;
 	background-color: #FFFFFF;	
-	border-radius:5px;		
+	border-radius:10px;		
 	box-shadow: 0px 0px 1px 1px #D5D5D5;
 	
 }
@@ -194,8 +195,8 @@ body {
        width: 100%;
         max-height:110px;
         display: block;
-        white-space: nowrap;
-        overflow-x:hidden;
+        white-space: normal;
+        overflow:hidden;
       position: relative;	
 	float: left;
 	
