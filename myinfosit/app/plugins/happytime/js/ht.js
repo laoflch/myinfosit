@@ -753,6 +753,7 @@ Ember.Handlebars.registerHelper('text-content',function(options){
 	  //ret.push('data-bindattr-' + dataId + '="' + dataId + '"');
 	  //return new EmberHandlebars.SafeString(ret.join(' '));
 	return new Ember.Handlebars.SafeString('<font data-bindattr-' + dataId + '=\"' + dataId + '\">'+font.replace(/(.{17}.)/g,"$1<br/>")+'</font>');
+
 	
 });
 /*Ember.Handlebars.registerHelper('int-if', function(context, options) {
@@ -778,4 +779,3 @@ Ember.Handlebars.registerHelper('int-boundif',function(property, fn) {
 
 	  return bind.call(context, property, fn, true, func, func, ['isTruthy', 'length']);
 });*/
-
