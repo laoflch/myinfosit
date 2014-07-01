@@ -119,6 +119,11 @@ MDEmber.PassRoute = MDEmber.StandRoute.extend({
 
 		
 	},
+	 actions : {
+		    turnItUp: function(level){
+		      //Do your thing
+		    }
+     }
 });
 
 MDEmber.HappyshareRoute = MDEmber.StandRoute.extend({
@@ -156,6 +161,17 @@ MDEmber.MDArrayController = Ember.ArrayController.extend({});
 MDEmber.PassController = MDEmber.MDArrayController.extend({
 	isShow:false,
 	lastY:0,
+	
+    moreContent: function(level){
+		    var view =MDEmber.PassView.create({
+		    	
+		    	
+		    });
+		    
+		    view.appendTo($("#morecontent"));
+    }
+    
+   
 });
 
 MDEmber.DragUpController = MDEmber.MDArrayController.extend({
@@ -425,12 +441,13 @@ MDEmber.PassView = Ember.View.extend({
           // }
               /**/
                this.controller.set("isShow",true);
-               hook.delay(2000).slideUp(1000, function () {
-                /*if(settings.reloadPage) {
+               this.controller.send('moreContent', 11);
+              /* hook.delay(2000).slideUp(1000, function () {
+                if(settings.reloadPage) {
                        window.location.reload(true);
-                   }*/
+                   }
               //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
-               });
+               });*/
                
                this.controller.set("isShow",false);
 

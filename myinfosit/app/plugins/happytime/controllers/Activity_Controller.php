@@ -50,6 +50,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 											'conditions' => '`WeixinRuleContentReplyMix`.`content_id` = `WeixinRuleContentReplyMixItem`.`content_id`'
 									)
 							),
+				            'order' => 'HappytimePassActivity.order_no DESC'
 				           /*  'page'=>1,'limit'=>4 */
 					));
 		$this->_clearClass($passActivitiesList);
@@ -146,7 +147,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 	
 					$current_mix=array("HappytimePassActivity_activity_id"=>$happyShareActivity["HappytimePassActivity_activity_id"],
 							"HappytimeActivity_activity_name"=>$happyShareActivity["HappytimeActivity_activity_name"],
-							"HappytimeActivity_issue_time"=>$passActivity["HappytimeActivity_issue_time"],
+							"HappytimeActivity_issue_time"=>$happyShareActivity["HappytimeActivity_issue_time"],
 							"HappytimeActivity_content_id"=>$happyShareActivity["HappytimeActivity_content_id"],
 							"WeixinRuleContentReplyMix_article_count"=>$happyShareActivity["WeixinRuleContentReplyMix_article_count"],
 							"WeixinRuleContentReplyMixItems"=>array(array("WeixinRuleContentReplyMixItem_item_no"=>$happyShareActivity["WeixinRuleContentReplyMixItem_item_no"],
