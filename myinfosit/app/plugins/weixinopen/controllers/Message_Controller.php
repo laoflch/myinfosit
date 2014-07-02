@@ -159,8 +159,8 @@ class MessageController extends WeixinopenAppController implements NoModelContro
 					$pageInfo=array();
 				}
 				
-				$var = var_export(array_merge($conditions,$pageInfo),TRUE);
-				file_put_contents("test8.txt","postStr".$var,FILE_APPEND);
+				/* $var = var_export(array_merge($conditions,$pageInfo),TRUE);
+				file_put_contents("test8.txt","postStr".$var,FILE_APPEND); */
 				
 				$messages_sample=$this->WeixinMessage->find("all",array_merge($conditions,$pageInfo));
 				$this->_clearClass($messages_sample);

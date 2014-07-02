@@ -26,8 +26,8 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 		/* if(isset($this->params["form"]['account_open_id'])
 		&&!empty($this->params["form"]['account_open_id'])){ */
 		if(true){
-		$passActivitiesList=$this->HappytimePassActivity->find("all",array(
-							'fields' => array('HappytimePassActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
+			
+			$conditions= array('fields' => array('HappytimePassActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
 							'WeixinRuleContentReplyMixItem.item_no','WeixinRuleContentReplyMixItem.title','WeixinRuleContentReplyMixItem.description','WeixinRuleContentReplyMixItem.pic_url',
 							'WeixinRuleContentReplyMixItem.url'),
 							'joins' => array(
@@ -50,9 +50,17 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 											'conditions' => '`WeixinRuleContentReplyMix`.`content_id` = `WeixinRuleContentReplyMixItem`.`content_id`'
 									)
 							),
-				            'order' => 'HappytimePassActivity.order_no DESC'
-				           /*  'page'=>1,'limit'=>4 */
-					));
+				            'order' => 'HappytimePassActivity.order_no DESC');
+			
+			if(isset($this->params["form"]['page_info'])&&!empty($this->params["form"]['page_info'])){
+				$pageInfo=json_decode($this->params["form"]['page_info']);
+				$pageInfo=(array)$pageInfo;
+					
+			}else{
+				$pageInfo=array();
+			}
+		$passActivitiesList=$this->HappytimePassActivity->find("all",array_merge($conditions,$pageInfo));
+		
 		$this->_clearClass($passActivitiesList);
 		$returnPassActivitiesList=array();
 		foreach ($passActivitiesList as $passActivity){
@@ -103,8 +111,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 		/* if(isset($this->params["form"]['account_open_id'])
 			&&!empty($this->params["form"]['account_open_id'])){ */
 		if(true){
-			$happyShareActivitiesList=$this->HappytimeHappyShareActivity->find("all",array(
-					'fields' => array('HappytimeHappyShareActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
+			$conditions= array('fields' => array('HappytimeHappyShareActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
 							'WeixinRuleContentReplyMixItem.item_no','WeixinRuleContentReplyMixItem.title','WeixinRuleContentReplyMixItem.description','WeixinRuleContentReplyMixItem.pic_url',
 					'WeixinRuleContentReplyMixItem.url'),
 					'joins' => array(
@@ -129,7 +136,18 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 					),
 					'order' => 'HappytimeHappyShareActivity.order_no DESC'
 					/*  'page'=>1,'limit'=>4 */
-			));
+			);
+			
+			if(isset($this->params["form"]['page_info'])&&!empty($this->params["form"]['page_info'])){
+				$pageInfo=json_decode($this->params["form"]['page_info']);
+				$pageInfo=(array)$pageInfo;
+					
+			}else{
+				$pageInfo=array();
+			}
+			$happyShareActivitiesList=$this->HappytimeHappyShareActivity->find("all",array_merge($conditions,$pageInfo));
+			
+			
 			$this->_clearClass($happyShareActivitiesList);
 			$returnhappyShareActivitiesList=array();
 			foreach ($happyShareActivitiesList as $happyShareActivity){
