@@ -108,6 +108,16 @@ MDEmber.PassRoute = MDEmber.StandRoute.extend({
 				{"page_info":'{"page":'+controller.currentPage+',"limit":'+controller.pageSize+'}'},
 				function(data) {
 					if (data["passActiviesList"]) {
+						
+						//var passActiviesList=new Array
+						Ember.ArrayPolyfills.forEach.call(data["passActiviesList"], function(element, index, array) {
+							array[index]=MDEmber.Activity.create(element);
+							});
+						
+						/*Ember.ArrayPolyfills.forEach(function(element, index, array){
+							array[index]=MDEmber.Activity.create(element);
+						},data["passActiviesList"]);*/
+						
 						controller.set("model",data["passActiviesList"]);
 						
 					}},
@@ -148,6 +158,13 @@ MDEmber.HappyshareRoute = MDEmber.StandRoute.extend({
 
 		
 	},
+});
+
+MDEmber.Activity = Ember.Object.extend({
+	
+	isSingle:function() {
+	    return this.get('WeixinRuleContentReplyMix_article_count')===1?true:false;
+	}.property('WeixinRuleContentReplyMix_article_count')
 });
 
 

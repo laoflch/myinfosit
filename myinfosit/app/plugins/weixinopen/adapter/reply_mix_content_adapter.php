@@ -55,7 +55,7 @@ class ReplyMixContentAdapter extends AbstractContentTypeAdapter implements Conte
 				for($i=0;$i<$contentReplyMix["WeixinRuleContentReplyMix"]["article_count"];$i++){
 					$aticle[$i]=array("item"=>array(
 					"Title"=>$contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["title"],
-							"Decription"=>$contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["decription"],
+							"Description"=>$contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["description"],
 							"PicUrl"=>$i===0?$this->maxPic($contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["pic_url"])
 							:$this->minPic($contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["pic_url"]),
 							"Url"=>$contentReplyMixItem[$i]["WeixinRuleContentReplyMixItem"]["url"],
