@@ -27,7 +27,7 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 		&&!empty($this->params["form"]['account_open_id'])){ */
 		if(true){
 			
-			$conditions= array('fields' => array('HappytimePassActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
+		/* 	$conditions= array('fields' => array('HappytimePassActivity.activity_id','HappytimeActivity.activity_name','HappytimeActivity.issue_time','HappytimeActivity.content_id','WeixinRuleContentReplyMix.article_count',
 							'WeixinRuleContentReplyMixItem.item_no','WeixinRuleContentReplyMixItem.title','WeixinRuleContentReplyMixItem.description','WeixinRuleContentReplyMixItem.pic_url',
 							'WeixinRuleContentReplyMixItem.url'),
 							'joins' => array(
@@ -60,6 +60,54 @@ class ActivityController extends HappytimeAppController implements NoModelContro
 				$pageInfo=array();
 			}
 		$passActivitiesList=$this->HappytimePassActivity->find("all",array_merge($conditions,$pageInfo));
+		 */
+		$offset=0;
+		$limit=0;
+		if(isset($this->params["form"]['page_info'])&&!empty($this->params["form"]['page_info'])){
+			$pageInfo=json_decode($this->params["form"]['page_info']);
+			$pageInfo=(array)$pageInfo;
+			if(isset($pageInfo["page"])
+			&&!empty($pageInfo["page"])
+			&&isset($pageInfo["limit"])
+			&&!empty($pageInfo["limit"])
+			){
+					
+				$offset=($pageInfo["page"]-1)*$pageInfo["limit"];
+				$limit=$pageInfo["limit"];
+					
+			}
+				
+		}else{
+			$pageInfo=array();
+		}
+		//$happyShareActivitiesList=$this->HappytimeHappyShareActivity->find("all",array_merge($conditions,$pageInfo));
+		$passActivitiesList=$this->HappytimePassActivity->query("
+					SELECT
+					`HappytimePassActivity`.`activity_id`,
+					`HappytimeActivity`.`activity_name`,
+					`HappytimeActivity`.`issue_time`,
+					`HappytimeActivity`.`content_id`,
+					`WeixinRuleContentReplyMix`.`article_count`,
+					`WeixinRuleContentReplyMixItem`.`item_no`,
+					`WeixinRuleContentReplyMixItem`.`title`,
+					`WeixinRuleContentReplyMixItem`.`description`,
+					`WeixinRuleContentReplyMixItem`.`pic_url`,
+					`WeixinRuleContentReplyMixItem`.`url`
+					FROM
+					(SELECT `activity_id`,`order_no`
+					 FROM
+					 `happytime_pass_activities`
+					 ORDER BY `order_no` DESC
+					 LIMIT ".$offset.",".$limit."
+					) AS `HappytimePassActivity`
+					INNER JOIN `happytime_activities` AS `HappytimeActivity`
+					    ON (`HappytimePassActivity`.`activity_id` = `HappytimeActivity`.`activity_id`)
+				    LEFT JOIN `weixin_rule_content_reply_mixes` AS `WeixinRuleContentReplyMix`
+					    ON (`HappytimeActivity`.`content_id` = `WeixinRuleContentReplyMix`.`content_id`)
+					LEFT JOIN `weixin_rule_content_reply_mix_items` AS `WeixinRuleContentReplyMixItem`
+					    ON (`WeixinRuleContentReplyMix`.`content_id` = `WeixinRuleContentReplyMixItem`.`content_id`)
+					");
+			
 		
 		$this->_clearClass($passActivitiesList);
 		$returnPassActivitiesList=array();

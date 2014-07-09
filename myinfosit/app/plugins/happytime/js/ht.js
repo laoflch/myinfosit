@@ -371,10 +371,10 @@ MDEmber.PassView = Ember.View.extend({
 		}
 	},
 	
-	click : function(event){
+	/*llclick : function(event){
 		//alert(event.target.name);
 		var ItemNode=$(event.target).closest(".article");
-		/*function getItemNode(node){
+		function getItemNode(node){
 			
 			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
 				return node;
@@ -387,7 +387,7 @@ MDEmber.PassView = Ember.View.extend({
 				return getItemNode(node.parentNode);
 			}
 			
-		}*/
+		}
 		
 		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
 			
@@ -402,7 +402,7 @@ MDEmber.PassView = Ember.View.extend({
 		
 		
 		
-	},
+	},*/
     touchStart:function(event){
     	this.controller.set("lastY",event.originalEvent.touches[0].pageY);
     	
@@ -463,12 +463,9 @@ MDEmber.PassView = Ember.View.extend({
         arrayPageSize=getPageSize($(window),$(document)[0]);
         pageHeight =arrayPageSize[1];
         screenHeight =arrayPageSize[3];
-      // e.preventDefault();
-      if(lastY-event.originalEvent.touches[0].pageY<-1){
-        //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
-        /*判断上划*/
-      }
-        if(st+screenHeight+2>=pageHeight){
+      
+        
+        if(st+screenHeight+2>pageHeight){
         	//alert(123);
         	var lastY=this.controller.get("lastY");
         	var swipe = lastY-event.originalEvent.touches[0].pageY;
@@ -593,7 +590,7 @@ MDEmber.HookView = Ember.View.extend({
              /*if(settings.reloadPage) {
                     window.location.reload(true);
                 }*/
-           //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+           $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
             });
             
         this.set("isShow",false);
@@ -601,7 +598,7 @@ MDEmber.HookView = Ember.View.extend({
 	
 	showHook:function(){
 		//var hook=$("#"+this.elementId);	
-		this.hookView.$().show().css("height","125px");
+		this.hookView.$().show().css("height","100px");
             
         this.controller.set("isShow",true);
 	}
@@ -751,30 +748,104 @@ Ember.Handlebars.registerHelper('text-content',function(options){
 	  // NOTE: We use all lower-case since Firefox has problems with mixed case in SVG
 	  //ret.push('data-bindattr-' + dataId + '="' + dataId + '"');
 	  //return new EmberHandlebars.SafeString(ret.join(' '));
-	return new Ember.Handlebars.SafeString('<font data-bindattr-' + dataId + '=\"' + dataId + '\">'+font.replace(/(.{17}.)/g,"$1<br/>")+'</font>');
+	return new Ember.Handlebars.SafeString('<font data-bindattr-' + dataId + '=\"' + dataId + '\">'+font?font.replace(/(.{17}.)/g,"$1<br/>"):""+'</font>');
 
 	
 });
-/*Ember.Handlebars.registerHelper('int-if', function(context, options) {
-	  Ember.assert("You must pass exactly one argument to the if helper", arguments.length === 2);
-	  Ember.assert("You must pass a block to the if helper", options.fn && options.fn !== Handlebars.VM.noop);
 
-	  return Ember.Handlebars.helpers.int-boundif.call(options.contexts[0], context, options);
-	});
-
-Ember.Handlebars.registerHelper('int-boundif',function(property, fn) {
+Ember.Handlebars.registerHelper('if-gt', function(property, fn) {
 	  var context = (fn.contexts && fn.contexts[0]) || this;
+	  var properties = property.split("$");
+	  var re_property = properties[0];
+	  var value = properties[1];
 	  var func = function(result) {
-	    //var truthy = result && get(result, 'isTruthy');
-	    if (!isNaN(result)) { 
-	    	return false; 
-	    }else{
-	    	if(result==1){
-	    		return true;
-	    		
-	    	
-	    }
+		  
+		var truthy = result;
+		if (typeof truthy === 'boolean') { return truthy; };
+		    
+	    if (parseInt(result) > (value)) { return true; };
+	    
+	    return false;
+
+	   /* if (Ember.isArray(result)) {
+	      return get(result, 'length') !== 0;
+	    } else {
+	      return !!result;
+	    }*/
 	  };
 
-	  return bind.call(context, property, fn, true, func, func, ['isTruthy', 'length']);
-});*/
+	  return bind.call(context, re_property, fn, true, func, func);
+	});
+
+
+function bind(property, options, preserveContext, shouldDisplay, valueNormalizer, childProperties) {
+	  var data = options.data,
+	      fn = options.fn,
+	      inverse = options.inverse,
+	      view = data.view,
+	      currentContext = this,
+	      normalized, observer, i;
+
+	  normalized = Ember.Handlebars.normalizePath(currentContext, property, data);
+
+	  // Set up observers for observable objects
+	  if ('object' === typeof this) {
+	    if (data.insideGroup) {
+	      observer = function() {
+	        Ember.run.once(view, 'rerender');
+	      };
+
+	      var template, context, result = handlebarsGet(currentContext, property, options);
+
+	      result = valueNormalizer(result);
+
+	      context = preserveContext ? currentContext : result;
+	      if (shouldDisplay(result)) {
+	        template = fn;
+	      } else if (inverse) {
+	        template = inverse;
+	      }
+
+	      template(context, { data: options.data });
+	    } else {
+	      // Create the view that will wrap the output of this template/property
+	      // and add it to the nearest view's childViews array.
+	      // See the documentation of Ember._HandlebarsBoundView for more.
+	      var bindView = view.createChildView(Ember._HandlebarsBoundView, {
+	        preserveContext: preserveContext,
+	        shouldDisplayFunc: shouldDisplay,
+	        valueNormalizerFunc: valueNormalizer,
+	        displayTemplate: fn,
+	        inverseTemplate: inverse,
+	        path: property,
+	        pathRoot: currentContext,
+	        previousContext: currentContext,
+	        isEscaped: !options.hash.unescaped,
+	        templateData: options.data
+	      });
+
+	      view.appendChild(bindView);
+
+	      observer = function() {
+	        Ember.run.scheduleOnce('render', bindView, 'rerenderIfNeeded');
+	      };
+	    }
+
+	    // Observes the given property on the context and
+	    // tells the Ember._HandlebarsBoundView to re-render. If property
+	    // is an empty string, we are printing the current context
+	    // object ({{this}}) so updating it is not our responsibility.
+	    if (normalized.path !== '') {
+	      view.registerObserver(normalized.root, normalized.path, observer);
+	      if (childProperties) {
+	        for (i=0; i<childProperties.length; i++) {
+	          view.registerObserver(normalized.root, normalized.path+'.'+childProperties[i], observer);
+	        }
+	      }
+	    }
+	  } else {
+	    // The object is not observable, so just render it out and
+	    // be done with it.
+	    data.buffer.push(handlebarsGet(currentContext, property, options));
+	  }
+	}

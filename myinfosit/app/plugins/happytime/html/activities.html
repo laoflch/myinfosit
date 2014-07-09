@@ -40,12 +40,24 @@
 		</div>
 		 
 			<div class="article_container">
+
+            {{#if-gt passActivity.WeixinRuleContentReplyMix_article_count$1}}
             
 			
             
             {{#each mixItem in passActivity.WeixinRuleContentReplyMixItems}}
-            {{#if mixItem.WeixinRuleContentReplyMixItem_first}}
-                <div class="framwork_first">
+            {{#if-gt mixItem.WeixinRuleContentReplyMixItem_item_no$1}}
+<a {{bindAttr href=mixItem.WeixinRuleContentReplyMixItem_url}}>
+<div class="article article_item"  {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
+<div class="framwork_item">
+                <div class="item_title"><div class="item_title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
+               </div>
+              </a>  
+            {{else}}
+            
+            <a {{bindAttr href=mixItem.WeixinRuleContentReplyMixItem_url}}>
+               
+				<div class="framwork_first">
 				<div class="article article_first" {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}} 
                {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
 				    <div class="title_first">
@@ -54,15 +66,33 @@
                     </div>
 				</div>
 			</div>
-            {{/if}}
-            {{#unless mixItem.WeixinRuleContentReplyMixItem_first}}
-               
-				<div class="article article_item"  {{bindAttr item_no=mixItem.WeixinRuleContentReplyMixItem_item_no url=mixItem.WeixinRuleContentReplyMixItem_url}}>
-<div class="framwork_item">
-                <div class="item_title"><div class="item_title_text">{{mixItem.WeixinRuleContentReplyMixItem_title}}</div></div><div class="item_pic"  {{backgroup-image url=mixItem.WeixinRuleContentReplyMixItem_pic_url}}></div></div>
-               </div>
-            {{/unless}}
+</a> 
+            {{/if-gt}}
 				{{/each}}
+{{else}}
+<div class="framwork_first">
+				<div class="article article_single" >
+				    <div class="single_title">
+					<div class="title_text">{{passActivity.WeixinRuleContentReplyMixItems.0.WeixinRuleContentReplyMixItem_title}}</div>
+				    <div class="title_time">{{passActivity.HappytimeActivity_issue_time}}</div>
+                    </div>
+                    <div class="framwork_single">
+                    <div class="single_img" {{backgroup-image url=passActivity.WeixinRuleContentReplyMixItems.0.WeixinRuleContentReplyMixItem_pic_url}}>
+					<!--div class="title_text">{{passActivity.WeixinRuleContentReplyMixItems.0.WeixinRuleContentReplyMixItem_title}}</div-->
+				    
+                    </div>
+                    </div>
+                    <div class="single_description">
+                    <div class="description_text">{{passActivity.WeixinRuleContentReplyMixItems.0.WeixinRuleContentReplyMixItem_description}}
+                    </div>
+</div>
+                    <div class="single_seeall">
+                   查看全文
+</div>
+				</div>
+			
+
+{{/if-gt}}
 				
 			</div>
 					
