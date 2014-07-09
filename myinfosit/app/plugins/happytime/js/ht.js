@@ -174,13 +174,13 @@ MDEmber.PassController = MDEmber.MDArrayController.extend({
 	isShow:false,
 	lastY:0,
 	currentPage:1,
-	pageSize:1,
+	pageSize:2,
 	
-    moreContent: function(level){
+    moreContent: function(thisView){
 		    var moreContentView =this.get("moreContentView");
 		    
-		    var _self=this;
-		    
+		    var _selfView=thisView;
+		    var _self=this;    
 			MDEmber.jsonAsync("/happytime/Activity/getPassActiviesList.json",
 					"post",
 					{"page_info":'{"page":'+(_self.currentPage+1)+',"limit":'+_self.pageSize+'}'},
@@ -194,8 +194,8 @@ MDEmber.PassController = MDEmber.MDArrayController.extend({
 								 viewc.set("controller",data["passActiviesList"]);
 								 moreContentView.pushObject(viewc);
 								 _self.currentPage++;
-								 var passView=_self.get("passView");
-								 passView.hookView.hiddenHook.apply(_self,new Array([passView.hookView.elementId,2000]));
+								 //var passView=_self.get("passView");
+								 thisView.hookView.hiddenHook.apply(_selfView,new Array([_selfView.hookView.elementId,1500,2500]));
 						}},
 					function() {
 						// view("异常！");
@@ -317,7 +317,7 @@ MDEmber.DragUpView = Ember.View.extend({
 	        //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
 	        /*判断上划*/
 	      }
-	        if(st+screenHeight+2>=pageHeight&&!this.controller.isShow){
+	        if(st+screenHeight>=pageHeight&&!this.controller.isShow){
 	        	//alert(123);
 	        	var lastY=this.controller.get("lastY");
 	        	var swipe = lastY-event.originalEvent.touches[0].pageY;
@@ -408,7 +408,7 @@ MDEmber.PassView = Ember.View.extend({
     	
     },
     touchMove:function(event){
-    	if(!this.controller.isShow){
+    	if(!this.controller.get("isShow")){
     		st = $(window).scrollTop();
     	function getPageSize(window,document) {
     		
@@ -465,20 +465,15 @@ MDEmber.PassView = Ember.View.extend({
         screenHeight =arrayPageSize[3];
       
         
-        if(st+screenHeight+2>pageHeight){
+        if(st+screenHeight>=pageHeight&&!this.controller.isShow){
         	//alert(123);
         	var lastY=this.controller.get("lastY");
         	var swipe = lastY-event.originalEvent.touches[0].pageY;
         	if(swipe > 0&&!this.controller.get("isShow")) {
         	   this.hookView.showHook.apply(this);	
-               this.controller.send('moreContent', 11);
-              /* hook.delay(2000).slideUp(1000, function () {
-                if(settings.reloadPage) {
-                       window.location.reload(true);
-                   }
-              //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
-               });*/
-               
+        	   
+               this.controller.send('moreContent', this);
+              
 
         }
         	
@@ -586,14 +581,19 @@ MDEmber.HookView = Ember.View.extend({
 	},
 	hiddenHook:function(args){
 		//var hook=$("#"+this.elementId);	
-		$("#"+args[0]).slideUp(args[1], function () {
+		/*var _self=this.hookView;
+		var _time=args[1];*/
+		$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},args[1]);
+		this.hookView.$().slideUp(args[2], function () {
              /*if(settings.reloadPage) {
                     window.location.reload(true);
                 }*/
-           $("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+		
+        //$("body").animate({"scrollTop": $(document)[0].body.scrollHeight},1);
+			
             });
             
-        this.set("isShow",false);
+        this.controller.set("isShow",false);
 	},
 	
 	showHook:function(){
