@@ -170,12 +170,15 @@ MDEmber.Activity = Ember.Object.extend({
 
 MDEmber.MDArrayController = Ember.ArrayController.extend({});
 
-MDEmber.PassController = MDEmber.MDArrayController.extend({
+MDEmber.DragUpController = MDEmber.MDArrayController.extend({
 	isShow:false,
 	lastY:0,
 	currentPage:1,
-	pageSize:2,
-	
+	pageSize:1,
+});
+
+MDEmber.PassController = MDEmber.DragUpController.extend({	
+	pageSize:2,	
     moreContent: function(thisView){
 		    var moreContentView =this.get("moreContentView");
 		    
@@ -212,19 +215,14 @@ MDEmber.PassController = MDEmber.MDArrayController.extend({
    
 });
 
-MDEmber.DragUpController = MDEmber.MDArrayController.extend({
-	isShow:false,
-	lastY:0,
-	currentPage:1,
-	pageSize:1,
-});
+
 
 MDEmber.DragUpView = Ember.View.extend({
 	hookView : null,
-	click : function(event){
+	/*click : function(event){
 		//alert(event.target.name);
 		var ItemNode=$(event.target).closest(".article");
-		/*function getItemNode(node){
+		function getItemNode(node){
 			
 			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
 				return node;
@@ -237,7 +235,7 @@ MDEmber.DragUpView = Ember.View.extend({
 				return getItemNode(node.parentNode);
 			}
 			
-		}*/
+		}
 		
 		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
 			
@@ -252,13 +250,13 @@ MDEmber.DragUpView = Ember.View.extend({
 		
 		
 		
-	},
+	},*/
 	 touchStart:function(event){
 	    	this.controller.set("lastY",event.originalEvent.touches[0].pageY);
 	    	
 	    },
 	    touchMove:function(event){
-	    	if(!this.controller.isShow){
+	    	if(!this.controller.get("isShow")){
 	    	st = $(window).scrollTop();
 	    	function getPageSize(window,document) {
 	    	    var xScroll, yScroll;
@@ -317,13 +315,13 @@ MDEmber.DragUpView = Ember.View.extend({
 	        //alert("pageHeight:"+pageHeight+"st:"+st+"screenHeight:"+screenHeight);
 	        /*判断上划*/
 	      }
-	        if(st+screenHeight>=pageHeight&&!this.controller.isShow){
+	        if(st+screenHeight>=pageHeight&&!this.controller.get("isShow")){
 	        	//alert(123);
 	        	var lastY=this.controller.get("lastY");
 	        	var swipe = lastY-event.originalEvent.touches[0].pageY;
 	        	if(swipe > 0&&!this.controller.get("isShow")) {
 	         	   this.hookView.showHook.apply(this);	
-	               this.controller.send('moreContent', 11);
+	               this.controller.send('moreContent', this);
 
 	        }
 	        	
@@ -351,17 +349,10 @@ MDEmber.MorecontentView=Ember.ContainerView.extend({
 			controller.set("moreContentView",this);
 		}
 	},
-	
-	/*classNames: ['the-container'],
-    childViews: ['aView'],
-    aView: Ember.View.create({
-      template: Ember.Handlebars.compile("A")
-    }),*/
 });
 
-MDEmber.PassView = Ember.View.extend({
+MDEmber.PassView = MDEmber.DragUpView.extend({
 	templateName : "pass_activities",
-	hookView : null,
 	init:function (){
 		this._super();
 		var controller = this.container.lookup("controller:pass");
@@ -371,131 +362,16 @@ MDEmber.PassView = Ember.View.extend({
 		}
 	},
 	
-	/*llclick : function(event){
-		//alert(event.target.name);
-		var ItemNode=$(event.target).closest(".article");
-		function getItemNode(node){
-			
-			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
-				return node;
-				
-			}else{
-			    if(typeof(node.className)!="undefined"||node.className!=null){
-			    	return false;
-			    	
-			    }
-				return getItemNode(node.parentNode);
-			}
-			
-		}
-		
-		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
-			
-			window.location.href=ItemNode[0].attributes["url"].value;
-			
-			
-		}else{
-			
-			return false;
-		}
-		
-		
-		
-		
-	},*/
-    touchStart:function(event){
-    	this.controller.set("lastY",event.originalEvent.touches[0].pageY);
-    	
-    },
-    touchMove:function(event){
-    	if(!this.controller.get("isShow")){
-    		st = $(window).scrollTop();
-    	function getPageSize(window,document) {
-    		
-    	    var xScroll, yScroll;
-    	    if (window.innerHeight && window.scrollMaxY) {
-    	        xScroll = window.innerWidth + window.scrollMaxX;
-    	        yScroll = window.innerHeight + window.scrollMaxY;
-    	    } else {
-    	        if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac    
-    	            xScroll = document.body.scrollWidth;
-    	            yScroll = document.body.scrollHeight;
-    	        } else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari    
-    	            xScroll = document.body.offsetWidth;
-    	            yScroll = document.body.offsetHeight;
-    	        }
-    	    }
-    	    var windowWidth, windowHeight;
-    	    if (self.innerHeight) { // all except Explorer    
-    	        if (document.documentElement.clientWidth) {
-    	            windowWidth = document.documentElement.clientWidth;
-    	        } else {
-    	            windowWidth = self.innerWidth;
-    	        }
-    	        windowHeight = self.innerHeight;
-    	    } else {
-    	        if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode    
-    	            windowWidth = document.documentElement.clientWidth;
-    	            windowHeight = document.documentElement.clientHeight;
-    	        } else {
-    	            if (document.body) { // other Explorers    
-    	                windowWidth = document.body.clientWidth;
-    	                windowHeight = document.body.clientHeight;
-    	            }
-    	        }
-    	    }   
-    	    
-    	    // for small pages with total height less then height of the viewport    
-    	    if (yScroll < windowHeight) {
-    	        pageHeight = windowHeight;
-    	    } else {
-    	        pageHeight = yScroll;
-    	    }    
-    	    // for small pages with total width less then width of the viewport    
-    	    if (xScroll < windowWidth) {
-    	        pageWidth = xScroll;
-    	    } else {
-    	        pageWidth = windowWidth;
-    	    }
-    	    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
-    	    return arrayPageSize;
-    	};
-        arrayPageSize=getPageSize($(window),$(document)[0]);
-        pageHeight =arrayPageSize[1];
-        screenHeight =arrayPageSize[3];
-      
-        
-        if(st+screenHeight>=pageHeight&&!this.controller.isShow){
-        	//alert(123);
-        	var lastY=this.controller.get("lastY");
-        	var swipe = lastY-event.originalEvent.touches[0].pageY;
-        	if(swipe > 0&&!this.controller.get("isShow")) {
-        	   this.hookView.showHook.apply(this);	
-        	   
-               this.controller.send('moreContent', this);
-              
-
-        }
-        	
-        }else{
-        	/*判断下划*/
-        	console.warn( "--3--" );
-        	this.controller.set("isShow",false);
-        }
-
-    	
-
-           
-    	
-    }
-    }
+	
 });
 
 MDEmber.HappyshareController = MDEmber.DragUpController.extend({
-	 moreContent: function(level){
+	 pageSize:2,
+	 moreContent: function(thisView){
 		    var moreContentView =this.get("moreContentView");
 		    
-		    var _self=this;
+		    var _selfView=thisView;
+		    var _self=this;    
 		    
 			MDEmber.jsonAsync("/happytime/Activity/getHappyShareActiviesList.json",
 					"post",
@@ -510,8 +386,8 @@ MDEmber.HappyshareController = MDEmber.DragUpController.extend({
 								 viewc.set("controller",data["happyShareActiviesList"]);
 								 moreContentView.pushObject(viewc);
 								 _self.currentPage++;
-								 var passView=_self.get("happyshareView");
-								 passView.hookView.hiddenHook.apply(_self,new Array([passView.hookView.elementId,2000]));
+								 //var passView=_self.get("happyshareView");
+								 thisView.hookView.hiddenHook.apply(_selfView,new Array([_selfView.hookView.elementId,1500,2500]));
 						}},
 					function() {
 						// view("异常！");
@@ -537,38 +413,7 @@ MDEmber.HappyshareView = MDEmber.DragUpView.extend({
 			controller.set("happyshareView",this);
 		}
 	},
-	click : function(event){
-		//alert(event.target.name);
-		var ItemNode=$(event.target).closest(".article");
-		/*function getItemNode(node){
-			
-			if(node.className&&node.className!=='null'&&node.className.indexOf("article")>-1){
-				return node;
-				
-			}else{
-			    if(typeof(node.className)!="undefined"||node.className!=null){
-			    	return false;
-			    	
-			    }
-				return getItemNode(node.parentNode);
-			}
-			
-		}*/
-		
-		if(typeof(ItemNode)!="undefined"&&ItemNode!=null&&ItemNode.length>0){
-			
-			window.location.href=ItemNode[0].attributes["url"].value;
-			
-			
-		}else{
-			
-			return false;
-		}
-		
-		
-		
-		
-	},
+	
    
 });
 
