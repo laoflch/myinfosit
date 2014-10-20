@@ -32,7 +32,106 @@
 </body>
 
   
-  <script type="text/x-handlebars" data-template-name="showactivity">
-dsfasdfds
+  <script type="text/x-handlebars" data-template-name="show_activity">
+dsfsdf
+    <!-- modal of picking the tickets -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">选择票务信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning">注意：本票为纸质票，可用于所有场次的演出。</div>
+            <h4>演出信息</h4>
+            <p class="confirm_info">
+                <span class="confirm_name">《乌龙山伯爵》-开心麻花</span>
+                <span>上戏剧院</span>
+            </p>
+            <h4>选择时间</h4>
+            <p style="overflow:hidden;" id="time_section" class="confirm_time">
+                <span class="time_cell selected">2014年12月24日<br>周三 19:30</span>
+                <span class="time_cell">2014年12月25日<br>周四 19:30</span>
+                <span class="time_cell">2014年12月26日<br>周五 19:30</span>
+                <span class="time_cell">2014年12月27日<br>周六 19:30</span>
+                <span class="time_cell">2014年12月28日<br>周日 19:30</span>
+            </p>
+            <h4>票价</h4>
+            <p>280元 (参与本次活动票价)</p>
+            <hr>
+            <h4>选择数量<span class="total_container">总共<span id="total_number">280</span>元</span></h4>
+            <p style="overflow:hidden;margin-top:4px;">
+                <span id="minus" class="count_picker disable">-</span>
+                <span id="ticket_number" class="number_container">1</span>
+                <span id="plus" class="count_picker enable">+</span>
+            </p>
+            <hr>
+            <h4>确认发货信息</h4>
+            <p>
+                * 演出当天凭序列号到剧场自提
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" style="background-color:#ea4872;border-color:#ea4872;">确定购买</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content" >
+        <div class="banner">
+            <img src="img/banner.jpg">
+        </div>
+        <div class="header_container">
+            <div class="poster">
+                <img src="img/poster.jpg">
+            </div>
+            <div class="text">
+                <p class="name">乌龙山伯爵</p>
+                <p>时间：12月24日~12月28日</p>
+                <p>票价：80 180 280 380 480 680 880</p>
+            </div>
+            <div class="button">
+                <a href="" data-toggle="modal" data-target="#myModal">立即购票</a>
+            </div>
+            <div class="info_container">
+                <p>地址：上戏剧院(华山路630号)</p>
+                <p>公交：48 113 328 548 57 71 76 127 311 925</p>
+                <p>参与活动票价：280元</p>
+            </div>
+        </div>
+        <div class="quote">
+            <img src="img/quote1.png">超给力超爆笑的幸存者复仇记<img src="img/quote2.png">
+        </div>
+        <div class="text_container">
+            <!-- intro -->
+            <div class="section_header">演出简介</div>
+            <div class="section_body">
+                <p>《乌龙山伯爵》作为开心麻花2011年贺岁重头大戏， 2010年12月至今，已上演近500场，场场爆满，盛况空前。被新浪网评为“年度最具人气话剧”。该剧导演闫非曾执导过开心麻花系列剧《疯狂的石头》、《谁都不许笑》，“闫非式幽默”为他积累了不少人气。</p>
+                <img src="img/pic.jpg">
+                <p>一个无工作、无房子、无车子的“三无”青年忽然得到巨额遗产，又阴差阳错地被误认为银行抢劫犯而被警方通缉。知情者要么死去，要么是他的对手。他该如何实现自我救赎？</p>
+                <img src="img/pic2.jpg">
+                <p>开心麻花《乌龙山伯爵》日前在上海、深圳、广州、天津、沈阳等地的巡演连掀各地观剧热潮。在上海，凭借前三场的高人气口碑，上海后两场演出还未宣传门票便已售空，更有北京粉丝飞去上海观剧，举带有演员名字的灯牌力挺麻花；在沈阳，剧场内座无虚席，二楼包厢内也站满观众，演员谢幕时一眼望去感觉“墙上都挂满了人”；在广州，受深圳演出极佳口碑影响，广州的三场演出一票难求……“开心麻花《乌龙山伯爵》”成为四月南北方观众的观剧热搜词。</p>
+            </div>
+            <!-- kandian -->
+            <div class="section_header">精彩看点</div>
+            <div class="section_body">
+                <p class="focus">笑点成串包袱横飞</p>
+                <p>《乌龙山伯爵》堪称最时尚的舞台剧，早上刚在报纸上出现的新闻话题，当晚的演出中就会将其化成包袱融入剧中。最早上演时，“经济适用坟”、“菲律宾警察”三国杀、《山楂树之恋》、高房价、限购令等年度社会热点都被用心构思进包袱中。</p>
+                <p class="focus">舞美豪华大气</p>
+                <p>阴森的教堂、逼真的墓地、惟妙惟肖的十字架、琳琅满目的酒吧……甚至连爆炸场面都搬上了舞台，在电影镜头中出现过的经典场面均在《乌龙山伯爵》的舞台上以极具创意的方式展现，看得观众如痴如醉。</p>
+            </div>
+            <!-- about mahua -->
+            <div class="section_header">关于开心麻花</div>
+            <div class="section_body">
+                <p><img class="logo" src="img/logo.jpg"><a target="_blank" href="http://www.kaixinmahua.com.cn/">开心麻花</a></p>
+                <p>2003年，开心麻花首创“贺岁舞台剧”概念。此后，每年推出贺岁新戏，深受观众喜爱，剧剧引发热潮。“想快乐，看开心麻花”已成为时尚达人的口号。</p>
+                <p class="focus">“开心麻花”=精彩故事+动人情怀+智慧盘点+喜剧风格。</p>
+                <p>主流观众年轻、时尚、走在潮流前沿、有消费力、有影响力。</p>
+                <p>10年时间，开心麻花的娱乐精神感染了千百万人。21部作品，从北京出发走遍上海、天津、重庆、武汉、深圳、南京、杭州、南昌、哈尔滨、西安、郑州等40多个城市。仅2013年大剧场演出700场，给近百万观众带来无限欢乐。连续三年登上央视春节晚会，创作、演出《扶不扶》《大城小事》《今天的幸福》系列等小品及《魔幻三兄弟》创意侧躺剧。</p>
+            </div>
+        </div>
+
+    </div>
   </script>
 </html>

@@ -98,7 +98,7 @@ MDEmber.StandRoute = Ember.Route.extend({
 
 });
 
-MDEmber.ShowactivityRoute = MDEmber.StandRoute.extend({
+MDEmber.ShowactivityRoute = Ember.Route.extend({
 	setupController : function(controller) {
 		
 		
@@ -119,11 +119,6 @@ MDEmber.ShowactivityRoute = MDEmber.StandRoute.extend({
 
 		
 	},
-	 actions : {
-		    turnItUp: function(level){
-		      //Do your thing
-		    }
-     }
 });
 
 
@@ -135,37 +130,24 @@ MDEmber.Showactivity = Ember.Object.extend({
 	}.property('WeixinRuleContentReplyMix_article_count')
 });
 
-MDEmber.ShowactivityController = Ember.ObjectController.extend({
-    moreContent: function(thisView){
-		    /*var moreContentView =this.get("moreContentView");
-		    
-		    var _selfView=thisView;
-		    var _self=this;    */
-			MDEmber.jsonAsync("/mahua/Activity/getHappyShareActiviesList.json",
-					"post",
-					{},
-					function(data) {
-							if (data["passActiviesList"]) {
-								
-							
-						}},
-					function() {
-						// view("异常！");
-						alert("获取json数据错误！");
-					});		    
-		    
-		   
-    }
-    
+MDEmber.MDArrayController = Ember.ArrayController.extend({});
+
+MDEmber.ShowactivityController = Ember.Controller.extend({
    
 });
 
 
 MDEmber.ShowactivityView = Ember.View.extend({
 	templateName : "show_activity",
-	init:function (){
+	/*init:function (){
+		this._super();
+		var controller = this.container.lookup("controller:showactivity");
+		if(controller){
+			
+			//controller.set("showactivityView",this);
+		}
 		
-	},
+	},*/
 	
 	
 });
