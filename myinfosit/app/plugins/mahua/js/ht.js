@@ -76,8 +76,8 @@ MDEmber.Router.map(function(){
 	this.route("showactivity", {
 		path : "/showactivity"
 	});
-	this.route("happyshare", {
-		path : "/happyshare"
+	this.route("orderticket", {
+		path : "/orderticket/:ticket_id"
 	});
 	
 });
@@ -99,6 +99,7 @@ MDEmber.StandRoute = Ember.Route.extend({
 });
 
 MDEmber.ShowactivityRoute = Ember.Route.extend({
+	
 	setupController : function(controller) {
 		
 		
@@ -133,12 +134,75 @@ MDEmber.Showactivity = Ember.Object.extend({
 MDEmber.MDArrayController = Ember.ArrayController.extend({});
 
 MDEmber.ShowactivityController = Ember.Controller.extend({
+	nextAction:function(thisView){
+		this.transitionToRoute("orderticket",{ticket_id:"12"});
+		
+	}
    
 });
 
 
 MDEmber.ShowactivityView = Ember.View.extend({
 	templateName : "show_activity",
+	click:function (){
+		if(event.target.id=="submit"){
+			this.controller.send('nextAction', this);
+		};
+		
+	},
+	
+	
+});
+
+MDEmber.OrderticketRoute = Ember.Route.extend({
+	model: function(params) {
+	   
+	    alert(params+"1");
+	  },
+	  serialize: function(model) {
+		    // this will make the URL `/posts/foo-post`
+		  alert(model+"2");
+		  },
+	setupController : function(controller) {
+		
+		
+		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
+				"post",
+				{},
+				function(data) {
+					if (data["showActivityInfo"]) {
+						
+						
+						controller.set("model",data["showActivityInfo"]);
+						
+					}},
+				function() {
+					// view("异常！");
+					alert("获取json数据错误！");
+				});
+*/
+		
+	},
+});
+
+
+
+MDEmber.Orderticket = Ember.Object.extend({
+	
+	isSingle:function() {
+	    return this.get('WeixinRuleContentReplyMix_article_count')===1?true:false;
+	}.property('WeixinRuleContentReplyMix_article_count')
+});
+
+
+
+MDEmber.OrderticketController = Ember.Controller.extend({
+   
+});
+
+
+MDEmber.OrderticketView = Ember.View.extend({
+	templateName : "order_ticket",
 	/*init:function (){
 		this._super();
 		var controller = this.container.lookup("controller:showactivity");
