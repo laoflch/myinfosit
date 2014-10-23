@@ -116,12 +116,12 @@
                 <span class="time_cell">2014年12月28日<br>周日 19:30</span>
             </p>
             <h4>票价</h4>
-            <p>280元 (参与本次活动票价)</p>
+            <p>{{model.single_price}}元 (参与本次活动票价)</p>
             <hr>
-            <h4>选择数量<span class="total_container">总共<span id="total_number">280</span>元</span></h4>
+            <h4>选择数量<span class="total_container">总共<span id="total_number">{{model.total}}</span>元</span></h4>
             <p style="overflow:hidden;margin-top:4px;">
                 <span id="minus" class="count_picker disable">-</span>
-                <span id="ticket_number" class="number_container">1</span>
+                <span id="ticket_number" class="number_container">{{model.count}}</span>
                 <span id="plus" class="count_picker enable">+</span>
             </p>
             <hr>

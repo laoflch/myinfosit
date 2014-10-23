@@ -416,7 +416,7 @@ CREATE TABLE `minsheng_activities` (
 drop table `minsheng_rule_content_orders`;
 CREATE TABLE `minsheng_rule_content_orders` (
   `content_id` int(8) NOT NULL,
-  `key_word` vchar(255) NOT NULL default '',
+  `key_word` varchar(255) NOT NULL default '',
   `activity_id` int(8) NOT NULL,
   `order_no` int(8) NOT NULL default 0,
   PRIMARY KEY  (`content_id`)
@@ -431,3 +431,11 @@ CREATE TABLE `weixin_user_infos` (
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
+drop table `mahua_cookie_key_source_codes`;
+CREATE TABLE `mahua_cookie_key_source_codes` (
+  `cookie_key` varchar(64) NOT NULL,
+  `source_code` varchar(64) NOT NULL default '',
+  PRIMARY KEY  (`cookie_key`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `myinfosit_db`.`mahua_cookie_key_source_codes` (`cookie_key`, `source_code`) VALUES ('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi', '123456');

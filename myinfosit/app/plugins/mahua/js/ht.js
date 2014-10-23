@@ -71,13 +71,14 @@ MDEmber = Ember.Application.create({
 
 MDEmber.Router.map(function(){
 	this.route("showactivity", {
-		path : "/"
+		path : "/:source_code"
 	});
 	this.route("showactivity", {
 		path : "/showactivity"
 	});
-	this.route("orderticket", {
-		path : "/orderticket/:ticket_id"
+	this.resource("orderticket", {
+		path : "/orderticket/:params"
+		//path : "/orderticket"
 	});
 	
 });
@@ -99,7 +100,27 @@ MDEmber.StandRoute = Ember.Route.extend({
 });
 
 MDEmber.ShowactivityRoute = Ember.Route.extend({
-	
+	model: function(params) {
+		   
+	    //alert(params.source_code+"1");
+		var return_str;
+		MDEmber.jsonSync("/mahua/Activity/showActivityInfo.json",
+				"post",
+				{"source_code":params.source_code},
+				function(data) {
+					if (data["showActivityInfo"]) {
+						
+						
+						return_str=data["showActivityInfo"];
+						
+					}},
+				function() {
+					// view("异常！");
+					alert("获取json数据错误！");
+				});
+
+       return return_str;
+	  },	
 	setupController : function(controller) {
 		
 		
@@ -135,7 +156,8 @@ MDEmber.MDArrayController = Ember.ArrayController.extend({});
 
 MDEmber.ShowactivityController = Ember.Controller.extend({
 	nextAction:function(thisView){
-		this.transitionToRoute("orderticket",{ticket_id:"12"});
+		//this.transitionToRoute("orderticket",280);
+		this.transitionToRoute("orderticket",{single_price: 280,count:1,total:280});
 		
 	}
    
@@ -157,15 +179,17 @@ MDEmber.ShowactivityView = Ember.View.extend({
 MDEmber.OrderticketRoute = Ember.Route.extend({
 	model: function(params) {
 	   
-	    alert(params+"1");
+	    //alert(params.single_price+"1");
 	  },
-	  serialize: function(model) {
+	  serialize: function(params) {
 		    // this will make the URL `/posts/foo-post`
-		  alert(model+"2");
+		  //alert(this.controller);
+		 //return {"single_price2":single_price,"single_price":single_price,};
+		  return {"params":params,};
 		  },
 	setupController : function(controller) {
 		
-		
+		//alert(controller);
 		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
 				"post",
 				{},
@@ -197,22 +221,59 @@ MDEmber.Orderticket = Ember.Object.extend({
 
 
 MDEmber.OrderticketController = Ember.Controller.extend({
-   
+	 plus:function(thisView){
+		 var model=this.get("model")
+		 //var count=model.count;
+		 var count= model["count"]+1;
+		 
+		 Ember.set(model,"count",count);
+		 Ember.set(model,"total",count*model["single_price"]);
+		 this.set("model",model);
+		 
+		 if(count>1){
+			 $("#minus").removeClass("disable");
+			 $("#minus").addClass("enable");
+		 }
+	 },
+     minus:function(thisView){
+    	 var model=this.get("model")
+		 //var count=model.count;
+		 var count= model["count"]-1;
+		 if(count>=1){
+		 Ember.set(model,"count",count);
+		 Ember.set(model,"total",count*model["single_price"]);
+		 this.set("model",model);
+		 
+		
+         }
+		 if(count==1){
+			 $("#minus").removeClass("enable");
+			 $("#minus").addClass("disable");
+		 }
+     }
 });
 
 
 MDEmber.OrderticketView = Ember.View.extend({
 	templateName : "order_ticket",
-	/*init:function (){
-		this._super();
-		var controller = this.container.lookup("controller:showactivity");
-		if(controller){
+	click: function() {
+		if($(event.target).hasClass("time_cell")){
+			//this.controller.send('nextAction', this);
 			
-			//controller.set("showactivityView",this);
-		}
-		
-	},*/
-	
+			$("span[class='time_cell selected']").removeClass("selected");
+			$(event.target).addClass("selected");
+		};
+		if($(event.target).hasClass("count_picker")){
+			//this.controller.send('nextAction', this);
+			
+			if($(event.target)[0].id=="plus"){
+				this.controller.send('plus', this);
+				
+			}else{
+				this.controller.send('minus', this);
+			}
+		};
+	}
 	
 });
 
