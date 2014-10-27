@@ -138,4 +138,39 @@
       </div>
     </div>
   </script>
+  <script type="text/x-handlebars" data-template-name="confirm_order">
+<div class="" id="myModal" style="border:1px solid #000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       <div class="modal-dialog">
+        <div class="modal-content">
+<form name=alipayment action="/myinfosit/mahua/alipay/alipayapi.php" method=post target="_blank">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">选择票务信息</h4>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning"{{model.order_id}}</div>
+            <h4>演出信息</h4>
+            <p class="confirm_info">
+                <span class="confirm_name">{{model.single_price}}</span>
+                <span>上戏剧院</span>
+            </p>
+            <h4>选择时间</h4>
+            <p style="overflow:hidden;" id="time_section" class="confirm_time">
+                <span class="confirm_name">{{model.total}}</span>
+            </p>
+            <h4>票价</h4>
+            <p>{{model.single_price}}元 (参与本次活动票价)</p>
+            
+            <h4>确认发货信息</h4>
+            <p><span class="confirm_name">{{model.count}}</span>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary" style="background-color:#ea4872;border-color:#ea4872;">订单付款</button>
+          </div>
+</form>
+        </div>
+      </div>
+    </div>
+  </script>
 </html>

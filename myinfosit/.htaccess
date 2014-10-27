@@ -4,6 +4,7 @@
    RewriteRule    ^$  /myinfosit/app/webroot/html/home.html    [L]
    RewriteRule    ^(.+)/(css|img|js|html)/(.*)$  /myinfosit/app/plugins/$1/$2/$3 [L]
    RewriteRule    ^(.+)/material/(mix|hook)/(.*)$  /myinfosit/app/plugins/$1/material/$2/$3 [L]
+   RewriteRule    ^(.+)/alipay/(.*)$  /myinfosit/app/plugins/$1/alipay/$2 [L]
    RewriteRule    (.*)  /myinfosit/app/webroot/$1 [L]
    RewriteRule    (theme.*)  /myinfosit/app/webroot/$1 [L]
 </IfModule>

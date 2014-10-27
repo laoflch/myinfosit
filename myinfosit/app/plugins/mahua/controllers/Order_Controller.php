@@ -7,14 +7,14 @@
  */
 App::import('Controller', "NoModelController",false);
 
-class ActivityController extends MahuaAppController implements NoModelController
+class OrderController extends MahuaAppController implements NoModelController
 {
 
 	var $helpers = array('Javascript');
 
 	var $components = array('Cookie','Session');
 
-	var $uses = array('mahua.MahuaCookieKeySourceCode');
+	var $uses = array('mahua.MahuaOrder');
 
 	//var $components = array('RequestHandler');
 
@@ -22,22 +22,18 @@ class ActivityController extends MahuaAppController implements NoModelController
 
 	
 	
-	function showActivityInfo(){
-		if(isset($this->params["form"]['source_code'])
-		&&!empty($this->params["form"]['source_code'])){
-		//if(true){
-			$key=session_id();
-			$codelist=$this->MahuaCookieKeySourceCode->find("first",array('conditions' => array('cookie_key' =>$key) ));
-			if(!$codelist
-			||$this->params["form"]['source_code']!==$codelist[0]["MahuaCookieKeySourceCode"]["source_code"]){
-			//if(true){
-				$this->data["cookie_key"]=$key;
-				$this->data["source_code"]=$this->params["form"]['source_code'];
-				$codelist=$this->MahuaCookieKeySourceCode->save($this->data);
-			}
-			
+	function createOrder(){
+		if(isset($this->params["form"]['order_info'])
+		&&!empty($this->params["form"]['order_info'])){
+		$order_info=$this->params["form"]['order_info'];
+				$this->data["single_price"]=$order_info["single_price"];
+				$this->data["count"]=$order_info["count"];
+				$this->data["total"]=$order_info["total"];
+				$codelist=$this->MahuaOrder->save($this->data);
+		
 			if($codelist){
-				$this->set('pass',array("return_code"=>122,"return_message"=>"cookie key has save!","showActivityInfo"=>""));
+				$codelist["MahuaOrder"]["order_id"]="MH001".substr("00000000".$this->MahuaOrder->id,-8);
+				$this->set('pass',array("return_code"=>122,"return_message"=>"cookie key has save!","orderInfo"=>$codelist));
 					
 			}
 		}

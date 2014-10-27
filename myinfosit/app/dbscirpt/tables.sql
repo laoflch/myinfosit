@@ -438,4 +438,13 @@ CREATE TABLE `mahua_cookie_key_source_codes` (
   PRIMARY KEY  (`cookie_key`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+drop table `mahua_orders`;
+CREATE TABLE `mahua_orders` (
+  `order_id` int(8) NOT NULL auto_increment,
+  `single_price` decimal(18,2) NOT NULL default 0.00,
+  `count` int(8) NOT NULL default 0,
+  `total_price` decimal(18,2) NOT NULL default 0.00,
+  PRIMARY KEY  (`order_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 INSERT INTO `myinfosit_db`.`mahua_cookie_key_source_codes` (`cookie_key`, `source_code`) VALUES ('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi', '123456');
