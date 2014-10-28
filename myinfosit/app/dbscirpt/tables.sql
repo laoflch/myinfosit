@@ -441,9 +441,11 @@ CREATE TABLE `mahua_cookie_key_source_codes` (
 drop table `mahua_orders`;
 CREATE TABLE `mahua_orders` (
   `order_id` int(8) NOT NULL auto_increment,
+  `phone_no` varchar(16) NOT NULL default '',
   `single_price` decimal(18,2) NOT NULL default 0.00,
   `count` int(8) NOT NULL default 0,
   `total_price` decimal(18,2) NOT NULL default 0.00,
+  `showtime` DATETIME, 
   PRIMARY KEY  (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

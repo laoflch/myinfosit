@@ -129,6 +129,8 @@
             <p>
                 * 演出当天凭序列号到剧场自提
             </p>
+<div><span>请输入手机号码</span><input id="phone_no"style="width:150px;height:20px" {{bindAttr value=model.time}}></input></div>
+          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -142,26 +144,34 @@
 <div class="" id="myModal" style="border:1px solid #000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
        <div class="modal-dialog">
         <div class="modal-content">
-<form name=alipayment action="/myinfosit/mahua/alipay/alipayapi.php" method=post target="_blank">
+<form name=alipayment action="/myinfosit/mahua/Order/payOrder" method=post target="_blank">
           <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">选择票务信息</h4>
           </div>
           <div class="modal-body">
-            <div class="alert alert-warning"{{model.order_id}}</div>
+            <div class="alert alert-warning">{{model.order_id}}</div>
+            <input type='hidden' name="order_id" {{bindAttr value=model.order_id}}/>
             <h4>演出信息</h4>
             <p class="confirm_info">
                 <span class="confirm_name">{{model.single_price}}</span>
+<input type='hidden' name="single_price" {{bindAttr value=model.single_price}}/>
                 <span>上戏剧院</span>
             </p>
             <h4>选择时间</h4>
             <p style="overflow:hidden;" id="time_section" class="confirm_time">
                 <span class="confirm_name">{{model.total}}</span>
+<input type='hidden' name="total" {{bindAttr value=model.total}}/>
             </p>
             <h4>票价</h4>
             <p>{{model.single_price}}元 (参与本次活动票价)</p>
             
             <h4>确认发货信息</h4>
             <p><span class="confirm_name">{{model.count}}</span>
+<input type='hidden' name="count" {{bindAttr value=model.count}}/>
+            </p>
+            <h4>确认发货信息</h4>
+            <p><span class="confirm_name">{{model.phone_no}}</span>
+<input type='hidden' name="phone_no" {{bindAttr value=model.phone_no}}/>
             </p>
           </div>
           <div class="modal-footer">

@@ -260,6 +260,9 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 		 }
      },
 	 confirmOrder:function(){
+		 var model=this.get("model");
+		 var phone_no=$("#phone_no")[0].value;
+		 Ember.set(model,"phone_no",phone_no);
 		 var thisController=this;
 		 MDEmber.jsonAsync("/mahua/Order/createOrder.json",
 					"post",
@@ -277,6 +280,12 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 						alert("获取json数据错误！");
 					});
 		
+	 },
+	 timeCellPick:function(target){
+		 var model=this.get("model");
+		 var time_str=target[0].innerText;
+		 Ember.set(model,"showtime",time_str);
+		 
 	 }
 });
 
@@ -289,6 +298,7 @@ MDEmber.OrderticketView = Ember.View.extend({
 			
 			$("span[class='time_cell selected']").removeClass("selected");
 			$(event.target).addClass("selected");
+			this.controller.send('timeCellPick', $(event.target));
 		};
 		if($(event.target).hasClass("count_picker")){
 			//this.controller.send('nextAction', this);
