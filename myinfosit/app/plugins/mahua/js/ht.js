@@ -165,7 +165,7 @@ MDEmber.MDArrayController = Ember.ArrayController.extend({});
 MDEmber.ShowactivityController = Ember.Controller.extend({
 	nextAction:function(thisView){
 		//this.transitionToRoute("orderticket",280);
-		this.transitionToRoute("orderticket",{single_price: 280,count:1,total:280});
+		this.transitionToRoute("orderticket",{single_price: 0.01,count:1,total:0.01});
 		
 	}
    
@@ -193,7 +193,7 @@ MDEmber.OrderticketRoute = Ember.Route.extend({
 		    // this will make the URL `/posts/foo-post`
 		  //alert(2);
 		 //return {"single_price2":single_price,"single_price":single_price,};
-		  //return {"params":params,};
+		  return {"params":params,};
 		  },
 	setupController : function(controller) {
 		
@@ -272,7 +272,7 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 							
 							
 							 //var model=thisController.get("model");
-							 thisController.transitionToRoute("confirmorder",data["orderInfo"]["MahuaOrder"]);
+							 thisController.transitionToRoute("confirmorder",{"order_info":data["orderInfo"]["MahuaOrder"],"para":data["para"]});
 							
 						}},
 					function() {
@@ -331,7 +331,8 @@ MDEmber.ConfirmorderRoute = Ember.Route.extend({
 		    // this will make the URL `/posts/foo-post`
 		 //this.controller.set("model",params);
 		 //return {"single_price":params["single_price"],"count":params["count"],"total":params["total"]};
-		  return {"params":params,};
+		  //return {"params":params,};
+		  return params["order_info"];
 		  },
 	setupController : function(controller) {
 		
@@ -367,66 +368,11 @@ MDEmber.Confirmorder = Ember.Object.extend({
 
 
 MDEmber.ConfirmorderController = Ember.Controller.extend({
-	 plus:function(thisView){
-		 var model=this.get("model")
-		 //var count=model.count;
-		 var count= model["count"]+1;
-		 
-		 Ember.set(model,"count",count);
-		 Ember.set(model,"total",count*model["single_price"]);
-		 this.set("model",model);
-		 
-		 if(count>1){
-			 $("#minus").removeClass("disable");
-			 $("#minus").addClass("enable");
-		 }
-	 },
-     minus:function(thisView){
-    	 var model=this.get("model")
-		 //var count=model.count;
-		 var count= model["count"]-1;
-		 if(count>=1){
-		 Ember.set(model,"count",count);
-		 Ember.set(model,"total",count*model["single_price"]);
-		 this.set("model",model);
-		 
-		
-         }
-		 if(count==1){
-			 $("#minus").removeClass("enable");
-			 $("#minus").addClass("disable");
-		 }
-     },
-	 confirmOrder:function(){
-		 this.transitionToRoute("orderticket",{single_price: 280,count:1,total:280});
-	 }
+	
 });
 
 
 MDEmber.ConfirmorderView = Ember.View.extend({
 	templateName : "confirm_order",
-	click: function() {
-		if($(event.target).hasClass("time_cell")){
-			//this.controller.send('nextAction', this);
-			
-			$("span[class='time_cell selected']").removeClass("selected");
-			$(event.target).addClass("selected");
-		};
-		if($(event.target).hasClass("count_picker")){
-			//this.controller.send('nextAction', this);
-			
-			if($(event.target)[0].id=="plus"){
-				this.controller.send('plus', this);
-				
-			}else{
-				this.controller.send('minus', this);
-			}
-		};
-		if($(event.target).hasClass("btn-primary")){
-			this.controller.send('confirmOrder', this);
-			
-			
-		};
-	}
 	
 });

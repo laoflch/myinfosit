@@ -144,35 +144,57 @@
 <div class="" id="myModal" style="border:1px solid #000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
        <div class="modal-dialog">
         <div class="modal-content">
-<form name=alipayment action="/myinfosit/mahua/Order/payOrder" method=post target="_blank">
+<form id='alipaysubmit' name='alipaysubmit' action='http://wappaygw.alipay.com/service/rest.htm?
+ _input_charset=utf-8' method='get'>
+<!--form id='alipaysubmit' name='alipaysubmit' action='https://mapi.alipay.com/gateway.do?_input_charset=utf-8' method='get' target="_blank"-->
           <div class="modal-header">
             <h4 class="modal-title" id="myModalLabel">选择票务信息</h4>
           </div>
           <div class="modal-body">
-            <div class="alert alert-warning">{{model.order_id}}</div>
-            <input type='hidden' name="order_id" {{bindAttr value=model.order_id}}/>
+            <div class="alert alert-warning">{{model.order_info.order_id}}</div>
             <h4>演出信息</h4>
             <p class="confirm_info">
-                <span class="confirm_name">{{model.single_price}}</span>
-<input type='hidden' name="single_price" {{bindAttr value=model.single_price}}/>
+                <span class="confirm_name">{{model.order_info.single_price}}</span>
                 <span>上戏剧院</span>
             </p>
             <h4>选择时间</h4>
             <p style="overflow:hidden;" id="time_section" class="confirm_time">
-                <span class="confirm_name">{{model.total}}</span>
-<input type='hidden' name="total" {{bindAttr value=model.total}}/>
+                <span class="confirm_name">{{model.order_info.total}}</span>
+
             </p>
             <h4>票价</h4>
             <p>{{model.single_price}}元 (参与本次活动票价)</p>
             
             <h4>确认发货信息</h4>
-            <p><span class="confirm_name">{{model.count}}</span>
-<input type='hidden' name="count" {{bindAttr value=model.count}}/>
+            <p><span class="confirm_name">{{model.order_info.count}}</span>
+
             </p>
             <h4>确认发货信息</h4>
-            <p><span class="confirm_name">{{model.phone_no}}</span>
-<input type='hidden' name="phone_no" {{bindAttr value=model.phone_no}}/>
+            <p><span class="confirm_name">{{model.order_info.phone_no}}</span>
+
             </p>
+<!--input type='hidden' name='_input_charset' value='utf-8'/>
+<input type='hidden' name='notify_url'  {{bindAttr value=model.para.notify_url}}/>
+<input type='hidden' name='out_trade_no' {{bindAttr value=model.para.out_trade_no}}/>
+<input type='hidden' name='partner' {{bindAttr value=model.para.partner}}/>
+<input type='hidden' name='payment_type' {{bindAttr value=model.para.payment_type}}/>
+<input type='hidden' name='return_url' {{bindAttr value=model.para.return_url}}/>
+<input type='hidden' name='seller_email' {{bindAttr value=model.para.seller_email}}/>
+<input type='hidden' name='service' {{bindAttr value=model.para.service}}/>
+<input type='hidden' name='subject' {{bindAttr value=model.para.subject}}/>
+<input type='hidden' name='total_fee' {{bindAttr value=model.para.total_fee}}/>
+<input type='hidden' name='sign' {{bindAttr value=model.para.sign}}/>
+<input type='hidden' name='sign_type' {{bindAttr value=model.para.sign_type}}/-->
+<input type='hidden' name='_input_charset' value='utf-8'/>
+<input type='hidden' name='format' {{bindAttr value=model.para.format}}/>
+<input type='hidden' name='partner' {{bindAttr value=model.para.partner}}/>
+<input type='hidden' name='req_data' {{bindAttr value=model.para.req_data}}/>
+<input type='hidden' name='req_id' {{bindAttr value=model.para.req_id}}/>
+<input type='hidden' name='sec_id' {{bindAttr value=model.para.sec_id}}/>
+<input type='hidden' name='service' {{bindAttr value=model.para.service}}/>
+<input type='hidden' name='v' {{bindAttr value=model.para.v}}/>
+<input type='hidden' name='sign' {{bindAttr value=model.para.sign}}/>
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>

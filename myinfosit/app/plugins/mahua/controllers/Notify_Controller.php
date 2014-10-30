@@ -14,7 +14,7 @@ class OrderController extends MahuaAppController implements NoModelController
 
 	var $components = array('Cookie','Session');
 
-	var $uses = array('mahua.MahuaOrder','mahua.MahuaOrderNotify');
+	var $uses = array('mahua.MahuaOrder');
 
 	//var $components = array('RequestHandler');
 
@@ -89,7 +89,7 @@ $notify_url = "http://商户网关地址/WS_WAP_PAYWAP-PHP-UTF-8/notify_url.php"
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //页面跳转同步通知页面路径
-$call_back_url = "http://192.168.0.134/myinfosit/mahua/Order/afterPayReturn";
+$call_back_url = "http://127.0.0.1:8800/WS_WAP_PAYWAP-PHP-UTF-8/call_back_url.php";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //操作中断返回地址
@@ -100,14 +100,14 @@ $merchant_url = "http://127.0.0.1:8800/WS_WAP_PAYWAP-PHP-UTF-8/xxxx.php";
         //必填        //商户订单号
         //$out_trade_no = $_POST['WIDout_trade_no'];
         //$out_trade_no = $this->params["form"]['order_id'];
-        $out_trade_no = $codelist["MahuaOrder"]["order_id"];
+        $out_trade_no = 12345674589;
         //商户网站订单系统中唯一订单号，必填        //订单名称
         //$subject = $_POST['WIDsubject'];
         $subject = "支付测试";
         //必填        //付款金额
         //$total_fee = $_POST['WIDtotal_fee'];
-       //$total_fee = $this->params["form"]['total'];
-        $total_fee=$codelist["MahuaOrder"]["total"];;
+       // $total_fee = $this->params["form"]['total'];
+        $total_fee=0.01;
 //必填
 
 //请求业务参数详细
@@ -335,7 +335,7 @@ $notify_url = "http://商户网关地址/WS_WAP_PAYWAP-PHP-UTF-8/notify_url.php"
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //页面跳转同步通知页面路径
-$call_back_url = "http://192.168.0.134/myinfosit/mahua/Order/afterPayReturn";
+$call_back_url = "http://127.0.0.1:8800/WS_WAP_PAYWAP-PHP-UTF-8/call_back_url.php";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //操作中断返回地址
@@ -415,89 +415,6 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 			$this->set('pass',"未传入订单号");
 		}
 	
-	}
-	
-	
-	
-	function afterPayReturn(){
-		App::import('file', "mahua.AlipayNotify",false);
-		//App::import('file', "mahua.AlipayConfig",false);
-		//App::import('file', "mahua.AlipaySubmit",false);
-		
-		//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		//合作身份者id，以2088开头的16位纯数字
-		$alipay_config['partner']		= '2088801824877184';
-		
-		//安全检验码，以数字和字母组成的32位字符
-		$alipay_config['key']			= 'jmac4o2f3fju3buvqzs7iwzykaua8zni';
-		
-		
-		$alipay_config['private_key_path']	= getcwd().'/../plugins/mahua/wapalipay/key/rsa_private_key.pem';
-		
-		//支付宝公钥（后缀是.pen）文件相对路径
-		//如果签名方式设置为“0001”时，请设置该参数
-		$alipay_config['ali_public_key_path']= getcwd().'/../plugins/mahua/wapalipay/key/alipay_public_key.pem';
-		
-		//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-		
-		
-		//签名方式 不需修改
-		//$alipay_config['sign_type']    = '0001';
-		$alipay_config['sign_type']    = 'MD5';
-		//字符编码格式 目前支持 gbk 或 utf-8
-		$alipay_config['input_charset']= 'utf-8';
-		
-		//ca证书路径地址，用于curl中ssl校验
-		//请保证cacert.pem文件在当前文件夹目录中
-		$alipay_config['cacert']    = getcwd().'/../plugins/mahua/wapalipay/cacert.pem';
-		
-		//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-		$alipay_config['transport']    = 'http';
-		
-		$alipayNotify = new AlipayNotify($alipay_config);
-		$verify_result = $alipayNotify->verifyReturn();
-		if($verify_result) {//验证成功
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//请在这里加上商户的业务逻辑程序代码
-		
-			//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
-			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表
-		
-			//商户订单号
-			//$out_trade_no = $_GET['out_trade_no'];
-			$out_trade_no =$this->params["url"]['out_trade_no'];
-			//支付宝交易号
-			//$trade_no = $_GET['trade_no'];
-			$trade_no =$this->params["url"]['trade_no'];
-			//交易状态
-			//$result = $_GET['result'];
-			$result =$this->params["url"]['result'];
-		
-			//判断该笔订单是否在商户网站中已经做过处理
-			//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-			//如果有做过处理，不执行商户的业务程序
-			$codelist=$this->MahuaOrderNotify->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
-				
-			
-			if(!$codelist&&isset($out_trade_no)&&!empty($out_trade_no)){
-				$this->data["order_id"]=intval(substr(trim($out_trade_no),-8));
-				$this->data["trade_no"]=$trade_no;
-				$this->data["result"]=$result;
-				$this->MahuaOrderNotify->save($this->data);
-			}
-		
-			$this->set('pass',"订单".$out_trade_no."支付成功！");
-		
-			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-		
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		}
-		else {
-			//验证失败
-			//如要调试，请看alipay_notify.php页面的verifyReturn函数
-			$this->set('pass',"支付不成功");
-		}
-		
 	}
 
 	

@@ -53,7 +53,7 @@ function createLinkstringUrlencode($para) {
 function paraFilter($para) {
 	$para_filter = array();
 	while (list ($key, $val) = each ($para)) {
-		if($key == "sign" || $key == "sign_type" || $val == "")continue;
+		if($key == "sign" || $key == "sign_type" || $key == "url" || $val == "")continue;
 		else	$para_filter[$key] = $para[$key];
 	}
 	return $para_filter;
@@ -105,7 +105,6 @@ function getHttpResponsePOST($url, $cacert_url, $para, $input_charset = '') {
 	curl_setopt($curl,CURLOPT_RETURNTRANSFER, 1);// 显示输出结果
 	curl_setopt($curl,CURLOPT_POST,true); // post传输数据
 	curl_setopt($curl,CURLOPT_POSTFIELDS,$para);// post传输数据
-	//curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
 	$responseText = curl_exec($curl);
 	//var_dump( curl_error($curl) );//如果执行curl过程中出现异常，可打开此开关，以便查看异常内容
 	curl_close($curl);

@@ -449,4 +449,12 @@ CREATE TABLE `mahua_orders` (
   PRIMARY KEY  (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+drop table `mahua_order_notifies`;
+CREATE TABLE `mahua_order_notifies` (
+  `order_id` int(8) NOT NULL,
+  `trade_no` varchar(32) NOT NULL default '',
+  `result` varchar(8) NOT NULL default '',
+  PRIMARY KEY  (`order_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8
+
 INSERT INTO `myinfosit_db`.`mahua_cookie_key_source_codes` (`cookie_key`, `source_code`) VALUES ('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi', '123456');
