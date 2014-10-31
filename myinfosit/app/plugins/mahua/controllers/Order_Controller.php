@@ -6,6 +6,7 @@
  *
  */
 App::import('Controller', "NoModelController",false);
+App::import('file', "mahua.AlipayConfig",true);
 
 class OrderController extends MahuaAppController implements NoModelController
 {
@@ -37,37 +38,7 @@ class OrderController extends MahuaAppController implements NoModelController
 				
 				App::import('file', "mahua.AlipaySubmit",false);
 	
-			//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-			//合作身份者id，以2088开头的16位纯数字
-			$alipay_config['partner']		= '2088801824877184';
-	
-			//安全检验码，以数字和字母组成的32位字符
-			$alipay_config['key']			= 'jmac4o2f3fju3buvqzs7iwzykaua8zni';
-	
-	
-			$alipay_config['private_key_path']	= getcwd().'/../plugins/mahua/wapalipay/key/rsa_private_key.pem';
-
-//支付宝公钥（后缀是.pen）文件相对路径
-//如果签名方式设置为“0001”时，请设置该参数
-$alipay_config['ali_public_key_path']= getcwd().'/../plugins/mahua/wapalipay/key/alipay_public_key.pem';
-
-
-//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-
-
-//签名方式 不需修改
-//$alipay_config['sign_type']    = '0001';
-$alipay_config['sign_type']    = 'MD5';
-//字符编码格式 目前支持 gbk 或 utf-8
-$alipay_config['input_charset']= 'utf-8';
-
-//ca证书路径地址，用于curl中ssl校验
-//请保证cacert.pem文件在当前文件夹目录中
-$alipay_config['cacert']    = getcwd().'/../plugins/mahua/wapalipay/cacert.pem';
-
-//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-$alipay_config['transport']    = 'http';
-	
+		
 			/**************************调用授权接口alipay.wap.trade.create.direct获取授权码token**************************/
 	
 //返回格式
@@ -85,11 +56,12 @@ $req_id = date('Ymdhis');
 //**req_data详细信息**
 
 //服务器异步通知页面路径
-$notify_url = "http://商户网关地址/WS_WAP_PAYWAP-PHP-UTF-8/notify_url.php";
+$notify_url = "http://www.micro-data.com.cn/mahua/Order/afterPayNotify.json";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //页面跳转同步通知页面路径
-$call_back_url = "http://192.168.0.134/myinfosit/mahua/Order/afterPayReturn";
+$call_back_url = "http://www.micro-data.com.cn/mahua/Order/afterPayReturn";
+//$call_back_url = "";
 //需http://格式的完整路径，不允许加?id=123这类自定义参数
 
 //操作中断返回地址
@@ -115,7 +87,8 @@ $req_data = '<direct_trade_create_req><notify_url>' . $notify_url . '</notify_ur
 //必填
 
 /************************************************************/
-
+$alipay_config_obj=new AlipayConfig();
+$alipay_config=$alipay_config_obj->toArray();
 //构造要请求的参数数组，无需改动
 $para_token = array(
 		"service" => "alipay.wap.trade.create.direct",
@@ -127,6 +100,8 @@ $para_token = array(
 		"req_data"	=> $req_data,
 		"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
 );
+
+//$alipay_config=new AlipayConfig();
 
 //建立请求
 $alipaySubmit = new AlipaySubmit($alipay_config);
@@ -283,9 +258,9 @@ $parameter = array(
 			//App::import('file', "mahua.AlipayConfig",false);
 			App::import('file', "mahua.AlipaySubmit",false);
 	
-			//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+			  //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 			//合作身份者id，以2088开头的16位纯数字
-			$alipay_config['partner']		= '2088801824877184';
+			/*$alipay_config['partner']		= '2088801824877184';
 	
 			//安全检验码，以数字和字母组成的32位字符
 			$alipay_config['key']			= 'jmac4o2f3fju3buvqzs7iwzykaua8zni';
@@ -312,10 +287,9 @@ $alipay_config['input_charset']= 'utf-8';
 $alipay_config['cacert']    = getcwd().'/../plugins/mahua/wapalipay/cacert.pem';
 
 //访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-$alipay_config['transport']    = 'http';
-	
-			/**************************调用授权接口alipay.wap.trade.create.direct获取授权码token**************************/
-	
+$alipay_config['transport']    = 'http';*/
+	 
+			/**************************调用授权接口alipay.wap.trade.create.direct获取授权码token**************************/ 
 //返回格式
 $format = "xml";
 //必填，不需要修改
@@ -346,7 +320,7 @@ $merchant_url = "http://127.0.0.1:8800/WS_WAP_PAYWAP-PHP-UTF-8/xxxx.php";
         //必填        //商户订单号
         //$out_trade_no = $_POST['WIDout_trade_no'];
         //$out_trade_no = $this->params["form"]['order_id'];
-        $out_trade_no = 12345674589;
+        $out_trade_no = '1234asd5674589';
         //商户网站订单系统中唯一订单号，必填        //订单名称
         //$subject = $_POST['WIDsubject'];
         $subject = "支付测试";
@@ -361,7 +335,8 @@ $req_data = '<direct_trade_create_req><notify_url>' . $notify_url . '</notify_ur
 //必填
 
 /************************************************************/
-
+$alipay_config_obj=new AlipayConfig();
+$alipay_config=$alipay_config_obj->toArray();
 //构造要请求的参数数组，无需改动
 $para_token = array(
 		"service" => "alipay.wap.trade.create.direct",
@@ -376,6 +351,8 @@ $para_token = array(
 
 //建立请求
 $alipaySubmit = new AlipaySubmit($alipay_config);
+//建立请求
+//$alipaySubmit = new AlipaySubmit($alipay_config);
 $html_text = $alipaySubmit->buildRequestHttp($para_token);
 
 //URLDECODE返回的信息
@@ -424,35 +401,9 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 		//App::import('file', "mahua.AlipayConfig",false);
 		//App::import('file', "mahua.AlipaySubmit",false);
 		
-		//↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		//合作身份者id，以2088开头的16位纯数字
-		$alipay_config['partner']		= '2088801824877184';
-		
-		//安全检验码，以数字和字母组成的32位字符
-		$alipay_config['key']			= 'jmac4o2f3fju3buvqzs7iwzykaua8zni';
-		
-		
-		$alipay_config['private_key_path']	= getcwd().'/../plugins/mahua/wapalipay/key/rsa_private_key.pem';
-		
-		//支付宝公钥（后缀是.pen）文件相对路径
-		//如果签名方式设置为“0001”时，请设置该参数
-		$alipay_config['ali_public_key_path']= getcwd().'/../plugins/mahua/wapalipay/key/alipay_public_key.pem';
-		
-		//↑↑↑↑↑↑↑↑↑↑请在这里配置您的基本信息↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-		
-		
-		//签名方式 不需修改
-		//$alipay_config['sign_type']    = '0001';
-		$alipay_config['sign_type']    = 'MD5';
-		//字符编码格式 目前支持 gbk 或 utf-8
-		$alipay_config['input_charset']= 'utf-8';
-		
-		//ca证书路径地址，用于curl中ssl校验
-		//请保证cacert.pem文件在当前文件夹目录中
-		$alipay_config['cacert']    = getcwd().'/../plugins/mahua/wapalipay/cacert.pem';
-		
-		//访问模式,根据自己的服务器是否支持ssl访问，若支持请选择https；若不支持请选择http
-		$alipay_config['transport']    = 'http';
+	
+		$alipay_config_obj=new AlipayConfig();
+		$alipay_config=$alipay_config_obj->toArray();
 		
 		$alipayNotify = new AlipayNotify($alipay_config);
 		$verify_result = $alipayNotify->verifyReturn();
@@ -500,5 +451,145 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 		
 	}
 
+	function afterPayNotify(){
+		App::import('file', "mahua.AlipayNotify",false);
+		//App::import('file', "mahua.AlipayConfig",false);
+		//App::import('file', "mahua.AlipaySubmit",false);
+		/* $var = var_export($this->params["form"],TRUE);
+		
+		file_put_contents("test6.txt","test;".$var,FILE_APPEND); */
+		$alipay_config_obj=new AlipayConfig();
+$alipay_config=$alipay_config_obj->toArray();
 	
+	$alipayNotify = new AlipayNotify($alipay_config);
+$verify_result = $alipayNotify->verifyNotify();
+/*$var = var_export($verify_result,TRUE);
+		
+		file_put_contents("test6.txt","test;".$var,FILE_APPEND);*/
+if($verify_result) 
+//if(true)
+{//验证成功
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//请在这里加上商户的业务逻辑程序代
+
+	
+	//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
+    //获取支付宝的通知返回参数，可参考技术文档中服务器异步通知参数列表
+	
+	//解析notify_data
+	//注意：该功能PHP5环境及以上支持，需开通curl、SSL等PHP配置环境。建议本地调试时使用PHP开发软件
+	$doc = new DOMDocument();	
+	
+	if ($alipay_config['sign_type'] == 'MD5') {
+		$doc->loadXML($this->params["form"]['notify_data']);
+	}
+	
+	if ($alipay_config['sign_type'] == '0001') {
+		$doc->loadXML($alipayNotify->decrypt($this->params["form"]['notify_data']));
+	}
+	
+	if( ! empty($doc->getElementsByTagName( "notify" )->item(0)->nodeValue) ) {
+	//if(true){
+
+		//商户订单号
+		$out_trade_no = $doc->getElementsByTagName( "out_trade_no" )->item(0)->nodeValue;
+		//支付宝交易号
+		$trade_no = $doc->getElementsByTagName( "trade_no" )->item(0)->nodeValue;
+		//交易状态
+		$trade_status = $doc->getElementsByTagName( "trade_status" )->item(0)->nodeValue;
+		
+		if($trade_status == 'TRADE_FINISHED'){
+		//if(true){
+			//判断该笔订单是否在商户网站中已经做过处理
+				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+				//如果有做过处理，不执行商户的业务程序
+					
+			//注意：
+			//该种交易状态只在两种情况下出现
+			//1、开通了普通即时到账，买家付款成功后。
+			//2、开通了高级即时到账，从该笔交易成功时间算起，过了签约时的可退款时限（如：三个月以内可退款、一年以内可退款等）后。
+	
+			//调试用，写文本函数记录程序运行情况是否正常
+			//logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+			$this->data["order_id"]=intval(substr(trim($out_trade_no),-8));
+			$this->data["trade_no"]=$trade_no;
+			$this->data["trade_status"]=$trade_status;
+			$this->data["payment_type"]=$doc->getElementsByTagName( "payment_type" )->item(0)->nodeValue;
+			$this->data["subject"]=$doc->getElementsByTagName( "subject" )->item(0)->nodeValue;
+			$this->data["buyer_email"]=$doc->getElementsByTagName( "buyer_email" )->item(0)->nodeValue;
+			$this->data["gmt_create"]=$doc->getElementsByTagName( "gmt_create" )->item(0)->nodeValue;
+			$this->data["notify_type"]=$doc->getElementsByTagName( "notify_type" )->item(0)->nodeValue;
+			$this->data["quantity"]=$doc->getElementsByTagName( "quantity" )->item(0)->nodeValue;
+			$this->data["notify_time"]=$doc->getElementsByTagName( "notify_time" )->item(0)->nodeValue;
+			$this->data["seller_id"]=$doc->getElementsByTagName( "seller_id" )->item(0)->nodeValue;
+			$this->data["is_total_fee_adjust"]=$doc->getElementsByTagName( "is_total_fee_adjust" )->item(0)->nodeValue;
+			$this->data["gmt_payment"]=$doc->getElementsByTagName( "gmt_payment" )->item(0)->nodeValue;
+			$this->data["seller_email"]=$doc->getElementsByTagName( "seller_email" )->item(0)->nodeValue;
+			$this->data["gmt_close"]=$doc->getElementsByTagName( "gmt_close" )->item(0)->nodeValue;
+			$this->data["price"]=$doc->getElementsByTagName( "price" )->item(0)->nodeValue;
+			$this->data["buyer_id"]=$doc->getElementsByTagName( "buyer_id" )->item(0)->nodeValue;
+			$this->data["notify_id"]=$doc->getElementsByTagName( "notify_id" )->item(0)->nodeValue;
+			$this->data["use_coupon"]=$doc->getElementsByTagName( "use_coupon" )->item(0)->nodeValue;
+			/* $var = var_export($this->data,TRUE);
+		
+		file_put_contents("test6.txt","test;".$var,FILE_APPEND); */
+			$teturn_str=$this->MahuaOrderNotify->save($this->data);
+			
+			if($teturn_str){
+			$this->set('pass',"success");	
+			}else{
+				$this->set('pass',"faild");//请不要修改或删除
+			}
+		}
+		else if ($trade_status == 'TRADE_SUCCESS') {
+			//判断该笔订单是否在商户网站中已经做过处理
+				//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+				//如果有做过处理，不执行商户的业务程序
+					
+			//注意：
+			//该种交易状态只在一种情况下出现——开通了高级即时到账，买家付款成功后。
+	
+			//调试用，写文本函数记录程序运行情况是否正常
+			//logResult("这里写入想要调试的代码变量值，或其他运行的结果记录");
+			
+		$this->data["order_id"]=intval(substr(trim($out_trade_no),-8));
+			$this->data["trade_no"]=$trade_no;
+			$this->data["trade_status"]=$trade_status;
+			$this->data["payment_type"]=$doc->getElementsByTagName( "payment_type" )->item(0)->nodeValue;
+			$this->data["subject"]=$doc->getElementsByTagName( "subject" )->item(0)->nodeValue;
+			$this->data["buyer_email"]=$doc->getElementsByTagName( "buyer_email" )->item(0)->nodeValue;
+			$this->data["gmt_create"]=$doc->getElementsByTagName( "gmt_create" )->item(0)->nodeValue;
+			$this->data["notify_type"]=$doc->getElementsByTagName( "notify_type" )->item(0)->nodeValue;
+			$this->data["quantity"]=$doc->getElementsByTagName( "quantity" )->item(0)->nodeValue;
+			$this->data["notify_time"]=$doc->getElementsByTagName( "notify_time" )->item(0)->nodeValue;
+			$this->data["seller_id"]=$doc->getElementsByTagName( "seller_id" )->item(0)->nodeValue;
+			$this->data["is_total_fee_adjust"]=$doc->getElementsByTagName( "is_total_fee_adjust" )->item(0)->nodeValue;
+			$this->data["gmt_payment"]=$doc->getElementsByTagName( "gmt_payment" )->item(0)->nodeValue;
+			$this->data["seller_email"]=$doc->getElementsByTagName( "seller_email" )->item(0)->nodeValue;
+			$this->data["gmt_close"]=$doc->getElementsByTagName( "gmt_close" )->item(0)->nodeValue;
+			$this->data["price"]=$doc->getElementsByTagName( "price" )->item(0)->nodeValue;
+			$this->data["buyer_id"]=$doc->getElementsByTagName( "buyer_id" )->item(0)->nodeValue;
+			$this->data["notify_id"]=$doc->getElementsByTagName( "notify_id" )->item(0)->nodeValue;
+			$this->data["use_coupon"]=$doc->getElementsByTagName( "use_coupon" )->item(0)->nodeValue;
+			
+			$teturn_str=$this->MahuaOrderNotify->save($this->data);
+			
+			if($teturn_str){
+			$this->set('pass',"success");	
+			}else{
+				$this->set('pass',"faild");//请不要修改或删除
+			}
+		}
+	}
+
+	//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+else {
+	$this->set('pass',"faild");
+	}
+	
+	}
 }

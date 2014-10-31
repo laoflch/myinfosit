@@ -453,7 +453,23 @@ drop table `mahua_order_notifies`;
 CREATE TABLE `mahua_order_notifies` (
   `order_id` int(8) NOT NULL,
   `trade_no` varchar(32) NOT NULL default '',
-  `result` varchar(8) NOT NULL default '',
+  `trade_status` varchar(16) NOT NULL default '',
+  `payment_type` varchar(2) NOT NULL default '',
+  `subject` varchar(256) NOT NULL default '',
+  `buyer_email` varchar(100) NOT NULL default '',
+  `gmt_create` DATETIME NOT NULL default '1990-01-01 00:00:00',
+  `notify_type` varchar(20) NOT NULL default '',
+  `quantity` int(8) NOT NULL default 0,
+  `notify_time` DATETIME NOT NULL default '1990-01-01 00:00:00',
+  `seller_id` varchar(16) NOT NULL default '',
+  `is_total_fee_adjust` varchar(1) NOT NULL default '',
+  `gmt_payment` DATETIME NOT NULL default '1990-01-01 00:00:00',
+  `seller_email` varchar(100) NOT NULL default '',
+  `gmt_close` DATETIME NOT NULL default '1990-01-01 00:00:00',
+  `price` decimal(18,2) NOT NULL default 0.00,
+  `buyer_id` varchar(16) NOT NULL default '',
+  `notify_id` varchar(36) NOT NULL default '',
+  `use_coupon` varchar(1) NOT NULL default '',
   PRIMARY KEY  (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8
 

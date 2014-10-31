@@ -324,7 +324,7 @@ MDEmber.OrderticketView = Ember.View.extend({
 MDEmber.ConfirmorderRoute = Ember.Route.extend({
 	model: function(params) {
 	   
-		alert(1);
+		//alert(1);
 	  },
 	  serialize: function(params) {
 		  //alert(2);
@@ -336,7 +336,7 @@ MDEmber.ConfirmorderRoute = Ember.Route.extend({
 		  },
 	setupController : function(controller) {
 		
-		alert(controller);
+		//alert(controller);
 		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
 				"post",
 				{},
