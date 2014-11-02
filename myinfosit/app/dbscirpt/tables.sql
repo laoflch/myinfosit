@@ -471,6 +471,34 @@ CREATE TABLE `mahua_order_notifies` (
   `notify_id` varchar(36) NOT NULL default '',
   `use_coupon` varchar(1) NOT NULL default '',
   PRIMARY KEY  (`order_id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+drop table `mahua_activity_basic_infos`;
+CREATE TABLE `mahua_activity_basic_infos` (
+  `activity_id` int(8) NOT NULL auto_increment,
+  `subject` varchar(32) NOT NULL default '',
+  `single_price` decimal(18,2) NOT NULL default 0.00,
+  `default_count` int(8) NOT NULL default 1,
+  `total_times` int(8) NOT NULL default 1,
+  `theatre` varchar(16) NOT NULL default '',
+  `address` varchar(255) NULL default '',
+  PRIMARY KEY  (`activity_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+drop table `mahua_activity_show_time_infos`;
+CREATE TABLE `mahua_activity_show_time_infos` (
+  `show_time_id` int(8) NOT NULL auto_increment,
+  `activity_id` int(8) NOT NULL default 0,
+  `show_time` DATETIME NOT NULL default '1990-01-01 00:00:00',
+  PRIMARY KEY  (`show_time_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+drop table `mahua_activity_descript_infos`;
+CREATE TABLE `mahua_activity_descript_infos` (
+  `activity_id` int(8) NOT NULL ,
+  `summry` varchar(255) NOT NULL default '',
+  `detail_descript` varchar(2000) NOT NULL default '',
+  PRIMARY KEY  (`activity_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `myinfosit_db`.`mahua_cookie_key_source_codes` (`cookie_key`, `source_code`) VALUES ('DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi', '123456');

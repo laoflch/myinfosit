@@ -14,7 +14,7 @@ class ActivityController extends MahuaAppController implements NoModelController
 
 	var $components = array('Cookie','Session');
 
-	var $uses = array('mahua.MahuaCookieKeySourceCode');
+	var $uses = array('mahua.MahuaCookieKeySourceCode','mahua.MahuaActivityBasicInfo');
 
 	//var $components = array('RequestHandler');
 
@@ -36,9 +36,54 @@ class ActivityController extends MahuaAppController implements NoModelController
 				$codelist=$this->MahuaCookieKeySourceCode->save($this->data);
 			}
 			
+			
 			if($codelist){
 				$this->set('pass',array("return_code"=>122,"return_message"=>"cookie key has save!","showActivityInfo"=>""));
 					
+			}
+		}
+	}
+	
+	function fetchBasicInfo(){
+		if(isset($this->params["form"]['activity_id'])
+		&&!empty($this->params["form"]['activity_id'])){
+			//if(true){
+			//$key=session_id();
+			//$activitieslist=$this->MahuaActivityBasicInfo->find("first",array('conditions' => array('activity_id' =>$this->params["url"]['activity_id']) ));
+			
+			$activitieslist=$this->MahuaActivityBasicInfo->query("
+					SELECT
+					`MahuaActivityBasicInfo`.`activity_id`,
+					`MahuaActivityBasicInfo`.`subject`,
+					`MahuaActivityBasicInfo`.`single_price`,
+					`MahuaActivityBasicInfo`.`default_count`,
+					`MahuaActivityBasicInfo`.`total_times`,
+					`MahuaActivityBasicInfo`.`theatre`,
+					`MahuaActivityBasicInfo`.`address`,
+					`MahuaActivityDescriptInfo`.`summry`,
+					`MahuaActivityDescriptInfo`.`detail_descript`
+					FROM
+					`mahua_activity_basic_infos`
+					AS `MahuaActivityBasicInfo`
+					LEFT JOIN `mahua_activity_descript_infos` AS `MahuaActivityDescriptInfo`
+					    ON (`MahuaActivityBasicInfo`.`activity_id` = `MahuaActivityDescriptInfo`.`activity_id`)
+				    WHERE `MahuaActivityBasicInfo`.`activity_id`=".$this->params['form']['activity_id']
+					);
+				
+			/* if(!$codelist
+			||$this->params["form"]['source_code']!==$codelist[0]["MahuaCookieKeySourceCode"]["source_code"]){
+				//if(true){
+				$this->data["cookie_key"]=$key;
+				$this->data["source_code"]=$this->params["form"]['source_code'];
+				$codelist=$this->MahuaCookieKeySourceCode->save($this->data);
+			} */
+				
+			if($activitieslist){
+				$this->_clearClass($activitieslist);
+				$this->set('pass',array("return_code"=>122,"return_message"=>"activity basic seccessfull","showActivityInfo"=>$activitieslist[0]));
+					
+			}else{
+				$this->set('pass',array("return_code"=>123,"return_message"=>"acctivity basic failed","showActivityInfo"=>$activitieslist[0]));
 			}
 		}
 	}

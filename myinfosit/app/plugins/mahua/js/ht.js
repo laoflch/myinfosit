@@ -74,13 +74,16 @@ MDEmber.Router.map(function(){
 		path : "/:source_code"
 	});
 	this.route("showactivity", {
+		path : "/:source_code/:activity_id"
+	});
+	this.route("showactivity", {
 		path : "/showactivity"
 	});
 	this.route("showactivity", {
 		path : "/"
 	});
 	this.resource("orderticket", {
-		path : "/orderticket/:params"
+		path : "/orderticket/:activity_id"
 		//path : "/orderticket"
 	});
 	this.resource("confirmorder", {
@@ -114,12 +117,15 @@ MDEmber.ShowactivityRoute = Ember.Route.extend({
 		if(params.source_code){
 		MDEmber.jsonSync("/mahua/Activity/showActivityInfo.json",
 				"post",
-				{"source_code":params.source_code},
+				{"source_code":params.source_code,"activity_id":params.activity_id},
 				function(data) {
 					if (data["showActivityInfo"]) {
 						
 						
 						return_str=data["showActivityInfo"];
+						
+					}
+					if(data["showActivityInfo"]){
 						
 					}},
 				function() {
@@ -127,14 +133,16 @@ MDEmber.ShowactivityRoute = Ember.Route.extend({
 					alert("获取json数据错误！");
 				});
 		}
-       return return_str;
-	  },	
+       return {"source_code":params.source_code,"activity_id":params.activity_id};
+	   //return return_str;
+	},	
 	setupController : function(controller) {
 		
-		
-		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
+		var model=controller.get("model");
+		//alert(123);
+		MDEmber.jsonAsync("/mahua/Activity/fetchBasicInfo.json",
 				"post",
-				{},
+				{"activity_id":model["activity_id"]},
 				function(data) {
 					if (data["showActivityInfo"]) {
 						
@@ -145,7 +153,7 @@ MDEmber.ShowactivityRoute = Ember.Route.extend({
 				function() {
 					// view("异常！");
 					alert("获取json数据错误！");
-				});*/
+				});
 
 		
 	},
@@ -165,7 +173,11 @@ MDEmber.MDArrayController = Ember.ArrayController.extend({});
 MDEmber.ShowactivityController = Ember.Controller.extend({
 	nextAction:function(thisView){
 		//this.transitionToRoute("orderticket",280);
-		this.transitionToRoute("orderticket",{single_price: 0.01,count:1,total:0.01});
+		var model=this.get("model");
+		this.transitionToRoute("orderticket",{activity_id: model["MahuaActivityBasicInfo_activity_id"]
+			                                 ,single_price: model["MahuaActivityBasicInfo_single_price"]
+		                                     ,count:model["MahuaActivityBasicInfo_default_count"]
+		                                     ,total:model["MahuaActivityBasicInfo_default_count"]*model["MahuaActivityBasicInfo_single_price"]});
 		
 	}
    
@@ -193,11 +205,11 @@ MDEmber.OrderticketRoute = Ember.Route.extend({
 		    // this will make the URL `/posts/foo-post`
 		  //alert(2);
 		 //return {"single_price2":single_price,"single_price":single_price,};
-		  return {"params":params,};
+		  return {"activity_id":params[":activity_id"],};
 		  },
 	setupController : function(controller) {
 		
-		//alert(controller);
+		alert(controller);
 		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
 				"post",
 				{},
