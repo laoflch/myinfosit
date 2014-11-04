@@ -140,13 +140,14 @@ MDEmber.ShowactivityRoute = Ember.Route.extend({
 		
 		var model=controller.get("model");
 		//alert(123);
-		MDEmber.jsonAsync("/mahua/Activity/fetchBasicInfo.json",
+		var source_code=model["source_code"];
+		MDEmber.jsonAsync("/mahua/Activity/fetchActivityInfo.json",
 				"post",
 				{"activity_id":model["activity_id"]},
 				function(data) {
 					if (data["showActivityInfo"]) {
 						
-						
+						data["showActivityInfo"]["source_code"]=source_code;
 						controller.set("model",data["showActivityInfo"]);
 						
 					}},
@@ -177,7 +178,8 @@ MDEmber.ShowactivityController = Ember.Controller.extend({
 		this.transitionToRoute("orderticket",{activity_id: model["MahuaActivityBasicInfo_activity_id"]
 			                                 ,single_price: model["MahuaActivityBasicInfo_single_price"]
 		                                     ,count:model["MahuaActivityBasicInfo_default_count"]
-		                                     ,total:model["MahuaActivityBasicInfo_default_count"]*model["MahuaActivityBasicInfo_single_price"]});
+		                                     ,total:model["MahuaActivityBasicInfo_default_count"]*model["MahuaActivityBasicInfo_single_price"]
+		                                     ,source_code:model["source_code"]});
 		
 	}
    
@@ -199,34 +201,43 @@ MDEmber.ShowactivityView = Ember.View.extend({
 MDEmber.OrderticketRoute = Ember.Route.extend({
 	model: function(params) {
 	   
-	    //alert(1);
+		return {"activity_id":params.activity_id};
 	  },
 	  serialize: function(params) {
 		    // this will make the URL `/posts/foo-post`
-		  //alert(2);
+		 // alert(2);
 		 //return {"single_price2":single_price,"single_price":single_price,};
-		  return {"activity_id":params[":activity_id"],};
+		  return {"activity_id":params["activity_id"]};
 		  },
 	setupController : function(controller) {
 		
-		alert(controller);
-		/*MDEmber.jsonAsync("/mahua/Activity/showActivityInfo.json",
+
+		
+		var model=controller.get("model");
+		//alert(123);
+		if(!model["single_price"]){
+		MDEmber.jsonAsync("/mahua/Activity/fetchBasicInfo.json",
 				"post",
-				{},
+				{"activity_id":model["activity_id"]},
 				function(data) {
 					if (data["showActivityInfo"]) {
 						
 						
-						controller.set("model",data["showActivityInfo"]);
+						controller.set("model",{activity_id: data["showActivityInfo"]["MahuaActivityBasicInfo_activity_id"]
+                        ,single_price: data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
+                        ,count:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]
+                        ,total:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]*data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
+						,source_code:"00000001"});
 						
 					}},
 				function() {
 					// view("异常！");
 					alert("获取json数据错误！");
 				});
-*/
+
 		
-	},
+	}
+}
 });
 
 

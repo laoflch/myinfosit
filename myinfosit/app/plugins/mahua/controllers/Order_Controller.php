@@ -31,6 +31,7 @@ class OrderController extends MahuaAppController implements NoModelController
 				$this->data["single_price"]=$order_info["single_price"];
 				$this->data["count"]=$order_info["count"];
 				$this->data["total"]=$order_info["total"];
+				$this->data["source_code"]=$order_info["source_code"];
 				$codelist=$this->MahuaOrder->save($this->data);
 		
 			if($codelist){
@@ -436,8 +437,11 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 				$this->data["result"]=$result;
 				$this->MahuaOrderNotify->save($this->data);
 			}
-		
-			$this->set('pass',"订单".$out_trade_no."支付成功！");
+			
+			$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+		    $codelist["MahuaOrder"]["result"]="支付成功!";
+		    $codelist["MahuaOrder"]["order_id"]="MH001".substr("00000000".$codelist["MahuaOrder"]["order_id"],-8);
+			$this->set('pass',$codelist["MahuaOrder"]);
 		
 			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 		
@@ -446,7 +450,17 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 		else {
 			//验证失败
 			//如要调试，请看alipay_notify.php页面的verifyReturn函数
-			$this->set('pass',"支付不成功");
+			$out_trade_no =$this->params["url"]['out_trade_no'];
+			//支付宝交易号
+			//$trade_no = $_GET['trade_no'];
+			$trade_no =$this->params["url"]['trade_no'];
+			//交易状态
+			//$result = $_GET['result'];
+			$result =$this->params["url"]['result'];
+			
+			$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+		    $codelist["MahuaOrder"]["result"]="支付失败!";
+			$this->set('pass',$codelist["MahuaOrder"]);
 		}
 		
 	}

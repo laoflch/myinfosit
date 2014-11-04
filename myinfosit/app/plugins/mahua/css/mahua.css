@@ -140,10 +140,17 @@ body {
 	overflow: hidden;
 }
 
+.confirm_info span {
+	float:left;
+	clear:left;
+	display: block;
+}
+
 .confirm_name {
 	color: #ea4872;
-	margin-bottom: 4px;
-	display: block;
+	margin-bottom: 4px;	
+	clear:right;
+	padding-left:20px;
 }
 
 .confirm_time {
@@ -197,6 +204,18 @@ body {
 
 .number_container {
 	width: 60px;
+	height: 34px;
+	float: left;
+	margin-right: 15px;
+	background-color: white;
+	border: 1px solid #adadad;
+	border-radius: 3px;
+	text-align: center;
+	padding-top: 6px;
+}
+
+.phone_container {
+	width: 150px;
 	height: 34px;
 	float: left;
 	margin-right: 15px;

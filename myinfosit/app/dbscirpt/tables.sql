@@ -434,7 +434,7 @@ CREATE TABLE `weixin_user_infos` (
 drop table `mahua_cookie_key_source_codes`;
 CREATE TABLE `mahua_cookie_key_source_codes` (
   `cookie_key` varchar(64) NOT NULL,
-  `source_code` varchar(64) NOT NULL default '',
+  `source_code` varchar(8) NOT NULL default '',
   PRIMARY KEY  (`cookie_key`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -445,7 +445,8 @@ CREATE TABLE `mahua_orders` (
   `single_price` decimal(18,2) NOT NULL default 0.00,
   `count` int(8) NOT NULL default 0,
   `total_price` decimal(18,2) NOT NULL default 0.00,
-  `showtime` DATETIME, 
+  `showtime` DATETIME NOT NULL default '1990-01-01 00:00:00', 
+  `source_code` varchar(8) NOT NULL default '',
   PRIMARY KEY  (`order_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
