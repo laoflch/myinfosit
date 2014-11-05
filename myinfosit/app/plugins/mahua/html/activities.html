@@ -109,12 +109,13 @@
             </p>
             <h4>选择时间</h4>
             <p style="overflow:hidden;" id="time_section" class="confirm_time">
-                <span class="time_cell selected">2014年12月24日<br>周三 19:30</span>
-                <span class="time_cell">2014年12月25日<br>周四 19:30</span>
-                <span class="time_cell">2014年12月26日<br>周五 19:30</span>
+             {{#each show in model.show_time_list}}   <!--span class="time_cell selected">2014年12月24日<br>周三 19:30</span-->
+                {{time-select content=show.MahuaActivityShowTimeInfo_show_time select=show.MahuaActivityShowTimeInfo_default_select}}
+                <!--span class="time_cell">2014年12月26日<br>周五 19:30</span>
                 <span class="time_cell">2014年12月27日<br>周六 19:30</span>
-                <span class="time_cell">2014年12月28日<br>周日 19:30</span>
-            </p>
+                <span class="time_cell">2014年12月28日<br>周日 19:30</span-->
+            {{/each}}
+             </p>
             <h4>票价</h4>
             <p>{{model.single_price}}元 (参与本次活动票价)</p>
             <hr>
@@ -163,9 +164,11 @@
             <h4>订单信息</h4>
             <div class="confirm_info">
                 <span> 单价：</span><span class="confirm_name">{{model.order_info.single_price}}</span>
-                <span> 演出地点：</span><span class="confirm_name">上戏剧院（华山路630号）</span>
+                
                 <span> 总价：</span><span class="confirm_name">{{model.order_info.total}}元 (参与本次活动票价)</span>
                 <span> 张数：</span><span class="confirm_name">{{model.order_info.count}}</span>
+                <span> 演出地点：</span><span class="confirm_name">上戏剧院（华山路630号）</span>
+                <span> 演出时间：</span><span class="confirm_name">{{time-format content=model.order_info.showtime select=model.order_info.showtime}}</span>
                 <span> 验证码接收手机：</span><span class="confirm_name">{{model.order_info.phone_no}}</span>
             </div>  
 <!--input type='hidden' name='_input_charset' value='utf-8'/>

@@ -32,6 +32,7 @@ class OrderController extends MahuaAppController implements NoModelController
 				$this->data["count"]=$order_info["count"];
 				$this->data["total"]=$order_info["total"];
 				$this->data["source_code"]=$order_info["source_code"];
+				$this->data["showtime"]=$order_info["show_time"];
 				$codelist=$this->MahuaOrder->save($this->data);
 		
 			if($codelist){
@@ -437,14 +438,24 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 				$this->data["result"]=$result;
 				$this->MahuaOrderNotify->save($this->data);
 			}
-			
-			$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+		    $codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+			//$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>19)));
 		    $codelist["MahuaOrder"]["result"]="支付成功!";
 		    $codelist["MahuaOrder"]["order_id"]="MH001".substr("00000000".$codelist["MahuaOrder"]["order_id"],-8);
+		    /* $codelist["MahuaOrder"]["show_time"]=date(Y,$codelist["MahuaOrder"]["showtime"])."年"
+		    		                             .date(m,$codelist["MahuaOrder"]["showtime"])."月"
+		    		                             .date(d,$codelist["MahuaOrder"]["showtime"])."日"
+		    		                             ." 星期".date(w,$codelist["MahuaOrder"]["showtime"])." "
+		    		                             .date(H,$codelist["MahuaOrder"]["showtime"])."点"
+		    		                             .date(s,$codelist["MahuaOrder"]["showtime"]); */
+		    $weekarray=array("日","一","二","三","四","五","六");
+		    $codelist["MahuaOrder"]["show_time"]=date("Y年m月d日 ",strtotime($codelist["MahuaOrder"]["showtime"]))
+		                                        ."星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
+		                                        .date(" H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
 			$this->set('pass',$codelist["MahuaOrder"]);
 		
 			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-		
+		 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
 		else {
@@ -460,26 +471,22 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 			
 			$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
 		    $codelist["MahuaOrder"]["result"]="支付失败!";
-			$this->set('pass',$codelist["MahuaOrder"]);
+			$this->set('pass',$codelist["MahuaOrder"]); 
 		}
 		
 	}
 
 	function afterPayNotify(){
-		App::import('file', "mahua.AlipayNotify",false);
+	App::import('file', "mahua.AlipayNotify",false);
 		//App::import('file', "mahua.AlipayConfig",false);
 		//App::import('file', "mahua.AlipaySubmit",false);
-		/* $var = var_export($this->params["form"],TRUE);
 		
-		file_put_contents("test6.txt","test;".$var,FILE_APPEND); */
 		$alipay_config_obj=new AlipayConfig();
 $alipay_config=$alipay_config_obj->toArray();
 	
 	$alipayNotify = new AlipayNotify($alipay_config);
 $verify_result = $alipayNotify->verifyNotify();
-/*$var = var_export($verify_result,TRUE);
-		
-		file_put_contents("test6.txt","test;".$var,FILE_APPEND);*/
+
 if($verify_result) 
 //if(true)
 {//验证成功
@@ -545,13 +552,67 @@ if($verify_result)
 			$this->data["buyer_id"]=$doc->getElementsByTagName( "buyer_id" )->item(0)->nodeValue;
 			$this->data["notify_id"]=$doc->getElementsByTagName( "notify_id" )->item(0)->nodeValue;
 			$this->data["use_coupon"]=$doc->getElementsByTagName( "use_coupon" )->item(0)->nodeValue;
-			/* $var = var_export($this->data,TRUE);
+		//$var = var_export($this->data,TRUE);
 		
-		file_put_contents("test6.txt","test;".$var,FILE_APPEND); */
+		//file_put_contents("test6.txt","test;".$var,FILE_APPEND);
 			$teturn_str=$this->MahuaOrderNotify->save($this->data);
 			
 			if($teturn_str){
-			$this->set('pass',"success");	
+				//$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+		$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>19)));
+		
+		    if($codelist){
+				$phone_no=$codelist["MahuaOrder"]["phone_no"];
+				$order_id="MH001".substr("00000000".$codelist["MahuaOrder"]["order_id"],-8);
+				$show_time=date("Y年m月d日 ",strtotime($codelist["MahuaOrder"]["showtime"]))
+		                                        ."星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
+		                                        .date(" H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
+				$count=	$codelist["MahuaOrder"]["count"];
+				
+				if($codelist["MahuaOrder"]["rand_num"]==="000001"){
+				$rand_num=$codelist["MahuaOrder"]["order_id"].substr("0000".rand(0,9999),-4);
+				$codelist["MahuaOrder"]["rand_num"]=$rand_num;
+				$teturn_str=$this->MahuaOrder->save($codelist["MahuaOrder"]);
+				if(!$teturn_str){
+					$this->set('pass',"faild");
+					return;
+				}
+				}else{
+					$rand_num=$codelist["MahuaOrder"]["rand_num"];
+				}
+				
+				
+				$content="恭喜您！订单".$order_id."已经生效，您所购买的".$show_time."的乌龙山伯爵话剧票共"
+						.$count."张已成功出票，验证码:".$rand_num."，请于演出当日提前半小时到演出场地凭验证码换取纸质演出票，客服电话18916159788【微数咨询】";
+				$curl=curl_init();
+				curl_setopt($curl, CURLOPT_URL, "http://www.smsadmin.cn/smsmarketing/wwwroot/api/post_send/");
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
+				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
+				//curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']); // 模拟用户使用的浏览器
+				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
+				
+				curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求
+				curl_setopt($curl, CURLOPT_POSTFIELDS, "uid=heasenma&pwd=hm123072&mobile=".$phone_no."&msg=".$content."&dtime="); // Post提交的数据包
+				curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环
+				curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
+				//curl_setopt($curl, CURLOPT_REFERER, "https://mp.weixin.qq.com/");
+				
+				$tmpInfo = curl_exec($curl); // 执行操作
+				
+				if (curl_errno($curl)) {
+					$this->set('pass',"faild");
+				}
+				
+				//if ($tmpInfo==="0"){
+					$this->set('pass',"success");
+				//}else{
+					//$this->set('pass',"faild");
+				//}
+				
+				
+			
+				}
 			}else{
 				$this->set('pass',"faild");//请不要修改或删除
 			}
@@ -604,6 +665,7 @@ if($verify_result)
 else {
 	$this->set('pass',"faild");
 	}
+	
 	
 	}
 }

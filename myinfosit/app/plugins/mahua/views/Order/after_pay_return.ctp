@@ -11,9 +11,11 @@
             <h4>订单信息</h4>
             <div class="confirm_info">
                 <span> 单价：</span><span class="confirm_name"><?php echo $pass["single_price"]?></span>
-                <span> 演出地点：</span><span class="confirm_name">上戏剧院（华山路630号）</span>
-                <span> 总价：</span><span class="confirm_name"><?php echo $pass["total_price "]?>元 (参与本次活动票价)</span>
                 <span> 张数：</span><span class="confirm_name"><?php echo $pass["count"]?></span>
+                
+                <span> 总价：</span><span class="confirm_name"><?php echo $pass["total_price"]?>元 (参与本次活动票价)</span>
+                <span> 演出地点：</span><span class="confirm_name">上戏剧院（华山路630号）</span>
+                <span> 时间：</span><span class="confirm_name"><?php echo $pass["show_time"]?></span>
                 <span> 验证码接收手机：</span><span class="confirm_name"><?php echo $pass["phone_no"]?></span>
             </div>  
           </div>

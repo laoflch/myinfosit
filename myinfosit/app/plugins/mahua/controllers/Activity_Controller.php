@@ -14,7 +14,7 @@ class ActivityController extends MahuaAppController implements NoModelController
 
 	var $components = array('Cookie','Session');
 
-	var $uses = array('mahua.MahuaCookieKeySourceCode','mahua.MahuaActivityBasicInfo');
+	var $uses = array('mahua.MahuaCookieKeySourceCode','mahua.MahuaActivityBasicInfo','mahua.MahuaActivityShowTimeInfo');
 
 	//var $components = array('RequestHandler');
 
@@ -126,6 +126,16 @@ class ActivityController extends MahuaAppController implements NoModelController
 				$this->set('pass',array("return_code"=>123,"return_message"=>"acctivity basic failed","showActivityInfo"=>$activitieslist[0]));
 			}
 		}
+	}
+	
+	function fetchActivityTimeInfo(){
+		/* if(isset($this->params["form"]['activity_id'])
+		&&!empty($this->params["form"]['activity_id'])){ */
+			//$showtimeslist=$this->MahuaActivityShowTimeInfo->find("all",array('conditions' => array('activity_id' =>$this->params["form"]['activity_id'])));
+		$showtimeslist=$this->MahuaActivityShowTimeInfo->find("all",array('conditions' => array('activity_id' =>1)));
+		$this->_clearClass($showtimeslist);
+		$this->set('pass',array("return_code"=>122,"return_message"=>"activity basic seccessfull","showTimeInfo"=>$showtimeslist));
+		/* } */
 	}
 	
 	function getHappyShareActiviesList(){
