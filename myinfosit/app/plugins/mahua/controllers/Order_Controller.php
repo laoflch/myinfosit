@@ -477,7 +477,7 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 	}
 
 	function afterPayNotify(){
-	App::import('file', "mahua.AlipayNotify",false);
+	    App::import('file', "mahua.AlipayNotify",false);
 		//App::import('file', "mahua.AlipayConfig",false);
 		//App::import('file', "mahua.AlipaySubmit",false);
 		
@@ -558,17 +558,21 @@ if($verify_result)
 			$teturn_str=$this->MahuaOrderNotify->save($this->data);
 			
 			if($teturn_str){
-				//$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
-		$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>19)));
+				$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>intval(substr(trim($out_trade_no),-8)))));
+		//$codelist=$this->MahuaOrder->find("first",array('conditions' => array('order_id' =>19)));
 		
 		    if($codelist){
 				$phone_no=$codelist["MahuaOrder"]["phone_no"];
 				$order_id="MH001".substr("00000000".$codelist["MahuaOrder"]["order_id"],-8);
-				$show_time=date("Y年m月d日 ",strtotime($codelist["MahuaOrder"]["showtime"]))
-		                                        ."星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
-		                                        .date(" H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
+				$weekarray=array("日","一","二","三","四","五","六");
+				$show_time=date("Y年m月d日",strtotime($codelist["MahuaOrder"]["showtime"]))
+		                                        ."(星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
+		                                        .date(")H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
 				$count=	$codelist["MahuaOrder"]["count"];
-				
+				$corp="【微数咨询】";
+				$service_phone="18916159788";
+				$uid="heasenma";
+				$pw=md5("hm123072");
 				if($codelist["MahuaOrder"]["rand_num"]==="000001"){
 				$rand_num=$codelist["MahuaOrder"]["order_id"].substr("0000".rand(0,9999),-4);
 				$codelist["MahuaOrder"]["rand_num"]=$rand_num;
@@ -583,16 +587,17 @@ if($verify_result)
 				
 				
 				$content="恭喜您！订单".$order_id."已经生效，您所购买的".$show_time."的乌龙山伯爵话剧票共"
-						.$count."张已成功出票，验证码:".$rand_num."，请于演出当日提前半小时到演出场地凭验证码换取纸质演出票，客服电话18916159788【微数咨询】";
+						.$count."张已成功出票，验证码:".$rand_num."，请于演出当日提前半小时到演出场地凭验证码换取纸质演出票，客服电话".$service_phone.$corp;
+				$content=iconv('UTF-8','GB2312',$content);
 				$curl=curl_init();
-				curl_setopt($curl, CURLOPT_URL, "http://www.smsadmin.cn/smsmarketing/wwwroot/api/post_send/");
+				curl_setopt($curl, CURLOPT_URL, "http://www.smsadmin.cn/smsmarketing/wwwroot/api/post_send_md5/");
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
 				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0); // 从证书中检查SSL加密算法是否存在
 				//curl_setopt($curl, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']); // 模拟用户使用的浏览器
 				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1); // 使用自动跳转
 				
 				curl_setopt($curl, CURLOPT_POST, 1); // 发送一个常规的Post请求
-				curl_setopt($curl, CURLOPT_POSTFIELDS, "uid=heasenma&pwd=hm123072&mobile=".$phone_no."&msg=".$content."&dtime="); // Post提交的数据包
+				curl_setopt($curl, CURLOPT_POSTFIELDS, "uid=".$uid."&pwd=".$pw."&mobile=".$phone_no."&msg=".$content."&dtime="); // Post提交的数据包
 				curl_setopt($curl, CURLOPT_TIMEOUT, 30); // 设置超时限制防止死循环
 				curl_setopt($curl, CURLOPT_HEADER, 0); // 显示返回的Header区域内容
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); // 获取的信息以文件流的形式返回
@@ -604,11 +609,11 @@ if($verify_result)
 					$this->set('pass',"faild");
 				}
 				
-				//if ($tmpInfo==="0"){
+				if (!strcspn($tmpInfo,"0")){
 					$this->set('pass',"success");
-				//}else{
-					//$this->set('pass',"faild");
-				//}
+				}else{
+					$this->set('pass',"faild");
+				}
 				
 				
 			

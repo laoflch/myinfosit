@@ -15,7 +15,7 @@ MDEmber = Ember.Application.create({
 	
 	transDateFomat:function(date_value){
 		
-		return date_value.getFullYear()+"年"+date_value.getMonth()+"月"
+		return date_value.getFullYear()+"年"+(parseInt(date_value.getMonth())+1)+"月"
 		       +date_value.getDate()+"日"+"<br> 周"+"日一二三四五六".charAt(date_value.getDay())+" "
                +date_value.getHours()+":"+date_value.getMinutes();
 	},
@@ -86,20 +86,16 @@ MDEmber = Ember.Application.create({
 });
 
 MDEmber.Router.map(function(){
+	
 	this.route("showactivity", {
-		path : "/:source_code"
+		path : "/showactivity/:source_code/:activity_id"
 	});
 	this.route("showactivity", {
 		path : "/:source_code/:activity_id"
 	});
-	this.route("showactivity", {
-		path : "/showactivity"
-	});
-	this.route("showactivity", {
-		path : "/"
-	});
+	
 	this.resource("orderticket", {
-		path : "/orderticket/:activity_id"
+		path : "/orderticket/:source_code/:activity_id"
 		//path : "/orderticket"
 	});
 	this.resource("confirmorder", {
@@ -152,6 +148,14 @@ MDEmber.ShowactivityRoute = Ember.Route.extend({
        return {"source_code":params.source_code,"activity_id":params.activity_id};
 	   //return return_str;
 	},	
+	 serialize: function(params) {
+		  //alert(2);
+		    // this will make the URL `/posts/foo-post`
+		 //this.controller.set("model",params);
+		 //return {"single_price":params["single_price"],"count":params["count"],"total":params["total"]};
+		  //return {"params":params,};
+		  return params;
+		  },
 	setupController : function(controller) {
 		
 		var model=controller.get("model");
@@ -217,13 +221,14 @@ MDEmber.ShowactivityView = Ember.View.extend({
 MDEmber.OrderticketRoute = Ember.Route.extend({
 	model: function(params) {
 	   
-		return {"activity_id":params.activity_id};
+		//return {"activity_id":params.activity_id};
+		return params;
 	  },
 	  serialize: function(params) {
 		    // this will make the URL `/posts/foo-post`
 		 // alert(2);
 		 //return {"single_price2":single_price,"single_price":single_price,};
-		  return {"activity_id":params["activity_id"]};
+		  return params;
 		  },
 	setupController : function(controller) {
 		
@@ -232,7 +237,7 @@ MDEmber.OrderticketRoute = Ember.Route.extend({
 		var model=controller.get("model");
 		//alert(123);
 		if(!model["single_price"]){
-		MDEmber.jsonAsync("/mahua/Activity/fetchBasicInfo.json",
+		MDEmber.jsonSync("/mahua/Activity/fetchBasicInfo.json",
 				"post",
 				{"activity_id":model["activity_id"]},
 				function(data) {
@@ -243,29 +248,7 @@ MDEmber.OrderticketRoute = Ember.Route.extend({
                         ,single_price: data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
                         ,count:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]
                         ,total:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]*data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
-						,source_code:"00000001"});
-						
-					}},
-				function() {
-					// view("异常！");
-					alert("获取json数据错误！");
-				});
-
-		
-	}else{
-		MDEmber.jsonAsync("/mahua/Activity/fetchActivityTimeInfo.json",
-				"post",
-				{"activity_id":model["activity_id"]},
-				function(data) {
-					if (data["showTimeInfo"]) {
-						
-						
-					/*	controller.set("model",{activity_id: data["showActivityInfo"]["MahuaActivityBasicInfo_activity_id"]
-                        ,single_price: data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
-                        ,count:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]
-                        ,total:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]*data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
-						,source_code:"00000001"});*/
-						Ember.set(model,"show_time_list",data["showTimeInfo"]);
+						,source_code:model["source_code"]});
 						
 					}},
 				function() {
@@ -275,6 +258,28 @@ MDEmber.OrderticketRoute = Ember.Route.extend({
 
 		
 	}
+		MDEmber.jsonAsync("/mahua/Activity/fetchActivityTimeInfo.json",
+				"post",
+				{"activity_id":model["activity_id"]},
+				function(data) {
+					if (data["showTimeInfo"]) {
+						
+						var model_in=controller.get("model");
+					/*	controller.set("model",{activity_id: data["showActivityInfo"]["MahuaActivityBasicInfo_activity_id"]
+                        ,single_price: data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
+                        ,count:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]
+                        ,total:data["showActivityInfo"]["MahuaActivityBasicInfo_default_count"]*data["showActivityInfo"]["MahuaActivityBasicInfo_single_price"]
+						,source_code:"00000001"});*/
+						Ember.set(model_in,"show_time_list",data["showTimeInfo"]);
+						
+					}},
+				function() {
+					// view("异常！");
+					alert("获取json数据错误！");
+				});
+
+		
+	
 }
 });
 
@@ -324,6 +329,10 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 		 var model=this.get("model");
 		 var phone_no=$("#phone_no")[0].value;
 		 Ember.set(model,"phone_no",phone_no);
+		 if(!model["show_time"]){
+			 var value=$("span[class='time_cell selected']")[0]["attributes"]["value"].nodeValue;
+			 Ember.set(model,"show_time",value);
+		 }
 		 var thisController=this;
 		 MDEmber.jsonAsync("/mahua/Order/createOrder.json",
 					"post",
@@ -332,8 +341,11 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 						if (data["orderInfo"]) {
 							
 							
-							 //var model=thisController.get("model");
-							 thisController.transitionToRoute("confirmorder",{"order_info":data["orderInfo"]["MahuaOrder"],"para":data["para"]});
+							 var model=thisController.get("model");
+							 thisController.transitionToRoute("confirmorder",{"activity_id":model["activity_id"]
+							                                                 ,"source_code":model["source_code"]
+							                                                 ,"order_info":data["orderInfo"]["MahuaOrder"]
+							                                                 ,"para":data["para"]});
 							
 						}},
 					function() {
@@ -347,6 +359,10 @@ MDEmber.OrderticketController = Ember.Controller.extend({
 		 var time_str=target[0]["attributes"]["value"].nodeValue;
 		 Ember.set(model,"show_time",time_str);
 		 
+	 },
+	 cancel:function(){
+		 var model=this.get("model");
+		 this.transitionToRoute("showactivity",{"source_code":model["source_code"],"activity_id":model["activity_id"]});
 	 }
 });
 
@@ -375,6 +391,13 @@ MDEmber.OrderticketView = Ember.View.extend({
 			
 			
 			this.controller.send('confirmOrder', this);
+			
+			
+		};
+		if($(event.target).hasClass("btn-cancel")){
+			
+			
+			this.controller.send('cancel', this);
 			
 			
 		};
@@ -429,12 +452,24 @@ MDEmber.Confirmorder = Ember.Object.extend({
 
 
 MDEmber.ConfirmorderController = Ember.Controller.extend({
-	
+	cancel:function(){
+		 var model=this.get("model");
+		 this.transitionToRoute("orderticket",{"activity_id":model["activity_id"],"source_code":model["source_code"]});
+	 }
 });
 
 
 MDEmber.ConfirmorderView = Ember.View.extend({
 	templateName : "confirm_order",
+	click:function(){
+       if($(event.target).hasClass("btn-cancel")){
+			
+			
+			this.controller.send('cancel', this);
+			
+			
+		};
+	}
 	
 });
 
