@@ -451,7 +451,7 @@ $html_text = $alipaySubmit->buildRequestForm($parameter, 'get', '确认');
 		    $weekarray=array("日","一","二","三","四","五","六");
 		    $codelist["MahuaOrder"]["show_time"]=date("Y年m月d日 ",strtotime($codelist["MahuaOrder"]["showtime"]))
 		                                        ."星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
-		                                        .date(" H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
+		                                        .date(" H:i",strtotime($codelist["MahuaOrder"]["showtime"]));
 			$this->set('pass',$codelist["MahuaOrder"]);
 		
 			//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
@@ -567,7 +567,7 @@ if($verify_result)
 				$weekarray=array("日","一","二","三","四","五","六");
 				$show_time=date("Y年m月d日",strtotime($codelist["MahuaOrder"]["showtime"]))
 		                                        ."(星期".$weekarray[date("w",strtotime($codelist["MahuaOrder"]["showtime"]))]
-		                                        .date(")H:s",strtotime($codelist["MahuaOrder"]["showtime"]));
+		                                        .date(")H:i",strtotime($codelist["MahuaOrder"]["showtime"]));
 				$count=	$codelist["MahuaOrder"]["count"];
 				$corp="【微数咨询】";
 				$service_phone="18916159788";

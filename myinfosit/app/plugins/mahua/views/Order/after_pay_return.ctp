@@ -1,5 +1,5 @@
 
-<div class="" id="myModal" style="border:1px solid #000" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
        <div class="modal-dialog">
         <div class="modal-content">
 <form id='alipaysubmit' name='alipaysubmit' action='http://wappaygw.alipay.com/service/rest.htm?
